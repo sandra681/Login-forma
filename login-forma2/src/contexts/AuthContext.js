@@ -1,66 +1,66 @@
-import React, {useContext, useState, useEffect} from 'react'
-import {auth} from '../firebase'
+// import React, {useContext, useState, useEffect} from 'react'
+// import {auth} from '../firebase'
 
-const AuthContext=React.createContext()
+// const AuthContext=React.createContext()
 
-export function useAuth(){
-    return useContext(AuthContext)
-}
+// export function useAuth(){
+//     return useContext(AuthContext)
+// }
 
-function AuthProvider({children}) {
-    const [currentUser, setCurrentUser]=useState()
-    const [loading, setLoading]=useState(true)
+// function AuthProvider({children}) {
+//     const [currentUser, setCurrentUser]=useState()
+//     const [loading, setLoading]=useState(true)
     
     
-    function signup(email, password){
-        return auth.createUserWithEmailAndPassword(email, password)
-    }
+//     function signup(email, password){
+//         return auth.createUserWithEmailAndPassword(email, password)
+//     }
 
-    //ako hoces da koristis neku drugu bazu, onda je potrebno izmeniti samo ove 2 funkcije(signup, login)
-    function login(email, password){
-        return auth.signInWithEmailAndPassword(email, password)
+//     //ako hoces da koristis neku drugu bazu, onda je potrebno izmeniti samo ove 2 funkcije(signup, login)
+//     function login(email, password){
+//         return auth.signInWithEmailAndPassword(email, password)
 
-    }
+//     }
 
-    function logout(){
-       return auth.signOut()
-    }
+//     function logout(){
+//        return auth.signOut()
+//     }
 
-    function resetPassword(email){
-        return auth.sendPasswordResetEmail(email)
-    }
+//     function resetPassword(email){
+//         return auth.sendPasswordResetEmail(email)
+//     }
 
-    function updateEmail(email){
-        return currentUser.updateEmail(email)
-    }
-    function updatePassword(password){
-        return currentUser.updatePassword(password)
-    }
-    useEffect(()=>{
-       const unsubscribe= auth.onAuthStateChanged(user=>{  /*  */
-        setCurrentUser(user)
-        setLoading(false)    
+//     function updateEmail(email){
+//         return currentUser.updateEmail(email)
+//     }
+//     function updatePassword(password){
+//         return currentUser.updatePassword(password)
+//     }
+//     useEffect(()=>{
+//        const unsubscribe= auth.onAuthStateChanged(user=>{  /*  */
+//         setCurrentUser(user)
+//         setLoading(false)    
         
-        })
-        return unsubscribe
-    }, [])
+//         })
+//         return unsubscribe
+//     }, [])
    
 
-    const value={
-        currentUser,
-        signup,
-        login,
-        logout,
-        resetPassword,
-        updateEmail,
-        updatePassword
-    }
+//     const value={
+//         currentUser,
+//         signup,
+//         login,
+//         logout,
+//         resetPassword,
+//         updateEmail,
+//         updatePassword
+//     }
 
-    return (
-        <AuthContext.Provider value={value}>
-            {!loading && children}
-        </AuthContext.Provider>
-    )
-}
+//     return (
+//         <AuthContext.Provider value={value}>
+//             {!loading && children}
+//         </AuthContext.Provider>
+//     )
+// }
 
-export default AuthProvider
+// export default AuthProvider
