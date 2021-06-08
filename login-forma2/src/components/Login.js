@@ -1,12 +1,12 @@
 import React, { useRef, useState } from "react";
 import { Form, Button, Card, Alert } from "react-bootstrap";
-import { useAuth } from "../contexts/AuthContext";
 import { Link, useHistory } from "react-router-dom";
 import axios from "axios";
 
 //use history koristimo onda da kad se ulogujemo da nam se otvori  druga strana
 
-function Login() {
+function Login(props) {
+  const { onLoginChange } = props;
   const emailRef = useRef();
   const passwordRef = useRef();
 
@@ -14,8 +14,7 @@ function Login() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const history = useHistory();
-
-  async function handleSubmit(e) {
+  function handleSubmit(e) {
     e.preventDefault();
     axios
       .post("http://localhost:8000/api/user-login", {
@@ -26,6 +25,10 @@ function Login() {
         // console.log("Success");
         setLoading(false);
         if (response.data.status === 200) {
+          localStorage.setItem(
+            "currentUser",
+            JSON.stringify(response.data.data)
+          );
           history.push("/");
         }
         setTimeout(() => {}, 2000);
@@ -55,7 +58,12 @@ function Login() {
               <Form.Control type="password" ref={passwordRef} required />
             </Form.Group>
 
-            <Button disabled={loading} className="w-100" type="submit">
+            <Button
+              disabled={loading}
+              className="w-100"
+              type="submit"
+              onClick={() => onLoginChange()}
+            >
               Log In
             </Button>
           </Form>

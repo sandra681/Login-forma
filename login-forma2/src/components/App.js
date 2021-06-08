@@ -1,38 +1,45 @@
-import React from "react";
-import { Container } from "react-bootstrap";
-import AuthProvider from "../contexts/AuthContext";
+import React, { useState } from "react";
 import Signup from "./Signup";
 import { Switch, Route } from "react-router-dom";
-import Dashboard from "./Dashboard";
 import Login from "./Login";
-import PrivateRoute from "./PrivateRoute";
 import ForgotPassword from "./ForgotPassword";
-import UpdateProfile from "./UpdateProfile";
 import Homepage from "./homepage/Homepage";
 import Header from "../common/Header";
 
 function App() {
-
+  function checkUser() {
+    const user = localStorage.getItem("currentUser");
+    if (user !== null) {
+      return true;
+    }
+    return false;
+  }
+  const [currentUser, setCurrentUser] = useState(checkUser);
+  function onLoginChange() {
+    const user = localStorage.getItem("currentUser");
+    if (user !== null) {
+      setCurrentUser(true);
+    }
+  }
   return (
-    <Container
-      className="d-flex align-items-center justify-content-center"
-      style={{ minHeight: "100vh" }}
-    >
-      <div className="w-100" style={{ maxWidth: "400px" }}>
-        <Header />
-        <Switch>
-          {/* <PrivateRoute exact path="/" component={Dashboard}></PrivateRoute>
+    <>
+      <Header currentUser={currentUser} />
+      <Switch>
+        {/* <PrivateRoute exact path="/" component={Dashboard}></PrivateRoute>
             <PrivateRoute
               path="/update-profile"
               component={UpdateProfile}
             ></PrivateRoute> */}
-          <Route exact path="/" component={Homepage}></Route>
-          <Route path="/signup" component={Signup}></Route>
-          <Route path="/login" component={Login}></Route>
-          <Route path="/forgot-password" component={ForgotPassword}></Route>
-        </Switch>
-      </div>
-    </Container>
+        <Route exact path="/">
+          <Homepage currentUser={currentUser} />
+        </Route>
+        <Route path="/signup" component={Signup}></Route>
+        <Route path="/login">
+          <Login onLoginChange={onLoginChange} />
+        </Route>
+        <Route path="/forgot-password" component={ForgotPassword}></Route>
+      </Switch>
+    </>
   );
 }
 

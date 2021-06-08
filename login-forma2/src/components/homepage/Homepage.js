@@ -5,9 +5,8 @@ import { getSomeHomes } from "../../api/residentialBuildingsApi";
 import LikedHomes from "../../homes/LikedHome";
 // import SearchBox from "../common/SearchBox";
 
-const Homepage = () => {
-  
-  
+const Homepage = (props) => {
+  const { currentUser } = props;
   const [loadMore, setLoadMore] = useState(false);
   const [homes, setHomes] = useState([]);
   const [likedHomes, setLikedHomes] = useState([]);
@@ -86,8 +85,10 @@ const Homepage = () => {
               Load more
             </button>
           </section>
+
           <div>
             <LikedHomes
+              currentUser={currentUser}
               removeAllLikedHomes={removeAllLikedHomes}
               likedHomes={likedHomes}
               removeLikedHome={removeLikedHome}
