@@ -6,7 +6,7 @@ import LikedHomes from "../../homes/LikedHome";
 // import SearchBox from "../common/SearchBox";
 
 const Homepage = (props) => {
-  const { currentUser } = props;
+  const { userToken } = props;
   const [loadMore, setLoadMore] = useState(false);
   const [homes, setHomes] = useState([]);
   const [likedHomes, setLikedHomes] = useState([]);
@@ -90,7 +90,7 @@ const Homepage = (props) => {
 
           <div>
             <LikedHomes
-              currentUser={currentUser}
+              userToken={userToken}
               removeAllLikedHomes={removeAllLikedHomes}
               likedHomes={likedHomes}
               removeLikedHome={removeLikedHome}
