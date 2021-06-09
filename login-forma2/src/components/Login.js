@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { Form, Button, Card, Alert } from "react-bootstrap";
 import { Link, useHistory } from "react-router-dom";
 import axios from "axios";
@@ -13,14 +13,42 @@ function Login(props) {
   //   const { login } = useAuth();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [csrfCookie, setCsrfCookie] = useState("");
   const history = useHistory();
+
+  useEffect(() => {
+    axios.get("http://localhost:8000/sanctum/csrf-cookie").then((response) => {
+      setCsrfCookie(response.data.csrf_token);
+    });
+  }, []);
   function handleSubmit(e) {
     e.preventDefault();
+    // To authenticate your SPA should make request to the sanctum/csrf-cookie endpoint
+
+    function getMeta(metaName) {
+      const metas = document.getElementsByTagName("meta");
+
+      for (let i = 0; i < metas.length; i++) {
+        if (metas[i].getAttribute("name") === metaName) {
+          return metas[i].getAttribute("content");
+        }
+      }
+
+      return "";
+    }
     axios
-      .post("http://localhost:8000/api/user-login", {
-        email: emailRef.current.value,
-        password: passwordRef.current.value,
-      })
+      .post(
+        "http://localhost:8000/api/user-login",
+        {
+          email: emailRef.current.value,
+          password: passwordRef.current.value,
+        }
+        // {
+        //   headers: {
+        //     "X-CSRF-Token ": csrfCookie,
+        //   },
+        // }
+      )
       .then((response) => {
         // console.log("Success");
         setLoading(false);

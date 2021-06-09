@@ -11,6 +11,7 @@ const Homepage = (props) => {
   const [homes, setHomes] = useState([]);
   const [likedHomes, setLikedHomes] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [filterHomes, setFilterHomes] = useState([]);
   const [num, setNum] = useState(10);
 
   useEffect(() => {
@@ -18,6 +19,7 @@ const Homepage = (props) => {
       setNum(num + 10);
       getSomeHomes(num).then(
         (result) => {
+          setFilterHomes(result);
           setHomes(result);
           setLoadMore(false);
           setCategories(["all", ...new Set(result.map((one) => one.category))]);
@@ -35,7 +37,7 @@ const Homepage = (props) => {
     setLikedHomes(likedHomes.filter((home) => home.id !== id));
   }
   function removeHome(id) {
-    setHomes(homes.filter((home) => home.id !== id));
+    setFilterHomes(filterHomes.filter((home) => home.id !== id));
   }
   const addLikedHome = (id) => {
     if (likedHomes.filter((home) => home.id === id).length > 0) {
@@ -43,7 +45,7 @@ const Homepage = (props) => {
     }
     const likedhome = [
       ...likedHomes,
-      homes.filter((home) => home.id === id)[0],
+      filterHomes.filter((home) => home.id === id)[0],
     ];
     setLikedHomes(likedhome);
     console.log(likedHomes);
@@ -51,10 +53,10 @@ const Homepage = (props) => {
 
   function categoryFilter(category) {
     if (category === "all") {
-      setHomes(homes);
+      setFilterHomes(homes);
       return;
     }
-    setHomes(homes.filter((home) => home.category === category));
+    setFilterHomes(homes.filter((home) => home.category === category));
   }
   return (
     <div>
@@ -70,7 +72,7 @@ const Homepage = (props) => {
         <main>
           <section className="menu section">
             <div>
-              {homes.map((home1) => {
+              {filterHomes.map((home1) => {
                 return (
                   <Home
                     key={home1.id}

@@ -17,7 +17,9 @@ function App() {
   const [currentUser, setCurrentUser] = useState(checkUser);
   function onLoginChange() {
     const user = localStorage.getItem("currentUser");
+
     if (user !== null) {
+      console.log(user);
       setCurrentUser(true);
     }
   }
