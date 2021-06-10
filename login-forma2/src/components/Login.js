@@ -30,39 +30,44 @@ function Login(props) {
 
     //   return "";
     // }
-    axios.get("http://localhost:8000/sanctum/csrf-cookie").then((response) => {
-      axios
-        .post(
-          "http://localhost:8000/api/user-login",
-          {
-            email: emailRef.current.value,
-            password: passwordRef.current.value,
-          }
-          // {
-          //   headers: {
-          //     "X-CSRF-Token ": csrfCookie,
-          //   },
-          // }
-        )
-        .then((response) => {
-          // console.log("Success");
-          setLoading(false);
-          if (response.data.status === 200) {
-            localStorage.setItem(
-              "userToken",
-              JSON.stringify(response.data.data)
-            );
-            history.push("/");
-          }
-          setTimeout(() => {}, 2000);
-          if (response.data.status === "failed") {
-            console.log("failed");
-            setTimeout(() => {
-              setError("failed");
-            }, 2000);
-          }
-        });
-    });
+    axios
+      .post(
+        "http://localhost:8000/api/user-login",
+        {
+          email: emailRef.current.value,
+          password: passwordRef.current.value,
+        }
+        // {
+        //   headers: {
+        //     "X-CSRF-TOKEN": response,
+        //   },
+        // }
+        // {
+        //   headers: {
+        //     "X-CSRF-Token ": csrfCookie,
+        //   },
+        // }
+      )
+      .then((response) => {
+        // console.log("Success");
+        setLoading(false);
+        if (response.data.status === 200) {
+          console.log(typeof response.data.data);
+          localStorage.setItem(
+            "currentUser",
+            JSON.stringify(response.data.data)
+          );
+          history.push("/");
+        }
+        setTimeout(() => {}, 2000);
+        if (response.data.status === "failed") {
+          console.log("failed");
+          console.log(response);
+          setTimeout(() => {
+            setError("failed");
+          }, 2000);
+        }
+      });
   }
 
   return (

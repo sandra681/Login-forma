@@ -1,18 +1,25 @@
 import React, { useState, useEffect } from "react";
 import Categories from "../../common/Categories";
 import Home from "../../homes/Home";
-import { getSomeHomes } from "../../api/residentialBuildingsApi";
+import { getSomeHomes, deleteHome } from "../../api/residentialBuildingsApi";
 import LikedHomes from "../../homes/LikedHome";
+import { useHistory } from "react-router";
 // import SearchBox from "../common/SearchBox";
 
 const Homepage = (props) => {
-  const { userToken } = props;
+  const { currentUser, adminUser } = props;
   const [loadMore, setLoadMore] = useState(false);
   const [homes, setHomes] = useState([]);
+
   const [likedHomes, setLikedHomes] = useState([]);
   const [categories, setCategories] = useState([]);
   const [filterHomes, setFilterHomes] = useState([]);
   const [num, setNum] = useState(10);
+  const history = useHistory();
+
+  function editHome() {
+    history.push("/addpage");
+  }
 
   useEffect(() => {
     if (loadMore === true || num === 10) {
@@ -58,6 +65,21 @@ const Homepage = (props) => {
     }
     setFilterHomes(homes.filter((home) => home.category === category));
   }
+
+  function handleDeleteHome(id) {
+    deleteHome(id).then((response) => {
+      if (response.status === 204) {
+        setNum(10);
+        setLoadMore(true);
+        setTimeout(() => {}, 2000);
+        return;
+      } else {
+        setNum(10);
+        console.log("Failed to delete");
+        return;
+      }
+    });
+  }
   return (
     <div>
       <header>
@@ -65,6 +87,16 @@ const Homepage = (props) => {
           <h2>Find Home</h2>
           <div className="underline"></div>
         </div>
+        {adminUser && (
+          <button
+            type="button"
+            className="btn btn-danger"
+            style={{ marginLeft: "90vw" }}
+            onClick={() => editHome()}
+          >
+            Add Home
+          </button>
+        )}
         <Categories categories={categories} categoryFilter={categoryFilter} />
       </header>
       <div className="box">
@@ -78,6 +110,9 @@ const Homepage = (props) => {
                     key={home1.id}
                     removeHome={removeHome}
                     addLikedHome={addLikedHome}
+                    deleteHome={handleDeleteHome}
+                    adminUser={adminUser}
+                    editHome={editHome}
                     {...home1}
                   />
                 );
@@ -89,12 +124,14 @@ const Homepage = (props) => {
           </section>
 
           <div>
-            <LikedHomes
-              userToken={userToken}
-              removeAllLikedHomes={removeAllLikedHomes}
-              likedHomes={likedHomes}
-              removeLikedHome={removeLikedHome}
-            />
+            {!adminUser && (
+              <LikedHomes
+                userToken={currentUser}
+                removeAllLikedHomes={removeAllLikedHomes}
+                likedHomes={likedHomes}
+                removeLikedHome={removeLikedHome}
+              />
+            )}
           </div>
         </main>
       </div>

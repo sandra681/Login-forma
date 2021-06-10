@@ -302,15 +302,17 @@ main {
 .apartment-contact {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: baseline;
   margin-bottom: 1.5rem;
 }
 .apartment-contact button {
+  margin-top: 0;
   color: var(--clr-primary-5);
   background: var(--clr-primary-10);
   padding: 0.25rem 0.5rem;
   border-radius: var(--radius);
 }
+
 .loadMore {
   display: block;
   width: 200px;

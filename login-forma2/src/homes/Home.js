@@ -1,9 +1,21 @@
 import React, { useState } from "react";
 
 const Home = (props) => {
-  const { id, image, info, price, name, street, removeHome, addLikedHome } =
-    props;
+  const {
+    id,
+    image,
+    info,
+    price,
+    name,
+    street,
+    removeHome,
+    addLikedHome,
+    deleteHome,
+    adminUser,
+    editHome,
+  } = props;
   const [readMore, setReadMore] = useState(false);
+  console.log(adminUser);
   return (
     <article className="single-apartment">
       <img src={image} alt={name}></img>
@@ -21,14 +33,26 @@ const Home = (props) => {
             {readMore ? "show less" : "read more"}
           </button>
         </p>
-        <button className="delete-btn" onClick={() => removeHome(id)}>
+        {adminUser &&
+        (<button className="delete-btn" onClick={() => editHome(id)}>
+          {" "}
+          EDIT
+        </button>)}
+        {adminUser &&
+        (<button className="delete-btn" onClick={() => deleteHome(id)}>
+          {" "}
+          DELETE
+        </button>)}
+        {!adminUser &&
+        (<button className="delete-btn" onClick={() => removeHome(id)}>
           {" "}
           not interested
-        </button>
-        <button className="delete-btn" onClick={() => addLikedHome(id)}>
+        </button>)}
+        {!adminUser &&
+        (<button className="delete-btn" onClick={() => addLikedHome(id)}>
           {" "}
           interested
-        </button>
+        </button>)}
       </footer>
     </article>
   );

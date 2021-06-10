@@ -3,7 +3,7 @@ import { NavLink, Link } from "react-router-dom";
 
 const Header = (props) => {
   const { currentUser } = props;
-  console.log("User:" + currentUser);
+  console.log(typeof currentUser);
   const activeStyle = { color: "#F15B2A" };
   const [menu, setMenu] = useState(false);
   const toggleMenu = () => {
@@ -14,7 +14,7 @@ const Header = (props) => {
     localStorage.removeItem("currentUser");
   };
   const show = menu ? "show" : "";
-  if (currentUser) {
+  if (currentUser !== null) {
     return (
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
         <div className="container-fluid">
@@ -69,11 +69,12 @@ const Header = (props) => {
             >
               <img
                 src="https://cdn2.iconfinder.com/data/icons/avatars-99/62/avatar-370-456322-512.png"
-                class="rounded-circle"
+                className="rounded-circle"
                 height="25"
                 alt=""
                 loading="lazy"
               />
+              <p>{currentUser.email}</p>
             </Link>
             <ul
               className={"dropdown-menu dropdown-menu-end " + show}
