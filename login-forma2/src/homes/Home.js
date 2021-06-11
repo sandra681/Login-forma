@@ -22,6 +22,7 @@ const Home = (props) => {
       <footer>
         <div className="apartment-info">
           <h4>{name}</h4>
+          <p>{props.home1.category}</p>
           <h4 className="apartment-price">${price}</h4>
         </div>
         <div className="apartment-contact">
@@ -33,26 +34,30 @@ const Home = (props) => {
             {readMore ? "show less" : "read more"}
           </button>
         </p>
-        {adminUser &&
-        (<button className="delete-btn" onClick={() => editHome(id)}>
-          {" "}
-          EDIT
-        </button>)}
-        {adminUser &&
-        (<button className="delete-btn" onClick={() => deleteHome(id)}>
-          {" "}
-          DELETE
-        </button>)}
-        {!adminUser &&
-        (<button className="delete-btn" onClick={() => removeHome(id)}>
-          {" "}
-          not interested
-        </button>)}
-        {!adminUser &&
-        (<button className="delete-btn" onClick={() => addLikedHome(id)}>
-          {" "}
-          interested
-        </button>)}
+        {adminUser && (
+          <button className="delete-btn" onClick={() => editHome(id)}>
+            {" "}
+            EDIT
+          </button>
+        )}
+        {adminUser && (
+          <button className="delete-btn" onClick={() => deleteHome(id)}>
+            {" "}
+            DELETE
+          </button>
+        )}
+        {!adminUser && (
+          <button className="delete-btn" onClick={() => removeHome(id)}>
+            {" "}
+            not interested
+          </button>
+        )}
+        {!adminUser && (
+          <button className="delete-btn" onClick={() => addLikedHome(id)}>
+            {" "}
+            interested
+          </button>
+        )}
       </footer>
     </article>
   );

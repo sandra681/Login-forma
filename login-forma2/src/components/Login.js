@@ -15,7 +15,7 @@ function Login(props) {
   const [loading, setLoading] = useState(false);
   const history = useHistory();
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
     // To authenticate your SPA should make request to the sanctum/csrf-cookie endpoint
 
@@ -30,7 +30,7 @@ function Login(props) {
 
     //   return "";
     // }
-    axios
+    await axios
       .post(
         "http://localhost:8000/api/user-login",
         {
@@ -100,10 +100,10 @@ function Login(props) {
             <Link to="/forgot-password">Forgot password?</Link>
           </div>
         </Card.Body>
+        <div className="w-100 text-center mt-2">
+          Need an account? <Link to="/signup">Sign Up</Link>
+        </div>
       </Card>
-      <div className="w-100 text-center mt-2">
-        Need an account? <Link to="/signup">Sign Up</Link>
-      </div>
     </>
   );
 }

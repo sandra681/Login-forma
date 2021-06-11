@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { NavLink, Link } from "react-router-dom";
 
 const Header = (props) => {
@@ -14,6 +14,9 @@ const Header = (props) => {
     localStorage.removeItem("currentUser");
   };
   const show = menu ? "show" : "";
+  useEffect(() => {
+    setMenu(false);
+  }, []);
   if (currentUser !== null) {
     return (
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -79,6 +82,7 @@ const Header = (props) => {
             <ul
               className={"dropdown-menu dropdown-menu-end " + show}
               aria-labelledby="navbarDropdownMenuLink"
+              style={{ position: "relative" }}
             >
               <li>
                 <a
@@ -160,6 +164,7 @@ const Header = (props) => {
           <ul
             className={"dropdown-menu dropdown-menu-end " + show}
             aria-labelledby="navbarDropdownMenuLink"
+            style={{ position: "relative" }}
           >
             <li>
               <NavLink
