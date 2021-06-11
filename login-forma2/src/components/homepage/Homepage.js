@@ -4,30 +4,77 @@ import Home from "../../homes/Home";
 import { getSomeHomes } from "../../api/residentialBuildingsApi";
 import LikedHomes from "../../homes/LikedHome";
 // import SearchBox from "../common/SearchBox";
+import data from '../../data';
+import SearchBar from "../SearchBar";
+import _ from 'lodash'
+import { ThreeSixty } from "@material-ui/icons";
 
 const Homepage = (props) => {
   const { currentUser } = props;
   const [loadMore, setLoadMore] = useState(false);
-  const [homes, setHomes] = useState([]);
+  const [homes, setHomes] = useState([]); 
   const [likedHomes, setLikedHomes] = useState([]);
   const [categories, setCategories] = useState([]);
   const [num, setNum] = useState(10);
+  const [input, setInput]=useState('')
+   
+   
 
-  useEffect(() => {
-    if (loadMore === true || num === 10) {
-      setNum(num + 10);
-      getSomeHomes(num).then(
-        (result) => {
-          setHomes(result);
-          setLoadMore(false);
-          setCategories(["all", ...new Set(result.map((one) => one.category))]);
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
-    }
-  }, [num, loadMore]);
+  
+
+    async function updateInput  (input) {
+     if(input===''){
+       setHomes(data)
+       setInput('')
+       return ;
+     }
+      const filtered = homes.filter(street => {
+       return street.street.toLowerCase().includes(input.toLowerCase())
+      })
+      setInput(input);
+      setHomes(filtered); //setFilterHomes
+   }
+
+
+   function sortByInput(e){
+     const value=e.target.value;
+     console.log(value)
+     const order=value.endsWith('asc') ? "asc" : "desc"
+
+     console.log(order)
+     var sortHome
+     if(value.startsWith('price')){
+       sortHome= _.orderBy(homes, ['price'],[order])
+     }else{
+      sortHome= _.orderBy(homes, ['name'],[order])
+     }
+      
+    
+  setHomes(sortHome)
+       
+   
+   }
+   
+
+useEffect(()=> {
+  setHomes(data);
+  setCategories(["all", ...new Set(homes.map((one) => one.category))])
+},[]);
+  // useEffect(() => {
+  //   if (loadMore === true || num === 10) {
+  //     setNum(num + 10);
+  //     getSomeHomes(num).then(
+  //       (result) => {
+  //         setHomes(result);
+  //         setLoadMore(false);
+  //         setCategories(["all", ...new Set(result.map((one) => one.category))]);
+  //       },
+  //       (error) => {
+  //         console.log(error);
+  //       }
+  //     );
+  //   }
+  // }, [num, loadMore]);
   function removeAllLikedHomes() {
     setLikedHomes([]);
   }
@@ -57,7 +104,7 @@ const Homepage = (props) => {
     setHomes(homes.filter((home) => home.category === category));
   }
   return (
-    <div>
+    <div className="homepage">
       <header>
         <div className="title">
           <h2>Find Home</h2>
@@ -65,8 +112,27 @@ const Homepage = (props) => {
         </div>
         <Categories categories={categories} categoryFilter={categoryFilter} />
       </header>
+      <div className="filter-container">
+
+      <div className="search">
+        <SearchBar input={input} onChange={updateInput}></SearchBar>
+        </div>
+        <div className="sort">
+        
+      
+         <select className="sort-select" onChange={e=>{sortByInput(e)}}>
+           <option value="" disabled selected>Sort By</option>
+           <option value="name_asc">Name - A - Z</option>
+           <option value="name_desc">Name - Z - A</option>
+           <option value="price_asc">Price - Lowest to Highest</option>
+           <option value="price_desc">Price - Highest to Lowest</option>
+         </select>
+         </div>
+     
+       </div>
       <div className="box">
-        <div>{/* <SearchBox /> */}</div>
+      
+
         <main>
           <section className="menu section">
             <div>
