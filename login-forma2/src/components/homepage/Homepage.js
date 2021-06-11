@@ -105,18 +105,24 @@ useEffect(()=> {
   }
   return (
     <div className="homepage">
-      <header>
+      <header style={{backgroundImage:`url("https://assets.architecturaldigest.in/photos/60084bc8d0435267a8df97f8/16:9/w_2560%2Cc_limit/The-Drawing-Studio-mumbai-interior-design_2-1366x768.jpg")`,
+    height: "400px",
+    maxWidth:"100%"
+    }}>
+      
         <div className="title">
           <h2>Find Home</h2>
           <div className="underline"></div>
         </div>
-        <Categories categories={categories} categoryFilter={categoryFilter} />
-      </header>
-      <div className="filter-container">
-
-      <div className="search">
+        
+        <div className="search">
         <SearchBar input={input} onChange={updateInput}></SearchBar>
         </div>
+      </header>
+      <Categories categories={categories} categoryFilter={categoryFilter} />
+      <div className="filter-container">
+
+     
         <div className="sort">
         
       

@@ -83,7 +83,7 @@ h1 {
   font-size: 3rem;
 }
 h2 {
-  font-size: 2rem;
+  font-size: 5rem;
 }
 h3 {
   font-size: 1.25rem;
@@ -168,6 +168,7 @@ main {
 }
 .title {
   text-align: center;
+  padding-top: 4rem;
   margin-bottom: 4rem;
 }
 .underline {
@@ -338,7 +339,12 @@ main {
   justify-content: center;
 }
 .search {
-  flex: 50%;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  max-width: 1120px;
+  width: 90%;
+  margin: 0 auto;
 }
 .filter-container {
   display: flex;
