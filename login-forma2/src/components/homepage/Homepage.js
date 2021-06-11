@@ -105,13 +105,18 @@ useEffect(()=> {
   }
   return (
     <div className="homepage">
-      <header style={{backgroundImage:`url("https://assets.architecturaldigest.in/photos/60084bc8d0435267a8df97f8/16:9/w_2560%2Cc_limit/The-Drawing-Studio-mumbai-interior-design_2-1366x768.jpg")`,
-    height: "400px",
-    maxWidth:"100%"
-    }}>
+      <header className="head" 
+      
+      /* style={{backgroundImage:` url("https://assets.architecturaldigest.in/photos/60084bc8d0435267a8df97f8/16:9/w_2560%2Cc_limit/The-Drawing-Studio-mumbai-interior-design_2-1366x768.jpg")`,
+  height: "500px",
+  maxWidth: "2000px",
+  backgroundSize:"cover",
+  backgroundRepeat:"no-repeat"
+ }} */
+ >
       
         <div className="title">
-          <h2>Find Home</h2>
+          <h2 >Find Home</h2>
           <div className="underline"></div>
         </div>
         
@@ -119,9 +124,16 @@ useEffect(()=> {
         <SearchBar input={input} onChange={updateInput}></SearchBar>
         </div>
       </header>
-      <Categories categories={categories} categoryFilter={categoryFilter} />
-      <div className="filter-container">
 
+    
+
+      
+      <div className="filter-container">
+      <div className="aa"></div>
+
+      <div className="category">
+       <Categories categories={categories} categoryFilter={categoryFilter} />
+    </div>
      
         <div className="sort">
         
