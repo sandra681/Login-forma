@@ -377,3 +377,13 @@ option {
 option:hover {
   background: green;
 }
+.card {
+  margin: 5% 30% 0 30%;
+  max-width: 30vw;
+}
+@media screen and (max-width: 650px) {
+  .card {
+    margin: 0;
+    max-width: 100%;
+  }
+}
