@@ -118,6 +118,12 @@ p {
     line-height: 1;
   }
 }
+@media screen and (max-width: 450px) {
+  .box {
+    display: flex;
+    flex-direction: column;
+  }
+}
 /*  global classes */
 
 /* section */
@@ -155,6 +161,7 @@ main {
   max-width: var(--fixed-width);
   margin: 5rem auto;
   display: flex;
+  flex-direction: row;
 }
 .loading {
   text-align: center;
@@ -302,15 +309,17 @@ main {
 .apartment-contact {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: baseline;
   margin-bottom: 1.5rem;
 }
 .apartment-contact button {
+  margin-top: 0;
   color: var(--clr-primary-5);
   background: var(--clr-primary-10);
   padding: 0.25rem 0.5rem;
   border-radius: var(--radius);
 }
+
 .loadMore {
   display: block;
   width: 200px;
@@ -325,4 +334,56 @@ main {
 
 .loadMore:hover {
   transform: scale(1.5);
+}
+.box {
+  display: flex;
+  justify-content: center;
+}
+.search {
+  flex: 50%;
+}
+.filter-container {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  max-width: 1120px;
+  width: 90%;
+  margin: 0 auto;
+}
+.sort {
+  padding-top: 30px;
+  padding-bottom: 25px;
+}
+.sort-select {
+  border: 1px solid #d8e4f5;
+  border-radius: 5px;
+  background: rgb(255, 255, 255);
+  box-shadow: 0 1px 3px -2px #9098a9;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 16px;
+  width: 210px;
+  height: 35px;
+
+  color: #5a667f;
+}
+option {
+  display: flex;
+  align-items: center;
+  background: rgb(255, 255, 255);
+  position: absolute;
+  width: 100%;
+}
+option:hover {
+  background: green;
+}
+.card {
+  margin: 5% 30% 0 30%;
+  max-width: 30vw;
+}
+@media screen and (max-width: 650px) {
+  .card {
+    margin: 0;
+    max-width: 100%;
+  }
 }

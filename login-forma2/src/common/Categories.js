@@ -8,7 +8,8 @@ const Categories = (props) => {
         return (
           <button
             type="button"
-            className="filter-btn"
+            className="filter-btn btn-lg"
+            id="filterBtn"
             key={index}
             onClick={() => categoryFilter(category)}
           >
