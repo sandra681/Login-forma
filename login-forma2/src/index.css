@@ -409,7 +409,7 @@ option:hover {
   overflow: hidden;
   position: fixed;
   width: 100%;
-
+}
 .card {
   margin: 5% 30% 0 30%;
   max-width: 30vw;
@@ -419,5 +419,4 @@ option:hover {
     margin: 0;
     max-width: 100%;
   }
-
 }
