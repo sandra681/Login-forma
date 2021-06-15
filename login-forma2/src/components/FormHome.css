@@ -1,0 +1,44 @@
+/* body {
+  background: -webkit-linear-gradient(left, #0072ff, #00c6ff);
+} */
+.forma {
+  background: #fff;
+  width: 50%;
+  margin-top: 5%;
+  margin-bottom: 2%;
+  border-radius: 0.5rem;
+  padding-top: 4%;
+}
+.form-control {
+  border-radius: 0.7em;
+}
+.form1 {
+  padding: 8%;
+}
+.forma h2 {
+  color: #0062cc;
+  margin-top: -5%;
+}
+.forma button {
+  width: 40%;
+  border: none;
+  border-radius: 1rem;
+  background: #0062cc;
+  padding: 1.5%;
+  font-weight: 600;
+  color: #fff;
+  cursor: pointer;
+}
+.dugme {
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+.price-number::-webkit-outer-spin-button,
+.price-number::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.price-number {
+  -moz-appearance: textfield;
+}

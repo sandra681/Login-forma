@@ -6,6 +6,9 @@ import LikedHomes from "../../homes/LikedHome";
 import { useHistory } from "react-router";
 // import SearchBox from "../common/SearchBox";
 import SearchBar from "../SearchBar";
+import _ from 'lodash'
+import { ThreeSixty } from "@material-ui/icons";
+import './Homepage.css'
 import _ from "lodash";
 
 const Homepage = (props) => {
@@ -131,12 +134,27 @@ const Homepage = (props) => {
       }
     });
   }
+
+
+  document.body.style.background='#fff'
   return (
     <div className="homepage">
-      <header>
+      <header className="head" 
+      
+      /* style={{backgroundImage:` url("https://assets.architecturaldigest.in/photos/60084bc8d0435267a8df97f8/16:9/w_2560%2Cc_limit/The-Drawing-Studio-mumbai-interior-design_2-1366x768.jpg")`,
+  height: "500px",
+  maxWidth: "2000px",
+  backgroundSize:"cover",
+  backgroundRepeat:"no-repeat"
+ }} */
+ >
+      
         <div className="title">
-          <h2>Find Home</h2>
+          <h2 >Find Home</h2>
           <div className="underline"></div>
+        </div>
+        <div className="search">
+        <SearchBar input={input} onChange={updateInput}></SearchBar>
         </div>
         {adminUser && (
           <button
@@ -148,12 +166,21 @@ const Homepage = (props) => {
             Add Home
           </button>
         )}
-        <Categories categories={categories} categoryFilter={categoryFilter} />
+      
       </header>
+
+    
+
+      
       <div className="filter-container">
-        <div className="search">
-          <SearchBar input={input} onChange={updateInput}></SearchBar>
-        </div>
+
+      <div className="aa"></div>
+
+      <div className="category">
+       <Categories categories={categories} categoryFilter={categoryFilter} />
+    </div>
+     
+
         <div className="sort">
           <select
             className="sort-select"
