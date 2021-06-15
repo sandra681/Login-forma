@@ -7,38 +7,30 @@ import axios from "axios";
 //use history koristimo onda da kad se ulogujemo da nam se otvori  druga strana
 
 function Login(props) {
-  const { onLoginChange } = props;
+  const { setToken, setIsLogin } = props;
   const emailRef = useRef();
   const passwordRef = useRef();
-
   //   const { login } = useAuth();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const history = useHistory();
-  function handleSubmit(e) {
+
+  async function handleSubmit(e) {
     e.preventDefault();
-    axios
-      .post("http://localhost:8000/api/user-login", {
+    await axios
+      .post("http://127.0.0.1:8000/api/auth/login", {
         email: emailRef.current.value,
         password: passwordRef.current.value,
       })
       .then((response) => {
-        // console.log("Success");
         setLoading(false);
-        if (response.data.status === 200) {
-          localStorage.setItem(
-            "currentUser",
-            JSON.stringify(response.data.data)
-          );
-          history.push("/");
-        }
+        setToken(response.data["access_token"]);
+        setIsLogin(true);
+        history.push("/");
         setTimeout(() => {}, 2000);
-        if (response.data.status === "failed") {
-          console.log("failed");
-          setTimeout(() => {
-            setError("failed");
-          }, 2000);
-        }
+      })
+      .catch((error) => {
+        console.log(error);
       });
   }
 
@@ -59,12 +51,7 @@ function Login(props) {
               <Form.Control type="password" ref={passwordRef} required />
             </Form.Group>
 
-            <Button
-              disabled={loading}
-              className="w-100"
-              type="submit"
-              onClick={() => onLoginChange()}
-            >
+            <Button disabled={loading} className="w-100" type="submit">
               Log In
             </Button>
           </Form>
@@ -72,10 +59,10 @@ function Login(props) {
             <Link to="/forgot-password">Forgot password?</Link>
           </div>
         </Card.Body>
+        <div className="w-100 text-center mt-2">
+          Need an account? <Link to="/signup">Sign Up</Link>
+        </div>
       </Card>
-      <div className="w-100 text-center mt-2">
-        Need an account? <Link to="/signup">Sign Up</Link>
-      </div>
     </>
   );
 }

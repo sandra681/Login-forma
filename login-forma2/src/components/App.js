@@ -6,25 +6,16 @@ import ForgotPassword from "./ForgotPassword";
 import Homepage from "./homepage/Homepage";
 import Header from "../common/Header";
 import FormHome from "./FormHome";
+import AddHome from "../components/addhome/AddHome";
 
 function App() {
-  function checkUser() {
-    const user = localStorage.getItem("currentUser");
-    if (user !== null) {
-      return true;
-    }
-    return false;
-  }
-  const [currentUser, setCurrentUser] = useState(checkUser);
-  function onLoginChange() {
-    const user = localStorage.getItem("currentUser");
-    if (user !== null) {
-      setCurrentUser(true);
-    }
-  }
+  const [token, setToken] = useState();
+  const [isLogin, setIsLogin] = useState();
+
+  const [adminUser, setAdminUser] = useState(false);
   return (
     <>
-      <Header currentUser={currentUser} />
+      <Header token={token} isLogin={isLogin} />
       <Switch>
         {/* <PrivateRoute exact path="/" component={Dashboard}></PrivateRoute>
             <PrivateRoute
@@ -32,15 +23,15 @@ function App() {
               component={UpdateProfile}
             ></PrivateRoute> */}
         <Route exact path="/">
-          <Homepage currentUser={currentUser} />
+          <Homepage token={token} adminUser={adminUser} />
         </Route>
         <Route path="/signup" component={Signup}></Route>
         <Route path="/login">
-          <Login onLoginChange={onLoginChange} />
+          <Login setToken={setToken} setIsLogin={setIsLogin} />
         </Route>
         <Route path="/forgot-password" component={ForgotPassword}></Route>
-
         <Route path="/form-home" component={FormHome}></Route>
+        <Route path="/addhome" component={AddHome}></Route>
       </Switch>
     </>
   );

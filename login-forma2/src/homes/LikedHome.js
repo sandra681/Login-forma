@@ -1,9 +1,8 @@
 import React from "react";
 
 const LikedHomes = (props) => {
-  const { currentUser, removeAllLikedHomes, likedHomes, removeLikedHome } =
-    props;
-  if (currentUser) {
+  const { token, removeAllLikedHomes, likedHomes, removeLikedHome } = props;
+  if (token !== "") {
     return (
       <section className="interested">
         <h3>{likedHomes.length} liked apartments</h3>

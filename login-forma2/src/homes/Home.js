@@ -1,15 +1,28 @@
 import React, { useState } from "react";
 
 const Home = (props) => {
-  const { id, image, info, price, name, street, removeHome, addLikedHome } =
-    props;
+  const {
+    id,
+    image,
+    info,
+    price,
+    name,
+    street,
+    removeHome,
+    addLikedHome,
+    deleteHome,
+    adminUser,
+    editHome,
+  } = props;
   const [readMore, setReadMore] = useState(false);
+  console.log(adminUser);
   return (
     <article className="single-apartment">
       <img src={image} alt={name}></img>
       <footer>
         <div className="apartment-info">
           <h4>{name}</h4>
+          <p>{props.home1.category}</p>
           <h4 className="apartment-price">${price}</h4>
         </div>
         <div className="apartment-contact">
@@ -21,14 +34,30 @@ const Home = (props) => {
             {readMore ? "show less" : "read more"}
           </button>
         </p>
-        <button className="delete-btn" onClick={() => removeHome(id)}>
-          {" "}
-          not interested
-        </button>
-        <button className="delete-btn" onClick={() => addLikedHome(id)}>
-          {" "}
-          interested
-        </button>
+        {adminUser && (
+          <button className="delete-btn" onClick={() => editHome(id)}>
+            {" "}
+            EDIT
+          </button>
+        )}
+        {adminUser && (
+          <button className="delete-btn" onClick={() => deleteHome(id)}>
+            {" "}
+            DELETE
+          </button>
+        )}
+        {!adminUser && (
+          <button className="delete-btn" onClick={() => removeHome(id)}>
+            {" "}
+            not interested
+          </button>
+        )}
+        {!adminUser && (
+          <button className="delete-btn" onClick={() => addLikedHome(id)}>
+            {" "}
+            interested
+          </button>
+        )}
       </footer>
     </article>
   );

@@ -314,15 +314,17 @@ main {
 .apartment-contact {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: baseline;
   margin-bottom: 1.5rem;
 }
 .apartment-contact button {
+  margin-top: 0;
   color: var(--clr-primary-5);
   background: var(--clr-primary-10);
   padding: 0.25rem 0.5rem;
   border-radius: var(--radius);
 }
+
 .loadMore {
   display: block;
   width: 200px;
@@ -392,6 +394,7 @@ option {
 option:hover {
   background: green;
 }
+
 .head {
   background-image: url("https://i.pinimg.com/originals/88/08/59/880859c96b1c82b281dd6173f9a2e901.jpg");
   height: 500px;
@@ -406,4 +409,15 @@ option:hover {
   overflow: hidden;
   position: fixed;
   width: 100%;
+
+.card {
+  margin: 5% 30% 0 30%;
+  max-width: 30vw;
+}
+@media screen and (max-width: 650px) {
+  .card {
+    margin: 0;
+    max-width: 100%;
+  }
+
 }

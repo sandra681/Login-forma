@@ -1,81 +1,96 @@
 import React, { useState, useEffect } from "react";
 import Categories from "../../common/Categories";
 import Home from "../../homes/Home";
-import { getSomeHomes } from "../../api/residentialBuildingsApi";
+import { getSomeHomes, deleteHome } from "../../api/residentialBuildingsApi";
 import LikedHomes from "../../homes/LikedHome";
+import { useHistory } from "react-router";
 // import SearchBox from "../common/SearchBox";
-import data from '../../data';
 import SearchBar from "../SearchBar";
 import _ from 'lodash'
 import { ThreeSixty } from "@material-ui/icons";
 import './Homepage.css'
+import _ from "lodash";
 
 const Homepage = (props) => {
-  const { currentUser } = props;
+  const { token, adminUser } = props;
   const [loadMore, setLoadMore] = useState(false);
-  const [homes, setHomes] = useState([]); 
+  const [homes, setHomes] = useState([]);
   const [likedHomes, setLikedHomes] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [filterHomes, setFilterHomes] = useState([]);
   const [num, setNum] = useState(10);
-  const [input, setInput]=useState('')
-   
-   
+  const history = useHistory();
 
-  
+  function editHome() {
+    history.push("/addpage");
+  }
 
-    async function updateInput  (input) {
-     if(input===''){
-       setHomes(data)
-       setInput('')
-       return ;
-     }
-      const filtered = homes.filter(street => {
-       return street.street.toLowerCase().includes(input.toLowerCase())
-      })
-      setInput(input);
-      setHomes(filtered); //setFilterHomes
-   }
+  useEffect(() => {
+    if (loadMore === true || num === 10) {
+      setNum(num + 10);
+      getSomeHomes(num).then(
+        (result) => {
+          setFilterHomes(result);
+          setHomes(result);
+          setLoadMore(false);
+          setCategories(["all", ...new Set(result.map((one) => one.category))]);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    }
+  }, [loadMore]);
+  const [input, setInput] = useState("");
 
+  async function updateInput(input) {
+    if (input === "") {
+      setFilterHomes(filterHomes);
+      setInput("");
+      return;
+    }
+    const filtered = filterHomes.filter((street) => {
+      return street.street.toLowerCase().includes(input.toLowerCase());
+    });
+    console.log(filtered);
+    setInput(input);
+    setFilterHomes(filtered); //setFilterHomes
+  }
 
-   function sortByInput(e){
-     const value=e.target.value;
-     console.log(value)
-     const order=value.endsWith('asc') ? "asc" : "desc"
+  function sortByInput(e) {
+    const value = e.target.value;
 
-     console.log(order)
-     var sortHome
-     if(value.startsWith('price')){
-       sortHome= _.orderBy(homes, ['price'],[order])
-     }else{
-      sortHome= _.orderBy(homes, ['name'],[order])
-     }
-      
-    
-  setHomes(sortHome)
-       
-   
-   }
-   
+    const order = value.endsWith("asc") ? "asc" : "desc";
 
-useEffect(()=> {
-  setHomes(data);
-  setCategories(["all", ...new Set(homes.map((one) => one.category))])
-},[]);
+    var sortHome;
+    if (value.startsWith("price")) {
+      sortHome = _.orderBy(filterHomes, ["price"], [order]);
+    } else {
+      sortHome = _.orderBy(filterHomes, ["name"], [order]);
+    }
+
+    setFilterHomes(sortHome);
+  }
+
   // useEffect(() => {
-  //   if (loadMore === true || num === 10) {
-  //     setNum(num + 10);
-  //     getSomeHomes(num).then(
-  //       (result) => {
-  //         setHomes(result);
-  //         setLoadMore(false);
-  //         setCategories(["all", ...new Set(result.map((one) => one.category))]);
-  //       },
-  //       (error) => {
-  //         console.log(error);
-  //       }
-  //     );
-  //   }
-  // }, [num, loadMore]);
+  //   setHomes(filterHomes);
+  //   setCategories(["all", ...new Set(homes.map((one) => one.category))]);
+  // }, []);
+  useEffect(() => {
+    if (loadMore === true || num === 10) {
+      setNum(num + 10);
+      getSomeHomes(num).then(
+        (result) => {
+          setHomes(result);
+          setLoadMore(false);
+          setCategories(["all", ...new Set(result.map((one) => one.category))]);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    }
+  }, [loadMore]);
   function removeAllLikedHomes() {
     setLikedHomes([]);
   }
@@ -83,7 +98,7 @@ useEffect(()=> {
     setLikedHomes(likedHomes.filter((home) => home.id !== id));
   }
   function removeHome(id) {
-    setHomes(homes.filter((home) => home.id !== id));
+    setFilterHomes(filterHomes.filter((home) => home.id !== id));
   }
   const addLikedHome = (id) => {
     if (likedHomes.filter((home) => home.id === id).length > 0) {
@@ -91,7 +106,7 @@ useEffect(()=> {
     }
     const likedhome = [
       ...likedHomes,
-      homes.filter((home) => home.id === id)[0],
+      filterHomes.filter((home) => home.id === id)[0],
     ];
     setLikedHomes(likedhome);
     console.log(likedHomes);
@@ -99,10 +114,25 @@ useEffect(()=> {
 
   function categoryFilter(category) {
     if (category === "all") {
-      setHomes(homes);
+      setFilterHomes(homes);
       return;
     }
-    setHomes(homes.filter((home) => home.category === category));
+    setFilterHomes(homes.filter((home) => home.category === category));
+  }
+
+  function handleDeleteHome(id) {
+    deleteHome(id).then((response) => {
+      if (response.status === 204) {
+        setNum(10);
+        setLoadMore(true);
+        setTimeout(() => {}, 2000);
+        return;
+      } else {
+        setNum(10);
+        console.log("Failed to delete");
+        return;
+      }
+    });
   }
 
 
@@ -123,47 +153,65 @@ useEffect(()=> {
           <h2 >Find Home</h2>
           <div className="underline"></div>
         </div>
-        
         <div className="search">
         <SearchBar input={input} onChange={updateInput}></SearchBar>
         </div>
+        {adminUser && (
+          <button
+            type="button"
+            className="btn btn-danger"
+            style={{ marginLeft: "90vw" }}
+            onClick={() => editHome()}
+          >
+            Add Home
+          </button>
+        )}
+      
       </header>
 
     
 
       
       <div className="filter-container">
+
       <div className="aa"></div>
 
       <div className="category">
        <Categories categories={categories} categoryFilter={categoryFilter} />
     </div>
      
-        <div className="sort">
-        
-      
-         <select className="sort-select" onChange={e=>{sortByInput(e)}}>
-           <option value="" disabled selected>Sort By</option>
-           <option value="name_asc">Name - A - Z</option>
-           <option value="name_desc">Name - Z - A</option>
-           <option value="price_asc">Price - Lowest to Highest</option>
-           <option value="price_desc">Price - Highest to Lowest</option>
-         </select>
-         </div>
-     
-       </div>
-      <div className="box">
-      
 
+        <div className="sort">
+          <select
+            className="sort-select"
+            onChange={(e) => {
+              sortByInput(e);
+            }}
+          >
+            <option value="" disabled>
+              Sort By
+            </option>
+            <option value="name_asc">Name - A - Z</option>
+            <option value="name_desc">Name - Z - A</option>
+            <option value="price_asc">Price - Lowest to Highest</option>
+            <option value="price_desc">Price - Highest to Lowest</option>
+          </select>
+        </div>
+      </div>
+      <div className="box">
         <main>
           <section className="menu section">
             <div>
-              {homes.map((home1) => {
+              {filterHomes.map((home1) => {
                 return (
                   <Home
                     key={home1.id}
                     removeHome={removeHome}
                     addLikedHome={addLikedHome}
+                    deleteHome={handleDeleteHome}
+                    adminUser={adminUser}
+                    editHome={editHome}
+                    home1={home1}
                     {...home1}
                   />
                 );
@@ -175,12 +223,14 @@ useEffect(()=> {
           </section>
 
           <div>
-            <LikedHomes
-              currentUser={currentUser}
-              removeAllLikedHomes={removeAllLikedHomes}
-              likedHomes={likedHomes}
-              removeLikedHome={removeLikedHome}
-            />
+            {!adminUser && (
+              <LikedHomes
+                token={token}
+                removeAllLikedHomes={removeAllLikedHomes}
+                likedHomes={likedHomes}
+                removeLikedHome={removeLikedHome}
+              />
+            )}
           </div>
         </main>
       </div>

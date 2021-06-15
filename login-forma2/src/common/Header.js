@@ -1,20 +1,28 @@
-import React, { useState } from "react";
+import axios from "axios";
+import React, { useState, useEffect } from "react";
 import { NavLink, Link } from "react-router-dom";
 
 const Header = (props) => {
-  const { currentUser } = props;
-  console.log("User:" + currentUser);
+  const {token, isLogin} = props;
   const activeStyle = { color: "#F15B2A" };
   const [menu, setMenu] = useState(false);
   const toggleMenu = () => {
     setMenu(!menu);
   };
   const toggleLogoutMenu = () => {
-    setMenu(!menu);
-    localStorage.removeItem("currentUser");
+    axios
+      .get("http://127.0.0.1:8000/api/auth/logout", {
+        headers: { access_token: token },
+      })
+      .then((response) => {
+        setMenu(!menu);
+      });
   };
   const show = menu ? "show" : "";
-  if (currentUser) {
+  useEffect(() => {
+    setMenu(false);
+  }, []);
+  if (isLogin) {
     return (
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
         <div className="container-fluid">
@@ -69,15 +77,17 @@ const Header = (props) => {
             >
               <img
                 src="https://cdn2.iconfinder.com/data/icons/avatars-99/62/avatar-370-456322-512.png"
-                class="rounded-circle"
+                className="rounded-circle"
                 height="25"
                 alt=""
                 loading="lazy"
               />
+              <p>email</p>
             </Link>
             <ul
               className={"dropdown-menu dropdown-menu-end " + show}
               aria-labelledby="navbarDropdownMenuLink"
+              style={{ position: "relative" }}
             >
               <li>
                 <a
@@ -159,6 +169,7 @@ const Header = (props) => {
           <ul
             className={"dropdown-menu dropdown-menu-end " + show}
             aria-labelledby="navbarDropdownMenuLink"
+            style={{ position: "relative" }}
           >
             <li>
               <NavLink
