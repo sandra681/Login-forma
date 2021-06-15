@@ -5,6 +5,7 @@ import Login from "./Login";
 import ForgotPassword from "./ForgotPassword";
 import Homepage from "./homepage/Homepage";
 import Header from "../common/Header";
+import FormHome from "./FormHome";
 import AddHome from "../components/addhome/AddHome";
 
 function App() {
@@ -29,6 +30,7 @@ function App() {
           <Login setToken={setToken} setIsLogin={setIsLogin} />
         </Route>
         <Route path="/forgot-password" component={ForgotPassword}></Route>
+        <Route path="/form-home" component={FormHome}></Route>
         <Route path="/addhome" component={AddHome}></Route>
       </Switch>
     </>
