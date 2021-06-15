@@ -5,13 +5,18 @@ import './FormHome.css'
 import axios from 'axios'
 
 
-function FormHome() {
+function FormHome(props) {
   
+    const {token} = props;
     const nameRef=useRef()
-    const addressRef=useRef()
+    const streetRef=useRef()
+    const cityRef=useRef()
     const priceRef=useRef()
     const infoRef=useRef()
     const categoryRef=useRef()
+    const squareFootageRef= useRef()
+    const  roomsRef= useRef()
+    const  parkingRef= useRef()
 
     const [loading, setLoading]=useState(false)
     const [error, setError]=useState("")
@@ -20,17 +25,22 @@ function FormHome() {
     function handleSubmit(e){
         e.preventDefault()
         axios
-        .post("",{
+        .post("http://127.0.0.1:8000/api/auth/homes",{
             name: nameRef.current.value,
-            address: addressRef.current.value,
+            street: streetRef.current.value,
+            city: cityRef.current.value,
             price: priceRef.current.value,
             information: infoRef.current.value,
-            category: categoryRef.current.value
+            category: categoryRef.current.value,
+            squareFootage: squareFootageRef.current.value,
+            rooms: roomsRef.current.value,
+            parking: parkingRef.current.value,
+
         })
         .then((response)=>{
             setLoading(false)
             if(response.data.status===200){
-
+            console.log("Success");
             }
 
             setTimeout(()=>{},2000);
@@ -49,6 +59,9 @@ function FormHome() {
         <>
         
             <Card className="container forma "> 
+            <div className="img-home">
+                <img src="https://t4.ftcdn.net/jpg/01/35/38/75/360_F_135387578_vKyGn4NM9E2ipUS9j1GRCDLs40CwRNyC.jpg" />
+            </div>
                 <Card.Body >
                     <h2 className="text-center mb-4">Add New Home</h2>
                     <Form className="form1" onSubmit={handleSubmit}>
@@ -58,12 +71,18 @@ function FormHome() {
                             <Form.Control ref={nameRef}  type="textarea" required placeholder="Home's Name"></Form.Control>
                         </FormGroup>
                         <br/>
-                        <FormGroup >
-                           {/*  <Form.Label >Address:</Form.Label> */}
-                            <Form.Control ref={addressRef} type="textarea" required placeholder="Address"></Form.Control>
+                        <Row className="md-2">
+                        <FormGroup as={Col}>
+                           {/*  <Form.Label >Street:</Form.Label> */}
+                            <Form.Control ref={streetRef} type="textarea" required placeholder="Street"></Form.Control>
                         </FormGroup>
-                      
+                        <FormGroup as={Col}>
+                           {/*  <Form.Label >City:</Form.Label> */}
+                            <Form.Control ref={cityRef} type="textarea" required placeholder="City"></Form.Control>
+                        </FormGroup>
+                        </Row>
                         <br/>
+                        
                         <Row className="md-2">
                         <FormGroup as={Col}>
                            {/*  <Form.Label >Price:</Form.Label> */}
@@ -83,6 +102,21 @@ function FormHome() {
                         </FormGroup>
                         </Row>
                         <br/>
+                        <Row className="md-3">
+                        <FormGroup as={Col}>
+                           
+                            <Form.Control ref={squareFootageRef} className="price-number" type="number" min="0" step="0.01" required placeholder="Square Footage"></Form.Control>
+                        </FormGroup>
+                        <FormGroup as={Col}>
+                           
+                            <Form.Control ref={roomsRef} className="price-number" type="number" min="0" required placeholder="Number of Rooms"></Form.Control>
+                        </FormGroup>
+                        <FormGroup as={Col}>
+                           
+                            <Form.Control ref={parkingRef} className="price-number" type="number" min="0" required placeholder="Parking Spaces"></Form.Control>
+                        </FormGroup>
+                        </Row>
+                        <br/>
                         <FormGroup>
                            {/*  <Form.Label >Information:</Form.Label> */}
                             <Form.Control ref={infoRef} as="textarea" rows={4} required placeholder="About home"></Form.Control>
@@ -90,7 +124,7 @@ function FormHome() {
                         <br/>
                         <FormGroup>
                             <Form.Label >Image:</Form.Label>
-                            <Form.File required></Form.File>
+                            <Form.File ></Form.File>
                         </FormGroup>
                         <br/>
                         

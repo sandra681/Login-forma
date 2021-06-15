@@ -6,7 +6,6 @@ import LikedHomes from "../../homes/LikedHome";
 import { useHistory } from "react-router";
 // import SearchBox from "../common/SearchBox";
 import SearchBar from "../SearchBar";
-import _ from 'lodash'
 import { ThreeSixty } from "@material-ui/icons";
 import './Homepage.css'
 import _ from "lodash";

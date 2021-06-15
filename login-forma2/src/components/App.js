@@ -30,7 +30,7 @@ function App() {
           <Login setToken={setToken} setIsLogin={setIsLogin} />
         </Route>
         <Route path="/forgot-password" component={ForgotPassword}></Route>
-        <Route path="/form-home" component={FormHome}></Route>
+        <Route path="/form-home" token={token} component={FormHome}></Route>
         <Route path="/addhome" component={AddHome}></Route>
       </Switch>
     </>
