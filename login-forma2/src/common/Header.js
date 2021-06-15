@@ -1,23 +1,28 @@
+import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { NavLink, Link } from "react-router-dom";
 
 const Header = (props) => {
-  const { currentUser } = props;
-  console.log(typeof currentUser);
+  const {token, isLogin} = props;
   const activeStyle = { color: "#F15B2A" };
   const [menu, setMenu] = useState(false);
   const toggleMenu = () => {
     setMenu(!menu);
   };
   const toggleLogoutMenu = () => {
-    setMenu(!menu);
-    localStorage.removeItem("currentUser");
+    axios
+      .get("http://127.0.0.1:8000/api/auth/logout", {
+        headers: { access_token: token },
+      })
+      .then((response) => {
+        setMenu(!menu);
+      });
   };
   const show = menu ? "show" : "";
   useEffect(() => {
     setMenu(false);
   }, []);
-  if (currentUser !== null) {
+  if (isLogin) {
     return (
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
         <div className="container-fluid">
@@ -77,7 +82,7 @@ const Header = (props) => {
                 alt=""
                 loading="lazy"
               />
-              <p>{currentUser.email}</p>
+              <p>email</p>
             </Link>
             <ul
               className={"dropdown-menu dropdown-menu-end " + show}

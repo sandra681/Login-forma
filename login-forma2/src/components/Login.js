@@ -6,10 +6,9 @@ import axios from "axios";
 //use history koristimo onda da kad se ulogujemo da nam se otvori  druga strana
 
 function Login(props) {
-  const { onLoginChange } = props;
+  const { setToken, setIsLogin } = props;
   const emailRef = useRef();
   const passwordRef = useRef();
-
   //   const { login } = useAuth();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -17,56 +16,20 @@ function Login(props) {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    // To authenticate your SPA should make request to the sanctum/csrf-cookie endpoint
-
-    // function getMeta(metaName) {
-    //   const metas = document.getElementsByTagName("meta");
-
-    //   for (let i = 0; i < metas.length; i++) {
-    //     if (metas[i].getAttribute("name") === metaName) {
-    //       return metas[i].getAttribute("content");
-    //     }
-    //   }
-
-    //   return "";
-    // }
     await axios
-      .post(
-        "http://localhost:8000/api/user-login",
-        {
-          email: emailRef.current.value,
-          password: passwordRef.current.value,
-        }
-        // {
-        //   headers: {
-        //     "X-CSRF-TOKEN": response,
-        //   },
-        // }
-        // {
-        //   headers: {
-        //     "X-CSRF-Token ": csrfCookie,
-        //   },
-        // }
-      )
+      .post("http://127.0.0.1:8000/api/auth/login", {
+        email: emailRef.current.value,
+        password: passwordRef.current.value,
+      })
       .then((response) => {
-        // console.log("Success");
         setLoading(false);
-        if (response.data.status === 200) {
-          console.log(typeof response.data.data);
-          localStorage.setItem(
-            "currentUser",
-            JSON.stringify(response.data.data)
-          );
-          history.push("/");
-        }
+        setToken(response.data["access_token"]);
+        setIsLogin(true);
+        history.push("/");
         setTimeout(() => {}, 2000);
-        if (response.data.status === "failed") {
-          console.log("failed");
-          console.log(response);
-          setTimeout(() => {
-            setError("failed");
-          }, 2000);
-        }
+      })
+      .catch((error) => {
+        console.log(error);
       });
   }
 
@@ -87,12 +50,7 @@ function Login(props) {
               <Form.Control type="password" ref={passwordRef} required />
             </Form.Group>
 
-            <Button
-              disabled={loading}
-              className="w-100"
-              type="submit"
-              onClick={() => onLoginChange()}
-            >
+            <Button disabled={loading} className="w-100" type="submit">
               Log In
             </Button>
           </Form>

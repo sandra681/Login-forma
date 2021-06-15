@@ -9,7 +9,7 @@ import SearchBar from "../SearchBar";
 import _ from "lodash";
 
 const Homepage = (props) => {
-  const { currentUser, adminUser } = props;
+  const { token, adminUser } = props;
   const [loadMore, setLoadMore] = useState(false);
   const [homes, setHomes] = useState([]);
   const [likedHomes, setLikedHomes] = useState([]);
@@ -37,7 +37,7 @@ const Homepage = (props) => {
         }
       );
     }
-  }, [num, loadMore]);
+  }, [loadMore]);
   const [input, setInput] = useState("");
 
   async function updateInput(input) {
@@ -87,7 +87,7 @@ const Homepage = (props) => {
         }
       );
     }
-  }, [num, loadMore]);
+  }, [loadMore]);
   function removeAllLikedHomes() {
     setLikedHomes([]);
   }
@@ -161,7 +161,7 @@ const Homepage = (props) => {
               sortByInput(e);
             }}
           >
-            <option value="" disabled selected>
+            <option value="" disabled>
               Sort By
             </option>
             <option value="name_asc">Name - A - Z</option>
@@ -198,7 +198,7 @@ const Homepage = (props) => {
           <div>
             {!adminUser && (
               <LikedHomes
-                userToken={currentUser}
+                token={token}
                 removeAllLikedHomes={removeAllLikedHomes}
                 likedHomes={likedHomes}
                 removeLikedHome={removeLikedHome}
