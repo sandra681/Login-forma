@@ -8,7 +8,7 @@ function SearchBar  ({input:keyword,onChange:setKeyword})  {
      style={BarStyling}
      key="random1"
      value={keyword}
-     placeholder={"Search Adress"}
+     placeholder={"Search Address"}
      onChange={(e) => setKeyword(e.target.value)}
     />
   );

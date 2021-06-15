@@ -5,6 +5,7 @@ import Login from "./Login";
 import ForgotPassword from "./ForgotPassword";
 import Homepage from "./homepage/Homepage";
 import Header from "../common/Header";
+import FormHome from "./FormHome";
 
 function App() {
   function checkUser() {
@@ -38,6 +39,8 @@ function App() {
           <Login onLoginChange={onLoginChange} />
         </Route>
         <Route path="/forgot-password" component={ForgotPassword}></Route>
+
+        <Route path="/form-home" component={FormHome}></Route>
       </Switch>
     </>
   );

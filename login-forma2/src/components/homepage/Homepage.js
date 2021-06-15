@@ -8,6 +8,7 @@ import data from '../../data';
 import SearchBar from "../SearchBar";
 import _ from 'lodash'
 import { ThreeSixty } from "@material-ui/icons";
+import './Homepage.css'
 
 const Homepage = (props) => {
   const { currentUser } = props;
@@ -103,6 +104,9 @@ useEffect(()=> {
     }
     setHomes(homes.filter((home) => home.category === category));
   }
+
+
+  document.body.style.background='#fff'
   return (
     <div className="homepage">
       <header className="head" 

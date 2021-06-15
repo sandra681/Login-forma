@@ -171,7 +171,9 @@ main {
   text-align: center;
   padding-top: 5rem;
   margin-bottom: 5rem;
-  font-size: 5rem;
+}
+.title h2 {
+  font-size: 3rem;
 }
 .underline {
   width: 6rem;
@@ -349,17 +351,20 @@ main {
   display: flex;
   /* flex-flow: column; */
   align-items: center;
+  justify-content: center;
   max-width: 1120px;
   width: 90%;
   margin: 0 auto;
+  height: 100px;
 }
 .sort {
-  margin-top: -20px;
+  margin-top: 0px;
   margin-bottom: 0px;
 }
 .category {
   width: 100%;
   margin-top: 20px;
+  height: 60px;
 }
 .aa {
   width: 25%;
@@ -388,7 +393,7 @@ option:hover {
   background: green;
 }
 .head {
-  background-image: url("https://assets.architecturaldigest.in/photos/60084bc8d0435267a8df97f8/16:9/w_2560%2Cc_limit/The-Drawing-Studio-mumbai-interior-design_2-1366x768.jpg");
+  background-image: url("https://i.pinimg.com/originals/88/08/59/880859c96b1c82b281dd6173f9a2e901.jpg");
   height: 500px;
   max-width: 100%;
   background-repeat: no-repeat;
