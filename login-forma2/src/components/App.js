@@ -42,7 +42,7 @@ function App() {
           <Login login={login} />
         </Route>
         <Route path="/forgot-password" component={ForgotPassword}></Route>
-        <Route path="/form-home" component={FormHome}></Route>
+        <Route path="/form-home" token={token} component={FormHome}></Route>
         <Route path="/addhome" component={AddHome}></Route>
       </Switch>
     </>
