@@ -15,7 +15,6 @@ const Home = (props) => {
     editHome,
   } = props;
   const [readMore, setReadMore] = useState(false);
-  console.log(adminUser);
   return (
     <article className="single-apartment">
       <img src={image} alt={name}></img>
