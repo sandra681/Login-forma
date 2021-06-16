@@ -1,27 +1,53 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
-import { NavLink, Link } from "react-router-dom";
+import { NavLink, Link, useHistory } from "react-router-dom";
 
-const Header = (props) => {
-  const {token, isLogin} = props;
+const Header = () => {
+  const token = localStorage.getItem("token");
+  const [isLogin, setIsLogin] = useState(localStorage.getItem("isLogin"));
+  const history = useHistory();
   const activeStyle = { color: "#F15B2A" };
+  // const [user, setUser] = useState(isLogin ? getUser() : false);
   const [menu, setMenu] = useState(false);
   const toggleMenu = () => {
     setMenu(!menu);
   };
-  const toggleLogoutMenu = () => {
-    axios
-      .get("http://127.0.0.1:8000/api/auth/logout", {
-        headers: { access_token: token },
+  async function getUser() {
+    await axios
+      .get("http://127.0.0.1:8000/api/auth/user", {
+        headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
-        setMenu(!menu);
+        // setUser(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
       });
-  };
-  const show = menu ? "show" : "";
+  }
+  async function toggleLogoutMenu() {
+    await axios
+      .get("http://127.0.0.1:8000/api/auth/logout", {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((response) => {
+        toggleMenu();
+        localStorage.removeItem("isLogin");
+        localStorage.removeItem("token");
+        setIsLogin(false);
+        history.push("/login");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  const show = menu ? "show" : ""; //For toggle menu oke oke
+
   useEffect(() => {
     setMenu(false);
   }, []);
+
+  // useEffect(() => {}, [isLogin]);
   if (isLogin) {
     return (
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -68,7 +94,7 @@ const Header = (props) => {
           <div className="d-flex align-items-center">
             <Link
               className="dropdown-toggle d-flex align-items-center hidden-arrow"
-              to="/"
+              to="#"
               id="navbarDropdownMenuLink"
               role="button"
               data-mb-toggle="dropdown"
@@ -82,7 +108,7 @@ const Header = (props) => {
                 alt=""
                 loading="lazy"
               />
-              <p>email</p>
+              <p>{"email"}</p>
             </Link>
             <ul
               className={"dropdown-menu dropdown-menu-end " + show}
@@ -90,15 +116,12 @@ const Header = (props) => {
               style={{ position: "relative" }}
             >
               <li>
-                <a
+                <button
                   className="dropdown-item"
-                  href="/"
-                  activeStyle={activeStyle}
-                  exact
                   onClick={() => toggleLogoutMenu()}
                 >
                   Logout
-                </a>
+                </button>
               </li>
             </ul>
           </div>
@@ -151,7 +174,7 @@ const Header = (props) => {
         <div className="d-flex align-items-center">
           <Link
             className="dropdown-toggle d-flex align-items-center hidden-arrow"
-            to="/"
+            to="#"
             id="navbarDropdownMenuLink"
             role="button"
             data-mb-toggle="dropdown"

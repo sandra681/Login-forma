@@ -1,13 +1,12 @@
-import React, { useEffect, useRef, useState } from 'react'
-import {Card, Form, Button, FormGroup, Row, Col} from 'react-bootstrap'
+import React, { useRef, useState } from "react";
+import { Card, Form, Button, FormGroup, Row, Col } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-import './FormHome.css'
-import axios from 'axios'
+import "./FormHome.css";
+import axios from "axios";
 
-
-function FormHome(props) {
+function FormHome() {
   
-    const {token} = props;
+     const token = localStorage.getItem("token");
     const nameRef=useRef()
     const streetRef=useRef()
     const cityRef=useRef()
@@ -22,42 +21,41 @@ function FormHome(props) {
     const [error, setError]=useState("")
 
 
-    function handleSubmit(e){
-        e.preventDefault()
-        axios
-        .post("http://127.0.0.1:8000/api/auth/homes",{
-            name: nameRef.current.value,
-            street: streetRef.current.value,
-            city: cityRef.current.value,
-            price: priceRef.current.value,
-            information: infoRef.current.value,
-            category: categoryRef.current.value,
-            squareFootage: squareFootageRef.current.value,
-            rooms: roomsRef.current.value,
-            parking: parkingRef.current.value,
-
-        })
-        .then((response)=>{
-            setLoading(false)
-            if(response.data.status===200){
-            console.log("Success");
-            }
-
-            setTimeout(()=>{},2000);
-            if(response.data.status==="failed"){
-                setTimeout(() => {
-                    setError("failed")
-                }, 2000);
-            }
-        })
-
-    }
-
-        document.body.style.background='-webkit-linear-gradient(left, #0072ff, #00c6ff)'
-
+    async function handleSubmit(e) {
+    e.preventDefault();
+    await axios
+      .post(
+        "http://127.0.0.1:8000/api/auth/home",
+        {
+          name: nameRef.current.value,
+          street: addressRef.current.value,
+          price: priceRef.current.value,
+          info: infoRef.current.value,
+          category: categoryRef.current.value,
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      )
+      .then((response) => {
+        setLoading(false);
+        if (response.data.status === 200) {
+          console.log("OK");
+        }
+        if (response.data.status === "failed") {
+          setTimeout(() => {
+            setError("failed");
+          }, 2000);
+        }
+      })
+      .catch((error) => {
+        console.log("GRESKA");
+        console.log(error.message);
+      });
+  }
     return (
         <>
-        
+      
             <Card className="container forma "> 
             <div className="img-home">
                 <img src="https://t4.ftcdn.net/jpg/01/35/38/75/360_F_135387578_vKyGn4NM9E2ipUS9j1GRCDLs40CwRNyC.jpg" />
@@ -135,7 +133,6 @@ function FormHome(props) {
                         type="submit">Add</Button>
                         </div>
                     </Form>
-
                 </Card.Body>
             </Card>
 
@@ -145,4 +142,5 @@ function FormHome(props) {
     )
 }
 
-export default FormHome
+
+export default FormHome;
