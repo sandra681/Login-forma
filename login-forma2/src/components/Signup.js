@@ -57,6 +57,9 @@ function Signup() {
           {/* {error && <Alert variant="danger">{error}</Alert>} */}
           <Form onSubmit={handleSubmit}>
             {/* <input type="hidden" name="_csrf" value={cfrToken} /> */}
+
+
+            
             <Form.Group id="email">
               <Form.Label>Email</Form.Label>
               <Form.Control type="email" ref={emailRef} required />
