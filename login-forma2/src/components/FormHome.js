@@ -1,37 +1,54 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { Card, Form, Button, FormGroup, Row, Col } from "react-bootstrap";
+import { getUser } from "../api/userApi";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./FormHome.css";
-import axios from "axios";
-
+import { axios } from "axios";
 function FormHome() {
-  
-     const token = localStorage.getItem("token");
-    const nameRef=useRef()
-    const streetRef=useRef()
-    const cityRef=useRef()
-    const priceRef=useRef()
-    const infoRef=useRef()
-    const categoryRef=useRef()
-    const squareFootageRef= useRef()
-    const  roomsRef= useRef()
-    const  parkingRef= useRef()
+  const token = localStorage.getItem("token");
+  const imageRef = useRef();
+  const nameRef = useRef();
+  const streetRef = useRef();
+  const cityRef = useRef();
+  const priceRef = useRef();
+  const infoRef = useRef();
+  const categoryRef = useRef();
+  const squareFootageRef = useRef();
+  const roomsRef = useRef();
+  const parkingRef = useRef();
+  const [userId, setUserID] = useState("");
 
-    const [loading, setLoading]=useState(false)
-    const [error, setError]=useState("")
+  useEffect(() => {
+    setUserID(
+      getUser().then((result) => {
+        if (result === null) {
+          return;
+        }
+        return result.data;
+      })
+    );
+  }, []);
 
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-    async function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
     await axios
       .post(
         "http://127.0.0.1:8000/api/auth/home",
         {
           name: nameRef.current.value,
-          street: addressRef.current.value,
+          street: streetRef.current.value,
           price: priceRef.current.value,
           info: infoRef.current.value,
           category: categoryRef.current.value,
+          city: cityRef.current.value,
+          square_footage: squareFootageRef.current.value,
+          rooms_number: roomsRef.current.value,
+          parking_spaces: parkingRef.current.value,
+          image: imageRef.current.value,
+          user_id: userId.id,
         },
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -53,94 +70,129 @@ function FormHome() {
         console.log(error.message);
       });
   }
-    return (
-        <>
-      
-            <Card className="container forma "> 
-            <div className="img-home">
-                <img src="https://t4.ftcdn.net/jpg/01/35/38/75/360_F_135387578_vKyGn4NM9E2ipUS9j1GRCDLs40CwRNyC.jpg" />
+  return (
+    <>
+      <Card className="container forma ">
+        <div className="img-home">
+          <img src="https://t4.ftcdn.net/jpg/01/35/38/75/360_F_135387578_vKyGn4NM9E2ipUS9j1GRCDLs40CwRNyC.jpg" />
+        </div>
+        <Card.Body>
+          <h2 className="text-center mb-4">Add New Home</h2>
+          <Form className="form1" onSubmit={handleSubmit}>
+            <FormGroup>
+              {/*  <Form.Label >Name:</Form.Label> */}
+              <Form.Control
+                ref={nameRef}
+                type="textarea"
+                required
+                placeholder="Home's Name"
+              ></Form.Control>
+            </FormGroup>
+            <br />
+            <Row className="md-2">
+              <FormGroup as={Col}>
+                {/*  <Form.Label >Street:</Form.Label> */}
+                <Form.Control
+                  ref={streetRef}
+                  type="textarea"
+                  required
+                  placeholder="Street"
+                ></Form.Control>
+              </FormGroup>
+              <FormGroup as={Col}>
+                {/*  <Form.Label >City:</Form.Label> */}
+                <Form.Control
+                  ref={cityRef}
+                  type="textarea"
+                  required
+                  placeholder="City"
+                ></Form.Control>
+              </FormGroup>
+            </Row>
+            <br />
+
+            <Row className="md-2">
+              <FormGroup as={Col}>
+                {/*  <Form.Label >Price:</Form.Label> */}
+                <Form.Control
+                  ref={priceRef}
+                  className="price-number"
+                  type="number"
+                  min="0"
+                  required
+                  placeholder="Price"
+                ></Form.Control>
+              </FormGroup>
+              <FormGroup as={Col}>
+                <Form.Control ref={categoryRef} as="select" required>
+                  <option defaultValue disabled hidden></option>
+                  <option>Rent</option>
+                  <option>Sell</option>
+                </Form.Control>
+              </FormGroup>
+            </Row>
+            <br />
+            <Row className="md-3">
+              <FormGroup as={Col}>
+                <Form.Control
+                  ref={squareFootageRef}
+                  className="price-number"
+                  type="number"
+                  min="0"
+                  step="0.01"
+                  required
+                  placeholder="Square Footage"
+                ></Form.Control>
+              </FormGroup>
+              <FormGroup as={Col}>
+                <Form.Control
+                  ref={roomsRef}
+                  className="price-number"
+                  type="number"
+                  min="0"
+                  required
+                  placeholder="Number of Rooms"
+                ></Form.Control>
+              </FormGroup>
+              <FormGroup as={Col}>
+                <Form.Control
+                  ref={parkingRef}
+                  className="price-number"
+                  type="number"
+                  min="0"
+                  required
+                  placeholder="Parking Spaces"
+                ></Form.Control>
+              </FormGroup>
+            </Row>
+            <br />
+            <FormGroup>
+              {/*  <Form.Label >Information:</Form.Label> */}
+              <Form.Control
+                ref={infoRef}
+                as="textarea"
+                rows={4}
+                required
+                placeholder="About home"
+              ></Form.Control>
+            </FormGroup>
+            <br />
+            <FormGroup>
+              <Form.Label>Image:</Form.Label>
+              <Form.File ref={imageRef}></Form.File>
+            </FormGroup>
+            <br />
+
+            <div className="dugme">
+              <Button disabled={loading} type="submit">
+                Add
+              </Button>
             </div>
-                <Card.Body >
-                    <h2 className="text-center mb-4">Add New Home</h2>
-                    <Form className="form1" onSubmit={handleSubmit}>
-                        
-                        <FormGroup >
-                           {/*  <Form.Label >Name:</Form.Label> */}
-                            <Form.Control ref={nameRef}  type="textarea" required placeholder="Home's Name"></Form.Control>
-                        </FormGroup>
-                        <br/>
-                        <Row className="md-2">
-                        <FormGroup as={Col}>
-                           {/*  <Form.Label >Street:</Form.Label> */}
-                            <Form.Control ref={streetRef} type="textarea" required placeholder="Street"></Form.Control>
-                        </FormGroup>
-                        <FormGroup as={Col}>
-                           {/*  <Form.Label >City:</Form.Label> */}
-                            <Form.Control ref={cityRef} type="textarea" required placeholder="City"></Form.Control>
-                        </FormGroup>
-                        </Row>
-                        <br/>
-                        
-                        <Row className="md-2">
-                        <FormGroup as={Col}>
-                           {/*  <Form.Label >Price:</Form.Label> */}
-                            <Form.Control ref={priceRef} className="price-number" type="number" min="0" required placeholder="Price"></Form.Control>
-                        </FormGroup>
-                        <FormGroup as={Col}>
-                
-                            <Form.Control ref={categoryRef} as="select"  required>
-                                
-                                <option selected disabled hidden ></option>
-                                <option>Rent</option>
-                                <option>Sell</option>
-                                
-                                
-                            </Form.Control>
-
-                        </FormGroup>
-                        </Row>
-                        <br/>
-                        <Row className="md-3">
-                        <FormGroup as={Col}>
-                           
-                            <Form.Control ref={squareFootageRef} className="price-number" type="number" min="0" step="0.01" required placeholder="Square Footage"></Form.Control>
-                        </FormGroup>
-                        <FormGroup as={Col}>
-                           
-                            <Form.Control ref={roomsRef} className="price-number" type="number" min="0" required placeholder="Number of Rooms"></Form.Control>
-                        </FormGroup>
-                        <FormGroup as={Col}>
-                           
-                            <Form.Control ref={parkingRef} className="price-number" type="number" min="0" required placeholder="Parking Spaces"></Form.Control>
-                        </FormGroup>
-                        </Row>
-                        <br/>
-                        <FormGroup>
-                           {/*  <Form.Label >Information:</Form.Label> */}
-                            <Form.Control ref={infoRef} as="textarea" rows={4} required placeholder="About home"></Form.Control>
-                        </FormGroup>
-                        <br/>
-                        <FormGroup>
-                            <Form.Label >Image:</Form.Label>
-                            <Form.File ></Form.File>
-                        </FormGroup>
-                        <br/>
-                        
-                        
-                       <div className="dugme">
-                        <Button 
-                        disabled={loading}
-                        type="submit">Add</Button>
-                        </div>
-                    </Form>
-                </Card.Body>
-            </Card>
-
-            
-
-        </>
-    )
+          </Form>
+        </Card.Body>
+      </Card>
+    </>
+  );
 }
-
 
 export default FormHome;
