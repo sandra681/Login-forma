@@ -30,11 +30,11 @@ function FormHome(props) {
             street: streetRef.current.value,
             city: cityRef.current.value,
             price: priceRef.current.value,
-            information: infoRef.current.value,
+            info: infoRef.current.value,
             category: categoryRef.current.value,
-            squareFootage: squareFootageRef.current.value,
-            rooms: roomsRef.current.value,
-            parking: parkingRef.current.value,
+            square_footage: squareFootageRef.current.value,
+            rooms_number: roomsRef.current.value,
+            parking_spaces: parkingRef.current.value,
 
         })
         .then((response)=>{
@@ -90,12 +90,11 @@ function FormHome(props) {
                         </FormGroup>
                         <FormGroup as={Col}>
                 
-                            <Form.Control ref={categoryRef} as="select"  required>
+                            <Form.Control ref={categoryRef} as="select" defaultValue="" required>
                                 
-                                <option selected disabled hidden ></option>
+                                <option   value="" >-Choose Category-</option>
                                 <option>Rent</option>
                                 <option>Sell</option>
-                                
                                 
                             </Form.Control>
 
@@ -119,12 +118,12 @@ function FormHome(props) {
                         <br/>
                         <FormGroup>
                            {/*  <Form.Label >Information:</Form.Label> */}
-                            <Form.Control ref={infoRef} as="textarea" rows={4} required placeholder="About home"></Form.Control>
+                            <Form.Control ref={infoRef} as="textarea" rows={4} required placeholder="About Home"></Form.Control>
                         </FormGroup>
                         <br/>
                         <FormGroup>
                             <Form.Label >Image:</Form.Label>
-                            <Form.File ></Form.File>
+                            <Form.File required ></Form.File>
                         </FormGroup>
                         <br/>
                         

@@ -6,7 +6,7 @@ import LikedHomes from "../../homes/LikedHome";
 import { useHistory } from "react-router";
 // import SearchBox from "../common/SearchBox";
 import SearchBar from "../SearchBar";
-import { ThreeSixty } from "@material-ui/icons";
+import { FilterDrama, ThreeSixty } from "@material-ui/icons";
 import './Homepage.css'
 import _ from "lodash";
 
@@ -40,18 +40,30 @@ const Homepage = (props) => {
       );
     }
   }, [loadMore]);
+
+ /*  useEffect(()=>{
+    
+    getSomeHomes(10).then(
+    (result)=>{
+      setHomes(result)
+     // setCategories(["all", ...new Set(homes.map((one) => one.category))]);
+    }
+    )
+   
+  }, []) */
+
   const [input, setInput] = useState("");
 
   async function updateInput(input) {
     if (input === "") {
       setFilterHomes(filterHomes);
       setInput("");
-      return;
+    //  return;
     }
     const filtered = filterHomes.filter((street) => {
       return street.street.toLowerCase().includes(input.toLowerCase());
     });
-    console.log(filtered);
+    
     setInput(input);
     setFilterHomes(filtered); //setFilterHomes
   }
@@ -64,32 +76,16 @@ const Homepage = (props) => {
     var sortHome;
     if (value.startsWith("price")) {
       sortHome = _.orderBy(filterHomes, ["price"], [order]);
-    } else {
+    } else if (value.startsWith("name")) {
       sortHome = _.orderBy(filterHomes, ["name"], [order]);
+    }else{
+      return;
     }
 
     setFilterHomes(sortHome);
   }
 
-  // useEffect(() => {
-  //   setHomes(filterHomes);
-  //   setCategories(["all", ...new Set(homes.map((one) => one.category))]);
-  // }, []);
-  useEffect(() => {
-    if (loadMore === true || num === 10) {
-      setNum(num + 10);
-      getSomeHomes(num).then(
-        (result) => {
-          setHomes(result);
-          setLoadMore(false);
-          setCategories(["all", ...new Set(result.map((one) => one.category))]);
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
-    }
-  }, [loadMore]);
+  
   function removeAllLikedHomes() {
     setLikedHomes([]);
   }
@@ -181,14 +177,14 @@ const Homepage = (props) => {
      
 
         <div className="sort">
-          <select
+          <select defaultValue=""
             className="sort-select"
             onChange={(e) => {
               sortByInput(e);
             }}
           >
-            <option value="" disabled>
-              Sort By
+            <option value="" >
+              -Sort By-
             </option>
             <option value="name_asc">Name - A - Z</option>
             <option value="name_desc">Name - Z - A</option>
@@ -221,7 +217,7 @@ const Homepage = (props) => {
             </button>
           </section>
 
-          <div>
+          <div >
             {!adminUser && (
               <LikedHomes
                 token={token}
