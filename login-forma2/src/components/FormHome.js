@@ -1,13 +1,12 @@
-import React, { useEffect, useRef, useState } from 'react'
-import {Card, Form, Button, FormGroup, Row, Col} from 'react-bootstrap'
+import React, { useRef, useState } from "react";
+import { Card, Form, Button, FormGroup, Row, Col } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-import './FormHome.css'
-import axios from 'axios'
+import "./FormHome.css";
+import axios from "axios";
 
-
-function FormHome(props) {
+function FormHome() {
   
-    const {token} = props;
+     const token = localStorage.getItem("token");
     const nameRef=useRef()
     const streetRef=useRef()
     const cityRef=useRef()
@@ -55,9 +54,10 @@ function FormHome(props) {
 
         document.body.style.background='-webkit-linear-gradient(left, #0072ff, #00c6ff)'
 
+
     return (
         <>
-        
+      
             <Card className="container forma "> 
             <div className="img-home">
                 <img src="https://t4.ftcdn.net/jpg/01/35/38/75/360_F_135387578_vKyGn4NM9E2ipUS9j1GRCDLs40CwRNyC.jpg" />
@@ -134,7 +134,6 @@ function FormHome(props) {
                         type="submit">Add</Button>
                         </div>
                     </Form>
-
                 </Card.Body>
             </Card>
 
@@ -144,4 +143,5 @@ function FormHome(props) {
     )
 }
 
-export default FormHome
+
+export default FormHome;
