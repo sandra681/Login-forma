@@ -6,7 +6,7 @@ import ForgotPassword from "./ForgotPassword";
 import Homepage from "./homepage/Homepage";
 import Header from "../common/Header";
 import FormHome from "./FormHome";
-import AddHome from "../components/addhome/AddHome";
+import PrivateRoute from "./PrivateRoute";
 import axios from "axios";
 
 function App() {
@@ -29,6 +29,7 @@ function App() {
     <>
       <Header />
       <Switch>
+        <PrivateRoute path="/form-home" component={FormHome}></PrivateRoute>
         {/* <PrivateRoute exact path="/" component={Dashboard}></PrivateRoute>
             <PrivateRoute
               path="/update-profile"
@@ -42,8 +43,7 @@ function App() {
           <Login login={login} />
         </Route>
         <Route path="/forgot-password" component={ForgotPassword}></Route>
-        <Route path="/form-home" token={token} component={FormHome}></Route>
-        <Route path="/addhome" component={AddHome}></Route>
+        {/* <Route path="/form-home" component={FormHome}></Route> */}
       </Switch>
     </>
   );
