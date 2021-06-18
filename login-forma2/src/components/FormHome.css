@@ -52,3 +52,20 @@
   margin-bottom: 6%;
   border-radius: 50%;
 }
+@media screen  and (max-width: 992px) {
+  .container{
+    width: 80%;
+  }
+}
+@media screen and (max-width:300px) {
+  .container{
+    width: 80%;
+  }
+  
+}
+@media screen and (max-width:560px) {
+  .form1{
+    
+  }
+  
+}
