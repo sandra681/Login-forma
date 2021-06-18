@@ -1,9 +1,8 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState } from "react";
 import { Card, Form, Button, FormGroup, Row, Col } from "react-bootstrap";
-import { getUser } from "../api/userApi";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./FormHome.css";
-import { axios } from "axios";
+import axios from "axios";
 function FormHome() {
   const token = localStorage.getItem("token");
   const imageRef = useRef();
@@ -16,21 +15,10 @@ function FormHome() {
   const squareFootageRef = useRef();
   const roomsRef = useRef();
   const parkingRef = useRef();
-  const [userId, setUserID] = useState("");
-
-  useEffect(() => {
-    setUserID(
-      getUser().then((result) => {
-        if (result === null) {
-          return;
-        }
-        return result.data;
-      })
-    );
-  }, []);
+  const user = JSON.parse(localStorage.getItem("user"));
+  console.log(user.id);
 
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
 
 
   async function handleSubmit(e) {
@@ -49,7 +37,7 @@ function FormHome() {
           rooms_number: roomsRef.current.value,
           parking_spaces: parkingRef.current.value,
           image: imageRef.current.value,
-          user_id: userId.id,
+          user_id: user.id,
         },
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -61,9 +49,7 @@ function FormHome() {
           console.log("OK");
         }
         if (response.data.status === "failed") {
-          setTimeout(() => {
-            setError("failed");
-          }, 2000);
+          setTimeout(() => {}, 2000);
         }
       })
       .catch((error) => {
@@ -78,7 +64,10 @@ function FormHome() {
     <>
       <Card className="container forma ">
         <div className="img-home">
-          <img src="https://t4.ftcdn.net/jpg/01/35/38/75/360_F_135387578_vKyGn4NM9E2ipUS9j1GRCDLs40CwRNyC.jpg" />
+          <img
+            src="https://t4.ftcdn.net/jpg/01/35/38/75/360_F_135387578_vKyGn4NM9E2ipUS9j1GRCDLs40CwRNyC.jpg"
+            alt="profile"
+          />
         </div>
         <Card.Body>
           <h2 className="text-center mb-4">Add New Home</h2>

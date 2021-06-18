@@ -7,7 +7,7 @@ export const PrivateRoute = ({ component: Component, ...rest }) => {
     <Route
       {...rest}
       render={(props) =>
-        isAdmin() ? <Component {...props} /> : <Redirect to="/login" />
+        isAdmin() ? <Redirect to="/login" /> : <Component {...props} />
       }
     />
   );
