@@ -1,18 +1,16 @@
 import React, { useRef, useState } from "react";
 import { Form, Button, Card, Alert } from "react-bootstrap";
-import { Link, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 import axios from "axios";
 
 //use history koristimo onda da kad se ulogujemo da nam se otvori  druga strana
 
 function Login(props) {
-  const { login, setLogin } = props;
+  const { login } = props;
   const emailRef = useRef();
   const passwordRef = useRef();
-  //   const { login } = useAuth();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const history = useHistory();
   async function handleSubmit(e) {
     e.preventDefault();
     await axios
@@ -27,6 +25,7 @@ function Login(props) {
         console.log(jwt_token);
       })
       .catch((error) => {
+        setError(error);
         console.log(error);
       });
   }
