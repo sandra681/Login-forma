@@ -1,18 +1,12 @@
 import React, { useState, useEffect } from "react";
 import Categories from "../../common/Categories";
 import Home from "../../homes/Home";
-import {
-  getHomes,
-  getSomeHomes,
-  deleteHome,
-} from "../../api/residentialBuildingsApi";
+import { getHomes, deleteHome } from "../../api/residentialBuildingsApi";
 import LikedHomes from "../../homes/LikedHome";
 import { useHistory } from "react-router";
 // import SearchBox from "../common/SearchBox";
 import SearchBar from "../SearchBar";
-import { ThreeSixty } from "@material-ui/icons";
-import './Homepage.css'
-import _ from "lodash";
+import "./Homepage.css";
 
 const Homepage = (props) => {
   const { token, adminUser } = props;
@@ -47,13 +41,12 @@ const Homepage = (props) => {
         }
       );
     }
-<<<<<<< HEAD
-  }, [loadMore, sort, order])
+  }, [loadMore, sort, order]);
   async function updateInput(input) {
     if (input === "") {
       setFilterHomes(remeberFiletrHomes);
       setInput("");
-    //  return;
+      //  return;
     }
     const filtered = filterHomes.filter((street) => {
       return street.street.toLowerCase().includes(input.toLowerCase());
@@ -152,13 +145,14 @@ const Homepage = (props) => {
         </div>
 
         <div className="sort">
-          <select defaultValue=""
+          <select
+            defaultValue=""
             className="sort-select"
             onChange={(e) => {
               sortByInput(e);
             }}
           >
-            <option value="" disabled >
+            <option value="" disabled>
               -Sort By-
             </option>
             <option value="name_asc">Name - A - Z</option>
