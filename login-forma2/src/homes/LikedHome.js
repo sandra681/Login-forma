@@ -4,13 +4,15 @@ const LikedHomes = (props) => {
   const { token, removeAllLikedHomes, likedHomes, removeLikedHome } = props;
   if (token !== "") {
     return (
-      <section className="interested">
+      <section   className="interested">
+        <div  style={{overflow:"auto" , height:"130px"}}>
         <h3>{likedHomes.length} liked apartments</h3>
         {likedHomes.map((home) => {
           return (
+            
             <article key={home.id} className="in_apart">
               <img src={home.image} alt={home.name} />
-              <div>
+              <div >
                 <h4>{home.name}</h4>
                 <div style={{ display: "contents" }}>
                   <p>${home.price}</p>
@@ -23,8 +25,10 @@ const LikedHomes = (props) => {
                 </div>
               </div>
             </article>
+          
           );
         })}
+        </div>
         <button onClick={() => removeAllLikedHomes()}>Clear all</button>
       </section>
     );

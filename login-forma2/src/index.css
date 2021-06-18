@@ -160,7 +160,7 @@ Tours
 main {
   width: 90vw;
   max-width: var(--fixed-width);
-  margin: 5rem auto;
+  margin: 2rem auto;
   display: flex;
   flex-direction: row;
 }
@@ -239,9 +239,12 @@ main {
   padding: 0.25rem 0.5rem;
   border-radius: var(--radius);
 }
+
 .interested {
   position: fixed;
   margin-left: 3rem;
+  right: 0;
+  bottom: 0;
   width: 28vw;
   border-radius: var(--radius);
   padding: 1.5rem 2rem;
@@ -252,6 +255,14 @@ main {
   font-weight: normal;
   text-transform: none;
   margin-bottom: 2rem;
+}
+@media screen and (max-width: 992px) {
+  .interested {
+    width: 85%;
+    left: 1rem;
+    right: 1rem;
+    bottom: 2rem;
+  }
 }
 .in_apart {
   display: grid;
@@ -346,9 +357,9 @@ main {
 }
 .search {
   display: flex;
-  flex-flow: column;
-  align-items: center;
+  justify-content: center;
 }
+
 .filter-container {
   display: flex;
   /* flex-flow: column; */
@@ -359,6 +370,11 @@ main {
   margin: 0 auto;
   height: 100px;
 }
+@media screen and (max-width: 800px) {
+  .filter-container {
+    flex-flow: column;
+  }
+}
 .sort {
   margin-top: 0px;
   margin-bottom: 0px;
@@ -368,6 +384,7 @@ main {
   margin-top: 20px;
   height: 60px;
 }
+
 .aa {
   width: 25%;
 }

@@ -11,7 +11,7 @@ import { useHistory } from "react-router";
 // import SearchBox from "../common/SearchBox";
 import SearchBar from "../SearchBar";
 import { ThreeSixty } from "@material-ui/icons";
-import "./Homepage.css";
+import './Homepage.css'
 import _ from "lodash";
 
 const Homepage = (props) => {
@@ -47,18 +47,17 @@ const Homepage = (props) => {
         }
       );
     }
-  }, [loadMore, sort, order]);
-
+<<<<<<< HEAD
+  }, [loadMore, sort, order])
   async function updateInput(input) {
     if (input === "") {
       setFilterHomes(remeberFiletrHomes);
       setInput("");
-      return;
+    //  return;
     }
     const filtered = filterHomes.filter((street) => {
       return street.street.toLowerCase().includes(input.toLowerCase());
     });
-    console.log(filtered);
     setInput(input);
     setFilterHomes(filtered); //setFilterHomes
   }
@@ -153,14 +152,14 @@ const Homepage = (props) => {
         </div>
 
         <div className="sort">
-          <select
+          <select defaultValue=""
             className="sort-select"
             onChange={(e) => {
               sortByInput(e);
             }}
           >
-            <option value="" disabled>
-              Sort By
+            <option value="" disabled >
+              -Sort By-
             </option>
             <option value="name_asc">Name - A - Z</option>
             <option value="name_desc">Name - Z - A</option>

@@ -20,6 +20,7 @@ function FormHome() {
 
   const [loading, setLoading] = useState(false);
 
+
   async function handleSubmit(e) {
     e.preventDefault();
     await axios
@@ -56,6 +57,9 @@ function FormHome() {
         console.log(error.message);
       });
   }
+  
+  document.body.style.background='-webkit-linear-gradient(left, #0072ff, #00c6ff)'
+  
   return (
     <>
       <Card className="container forma ">
@@ -171,6 +175,7 @@ function FormHome() {
               <Form.File ref={imageRef}></Form.File>
             </FormGroup>
             <br />
+
 
             <div className="dugme">
               <Button disabled={loading} type="submit">
