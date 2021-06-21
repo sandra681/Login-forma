@@ -7,23 +7,11 @@ const Header = () => {
   const [isLogin, setIsLogin] = useState(localStorage.getItem("isLogin"));
   const history = useHistory();
   const activeStyle = { color: "#F15B2A" };
-  // const [user, setUser] = useState(isLogin ? getUser() : false);
   const [menu, setMenu] = useState(false);
+  const user = JSON.parse(localStorage.getItem("user"));
   const toggleMenu = () => {
     setMenu(!menu);
   };
-  async function getUser() {
-    await axios
-      .get("http://127.0.0.1:8000/api/auth/user", {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then((response) => {
-        // setUser(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }
   async function toggleLogoutMenu() {
     await axios
       .get("http://127.0.0.1:8000/api/auth/logout", {
@@ -33,6 +21,7 @@ const Header = () => {
         toggleMenu();
         localStorage.removeItem("isLogin");
         localStorage.removeItem("token");
+        localStorage.removeItem("user");
         setIsLogin(false);
         history.push("/login");
       })
@@ -108,7 +97,7 @@ const Header = () => {
                 alt=""
                 loading="lazy"
               />
-              <p>{"email"}</p>
+              <p>{user === null ? "email" : user["email"]}</p>
             </Link>
             <ul
               className={"dropdown-menu dropdown-menu-end " + show}

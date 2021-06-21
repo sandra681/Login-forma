@@ -1,23 +1,25 @@
 import React, { useState, useEffect } from "react";
 import Categories from "../../common/Categories";
 import Home from "../../homes/Home";
-import { getSomeHomes, deleteHome } from "../../api/residentialBuildingsApi";
+import { getHomes, deleteHome } from "../../api/residentialBuildingsApi";
 import LikedHomes from "../../homes/LikedHome";
 import { useHistory } from "react-router";
 // import SearchBox from "../common/SearchBox";
 import SearchBar from "../SearchBar";
-import { FilterDrama, ThreeSixty } from "@material-ui/icons";
-import './Homepage.css'
-import _ from "lodash";
+import "./Homepage.css";
 
 const Homepage = (props) => {
   const { token, adminUser } = props;
   const [loadMore, setLoadMore] = useState(false);
-  const [homes, setHomes] = useState([]);
+  const [homes, setHomes] = useState([]); // Za All Category
   const [likedHomes, setLikedHomes] = useState([]);
   const [categories, setCategories] = useState([]);
-  const [filterHomes, setFilterHomes] = useState([]);
+  const [filterHomes, setFilterHomes] = useState([]); //Ove za sve
   const [num, setNum] = useState(10);
+  const [sort, setSort] = useState("name");
+  const [order, setOrder] = useState("asc");
+  const [input, setInput] = useState("");
+  const [remeberFiletrHomes, setRemeberFilterHomes] = useState(); //ovim pamtimo filtrirane za Search Adress
   const history = useHistory();
 
   function editHome() {
@@ -26,10 +28,10 @@ const Homepage = (props) => {
 
   useEffect(() => {
     if (loadMore === true || num === 10) {
-      setNum(num + 10);
-      getSomeHomes(num).then(
+      getHomes(sort, order, num).then(
         (result) => {
           setFilterHomes(result);
+          setRemeberFilterHomes(result);
           setHomes(result);
           setLoadMore(false);
           setCategories(["all", ...new Set(result.map((one) => one.category))]);
@@ -39,53 +41,26 @@ const Homepage = (props) => {
         }
       );
     }
-  }, [loadMore]);
-
- /*  useEffect(()=>{
-    
-    getSomeHomes(10).then(
-    (result)=>{
-      setHomes(result)
-     // setCategories(["all", ...new Set(homes.map((one) => one.category))]);
-    }
-    )
-   
-  }, []) */
-
-  const [input, setInput] = useState("");
-
+  }, [loadMore, sort, order]);
   async function updateInput(input) {
     if (input === "") {
-      setFilterHomes(filterHomes);
+      setFilterHomes(remeberFiletrHomes);
       setInput("");
-    //  return;
+      //  return;
     }
     const filtered = filterHomes.filter((street) => {
       return street.street.toLowerCase().includes(input.toLowerCase());
     });
-    
     setInput(input);
     setFilterHomes(filtered); //setFilterHomes
   }
 
   function sortByInput(e) {
-    const value = e.target.value;
-
-    const order = value.endsWith("asc") ? "asc" : "desc";
-
-    var sortHome;
-    if (value.startsWith("price")) {
-      sortHome = _.orderBy(filterHomes, ["price"], [order]);
-    } else if (value.startsWith("name")) {
-      sortHome = _.orderBy(filterHomes, ["name"], [order]);
-    }else{
-      return;
-    }
-
-    setFilterHomes(sortHome);
+    const value = e.target.value.split("_")[0];
+    const order = e.target.value.split("_")[1];
+    setSort(value);
+    setOrder(order);
   }
-
-  
   function removeAllLikedHomes() {
     setLikedHomes([]);
   }
@@ -130,26 +105,25 @@ const Homepage = (props) => {
     });
   }
 
-
-  document.body.style.background='#fff'
+  document.body.style.background = "#fff";
   return (
     <div className="homepage">
-      <header className="head" 
-      
-      /* style={{backgroundImage:` url("https://assets.architecturaldigest.in/photos/60084bc8d0435267a8df97f8/16:9/w_2560%2Cc_limit/The-Drawing-Studio-mumbai-interior-design_2-1366x768.jpg")`,
+      <header
+        className="head"
+
+        /* style={{backgroundImage:` url("https://assets.architecturaldigest.in/photos/60084bc8d0435267a8df97f8/16:9/w_2560%2Cc_limit/The-Drawing-Studio-mumbai-interior-design_2-1366x768.jpg")`,
   height: "500px",
   maxWidth: "2000px",
   backgroundSize:"cover",
   backgroundRepeat:"no-repeat"
  }} */
- >
-      
+      >
         <div className="title">
-          <h2 >Find Home</h2>
+          <h2>Find Home</h2>
           <div className="underline"></div>
         </div>
         <div className="search">
-        <SearchBar input={input} onChange={updateInput}></SearchBar>
+          <SearchBar input={input} onChange={updateInput}></SearchBar>
         </div>
         {adminUser && (
           <button
@@ -161,29 +135,24 @@ const Homepage = (props) => {
             Add Home
           </button>
         )}
-      
       </header>
 
-    
-
-      
       <div className="filter-container">
+        <div className="aa"></div>
 
-      <div className="aa"></div>
-
-      <div className="category">
-       <Categories categories={categories} categoryFilter={categoryFilter} />
-    </div>
-     
+        <div className="category">
+          <Categories categories={categories} categoryFilter={categoryFilter} />
+        </div>
 
         <div className="sort">
-          <select defaultValue=""
+          <select
+            defaultValue=""
             className="sort-select"
             onChange={(e) => {
               sortByInput(e);
             }}
           >
-            <option value="" >
+            <option value="" disabled>
               -Sort By-
             </option>
             <option value="name_asc">Name - A - Z</option>
@@ -212,12 +181,18 @@ const Homepage = (props) => {
                 );
               })}
             </div>
-            <button className="loadMore" onClick={() => setLoadMore(true)}>
+            <button
+              className="loadMore"
+              onClick={() => {
+                setLoadMore(true);
+                setNum(num + 10);
+              }}
+            >
               Load more
             </button>
           </section>
 
-          <div >
+          <div>
             {!adminUser && (
               <LikedHomes
                 token={token}

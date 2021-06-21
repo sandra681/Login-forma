@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import Signup from "./Signup";
 import { Switch, Route, useHistory } from "react-router-dom";
 import Login from "./Login";
@@ -6,15 +6,15 @@ import ForgotPassword from "./ForgotPassword";
 import Homepage from "./homepage/Homepage";
 import Header from "../common/Header";
 import FormHome from "./FormHome";
-import AddHome from "../components/addhome/AddHome";
-import axios from "axios";
+import PrivateRoute from "./PrivateRoute";
+import { getUser } from "../api/userApi";
 
 function App() {
   const history = useHistory();
   let inMemoryToken = {};
   const token = localStorage.getItem('token')
 
-  function login({ access_token, token_type, expires_at }, noRedirect) {
+  async function login({ access_token, token_type, expires_at }, noRedirect) {
     inMemoryToken = {
       token: access_token,
       type: token_type,
@@ -22,14 +22,25 @@ function App() {
     };
     localStorage.setItem("token", inMemoryToken.token);
     localStorage.setItem("isLogin", true);
+    getLoginUser(inMemoryToken.token);
     if (!noRedirect) {
       history.push("/");
     }
   }
+  async function getLoginUser(token) {
+    const user1 = await getUser(token).then((result) => {
+      return result;
+    });
+    setTimeout(() => {}, 2000);
+    console.log(user1);
+    localStorage.setItem("user", JSON.stringify(user1));
+  }
+
   return (
     <>
       <Header />
       <Switch>
+        <PrivateRoute path="/form-home" component={FormHome}></PrivateRoute>
         {/* <PrivateRoute exact path="/" component={Dashboard}></PrivateRoute>
             <PrivateRoute
               path="/update-profile"
@@ -43,8 +54,7 @@ function App() {
           <Login login={login} />
         </Route>
         <Route path="/forgot-password" component={ForgotPassword}></Route>
-        <Route path="/form-home" token={token} component={FormHome}></Route>
-        <Route path="/addhome" component={AddHome}></Route>
+        {/* <Route path="/form-home" component={FormHome}></Route> */}
       </Switch>
     </>
   );
