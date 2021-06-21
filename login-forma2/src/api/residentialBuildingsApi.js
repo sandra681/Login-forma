@@ -1,8 +1,11 @@
 import { handleResponse, handleError } from "./apiUtils";
 const baseUrl = "http://127.0.0.1:8000/api/home/";
 
-export function getHomes() {
-  return fetch(baseUrl).then(handleResponse).catch(handleError);
+export function getHomes(sort,order, num) {
+  console.log(baseUrl + sort + "/" +order+"/"+num);
+  return fetch(baseUrl + sort + "/" +order+"/"+num)
+    .then(handleResponse)
+    .catch(handleError);
 }
 export function getSomeHomes(num) {
   const url = baseUrl + num;

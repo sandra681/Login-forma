@@ -1,10 +1,9 @@
 import { handleError, handleResponse } from "./apiUtils";
-import { axios } from "axios";
 
 const baseUrl = "http://127.0.0.1:8000/api/auth/user";
-const token = localStorage.getItem("token");
+// csonst token = localStorage.getItem("token");
 
-export async function getUser() {
+export function getUser(token) {
   if (!token) {
     return null;
   }

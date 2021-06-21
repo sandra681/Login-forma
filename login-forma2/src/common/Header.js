@@ -8,6 +8,7 @@ const Header = () => {
   const history = useHistory();
   const activeStyle = { color: "#F15B2A" };
   const [menu, setMenu] = useState(false);
+  const user = JSON.parse(localStorage.getItem("user"));
   const toggleMenu = () => {
     setMenu(!menu);
   };
@@ -20,6 +21,7 @@ const Header = () => {
         toggleMenu();
         localStorage.removeItem("isLogin");
         localStorage.removeItem("token");
+        localStorage.removeItem("user");
         setIsLogin(false);
         history.push("/login");
       })
@@ -95,7 +97,7 @@ const Header = () => {
                 alt=""
                 loading="lazy"
               />
-              <p>{"email"}</p>
+              <p>{user === null ? "email" : user["email"]}</p>
             </Link>
             <ul
               className={"dropdown-menu dropdown-menu-end " + show}
