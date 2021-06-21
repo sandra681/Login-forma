@@ -11,8 +11,8 @@ const Home = (props) => {
     removeHome,
     addLikedHome,
     deleteHome,
-    adminUser,
     editHome,
+    admin,
   } = props;
   const [readMore, setReadMore] = useState(false);
   return (
@@ -33,25 +33,25 @@ const Home = (props) => {
             {readMore ? "show less" : "read more"}
           </button>
         </p>
-        {adminUser && (
+        {admin && (
           <button className="delete-btn" onClick={() => editHome(id)}>
             {" "}
             EDIT
           </button>
         )}
-        {adminUser && (
+        {admin && (
           <button className="delete-btn" onClick={() => deleteHome(id)}>
             {" "}
             DELETE
           </button>
         )}
-        {!adminUser && (
+        {!admin && (
           <button className="delete-btn" onClick={() => removeHome(id)}>
             {" "}
             not interested
           </button>
         )}
-        {!adminUser && (
+        {!admin && (
           <button className="delete-btn" onClick={() => addLikedHome(id)}>
             {" "}
             interested

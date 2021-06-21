@@ -14,12 +14,3 @@ export function getUser(token) {
     .catch(handleError);
 }
 
-export function isAdmin() {
-  const currentUser = getUser();
-  if (currentUser === null) return;
-  if (currentUser.admin === 1) {
-    return true;
-  } else {
-    return false;
-  }
-}
