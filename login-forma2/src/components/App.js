@@ -12,6 +12,7 @@ import axios from "axios";
 function App() {
   const history = useHistory();
   let inMemoryToken = {};
+  const token = localStorage.getItem('token')
 
   function login({ access_token, token_type, expires_at }, noRedirect) {
     inMemoryToken = {

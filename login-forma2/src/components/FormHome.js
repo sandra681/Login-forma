@@ -76,10 +76,11 @@ function FormHome() {
                            {/*  <Form.Label >Street:</Form.Label> */}
                             <Form.Control ref={streetRef} type="textarea" required placeholder="Street"></Form.Control>
                         </FormGroup>
+                        <br/>
                         <FormGroup as={Col}>
                            {/*  <Form.Label >City:</Form.Label> */}
                             <Form.Control ref={cityRef} type="textarea" required placeholder="City"></Form.Control>
-                        </FormGroup>
+                        </FormGroup> 
                         </Row>
                         <br/>
                         
@@ -88,6 +89,7 @@ function FormHome() {
                            {/*  <Form.Label >Price:</Form.Label> */}
                             <Form.Control ref={priceRef} className="price-number" type="number" min="0" required placeholder="Price"></Form.Control>
                         </FormGroup>
+                        <br/>
                         <FormGroup as={Col}>
                 
                             <Form.Control ref={categoryRef} as="select" defaultValue="" required>
@@ -106,10 +108,12 @@ function FormHome() {
                            
                             <Form.Control ref={squareFootageRef} className="price-number" type="number" min="0" step="0.01" required placeholder="Square Footage"></Form.Control>
                         </FormGroup>
+                        <br/>
                         <FormGroup as={Col}>
                            
                             <Form.Control ref={roomsRef} className="price-number" type="number" min="0" required placeholder="Number of Rooms"></Form.Control>
                         </FormGroup>
+                        <br/>
                         <FormGroup as={Col}>
                            
                             <Form.Control ref={parkingRef} className="price-number" type="number" min="0" required placeholder="Parking Spaces"></Form.Control>
