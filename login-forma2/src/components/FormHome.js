@@ -2,6 +2,8 @@ import React, { useRef, useState } from "react";
 import { Card, Form, Button, FormGroup, Row, Col } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./FormHome.css";
+import {useHistory} from 'react-router'
+import {Link} from 'react-router-dom'
 
 //import { axios } from "axios";
 import axios from 'axios';
@@ -19,6 +21,7 @@ function FormHome() {
   const roomsRef = useRef();
   const parkingRef = useRef();
   const user = JSON.parse(localStorage.getItem("user"));
+  const history=useHistory()
   // console.log(user.id);
 
   const [loading, setLoading] = useState(false);
@@ -53,6 +56,7 @@ function FormHome() {
         setLoading(false);
         if (response.data.status === 200) {
           console.log("OK");
+          
         }
         if (response.data.status === "failed") {
           setTimeout(() => {}, 2000);
@@ -77,7 +81,7 @@ function FormHome() {
         </div>
         <Card.Body>
           <h2 className="text-center mb-4">Add New Home</h2>
-          <Form className="form1" onSubmit={handleSubmit}>
+          <Form className="form1" onSubmit={handleSubmit} >
             <FormGroup>
               {/*  <Form.Label >Name:</Form.Label> */}
               <Form.Control
@@ -98,6 +102,7 @@ function FormHome() {
                   placeholder="Street"
                 ></Form.Control>
               </FormGroup>
+              <br />
               <FormGroup as={Col}>
                 {/*  <Form.Label >City:</Form.Label> */}
                 <Form.Control
@@ -122,6 +127,7 @@ function FormHome() {
                   placeholder="Price"
                 ></Form.Control>
               </FormGroup>
+              <br />
               <FormGroup as={Col}>
                 <Form.Control ref={categoryRef} as="select" defaultValue="" required>
                   <option value=""  >--Choose Category--</option>
@@ -143,6 +149,7 @@ function FormHome() {
                   placeholder="Square Footage"
                 ></Form.Control>
               </FormGroup>
+              <br />
               <FormGroup as={Col}>
                 <Form.Control
                   ref={roomsRef}
@@ -153,6 +160,7 @@ function FormHome() {
                   placeholder="Number of Rooms"
                 ></Form.Control>
               </FormGroup>
+              <br />
               <FormGroup as={Col}>
                 <Form.Control
                   ref={parkingRef}
@@ -184,8 +192,9 @@ function FormHome() {
 
 
             <div className="dugme">
-              <Button disabled={loading} type="submit">
-                Add
+              <Button disabled={loading} type="submit"  >
+               
+               Add
               </Button>
             </div>
 

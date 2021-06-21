@@ -5,8 +5,7 @@ export const PrivateRoute = ({ component: Component, ...rest }) => {
   return (
     <Route
       {...rest}
-      render={(props) =>
-        JSON.parse(localStorage.getItem("user")).admin === 1 ? (
+      render={(props) => JSON.parse(localStorage.getItem("user")).admin === 1 ? (
           <Component {...props} />
         ) : (
           <Redirect to="/login" />
