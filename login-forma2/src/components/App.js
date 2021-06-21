@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Signup from "./Signup";
 import { Switch, Route, useHistory } from "react-router-dom";
 import Login from "./Login";
@@ -12,9 +12,7 @@ import { getUser } from "../api/userApi";
 function App() {
   const history = useHistory();
   let inMemoryToken = {};
-  const token=localStorage.getItem("token");
-
-
+  const admin = localStorage.getItem("admin");
   async function login({ access_token, token_type, expires_at }, noRedirect) {
     inMemoryToken = {
       token: access_token,
@@ -23,7 +21,12 @@ function App() {
     };
     localStorage.setItem("token", inMemoryToken.token);
     localStorage.setItem("isLogin", true);
-    getLoginUser(inMemoryToken.token);
+    const loggUser = await getLoginUser(inMemoryToken.token);
+    console.log(loggUser.admin);
+    if (loggUser.admin === 1) {
+      localStorage.setItem("admin", true);
+      console.log(admin);
+    }
     if (!noRedirect) {
       history.push("/");
     }
@@ -35,6 +38,7 @@ function App() {
     setTimeout(() => {}, 2000);
     console.log(user1);
     localStorage.setItem("user", JSON.stringify(user1));
+    return user1;
   }
 
   return (
@@ -48,7 +52,7 @@ function App() {
               component={UpdateProfile}
             ></PrivateRoute> */}
         <Route exact path="/">
-          <Homepage token={inMemoryToken} />
+          <Homepage token={inMemoryToken} admin={admin} />
         </Route>
         <Route path="/signup" component={Signup}></Route>
         <Route path="/login">
