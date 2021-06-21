@@ -19,7 +19,7 @@ function FormHome() {
   const roomsRef = useRef();
   const parkingRef = useRef();
   const user = JSON.parse(localStorage.getItem("user"));
-  console.log(user.id);
+  // console.log(user.id);
 
   const [loading, setLoading] = useState(false);
 
