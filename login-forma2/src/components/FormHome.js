@@ -3,7 +3,8 @@ import { Card, Form, Button, FormGroup, Row, Col } from "react-bootstrap";
 import { getUser } from "../api/userApi";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./FormHome.css";
-import { axios } from "axios";
+//import { axios } from "axios";
+import axios from 'axios';
 function FormHome() {
   const token = localStorage.getItem("token");
   const imageRef = useRef();
@@ -36,6 +37,7 @@ function FormHome() {
   async function handleSubmit(e) {
     e.preventDefault();
     await axios
+   
       .post(
         "http://127.0.0.1:8000/api/auth/home",
         {
@@ -49,7 +51,7 @@ function FormHome() {
           rooms_number: roomsRef.current.value,
           parking_spaces: parkingRef.current.value,
           image: imageRef.current.value,
-          user_id: userId.id,
+          user_id:10,
         },
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -128,8 +130,8 @@ function FormHome() {
                 ></Form.Control>
               </FormGroup>
               <FormGroup as={Col}>
-                <Form.Control ref={categoryRef} as="select" required>
-                  <option defaultValue disabled hidden></option>
+                <Form.Control ref={categoryRef} as="select" defaultValue="" required>
+                  <option value=""  >--Choose Category--</option>
                   <option>Rent</option>
                   <option>Sell</option>
                 </Form.Control>

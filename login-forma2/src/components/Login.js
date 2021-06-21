@@ -31,6 +31,8 @@ function Login(props) {
       });
   }
 
+  document.body.style.background = "#fff";
+
   return (
     <>
       <Card>
