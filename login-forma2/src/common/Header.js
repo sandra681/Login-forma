@@ -22,6 +22,7 @@ const Header = () => {
         localStorage.removeItem("isLogin");
         localStorage.removeItem("token");
         localStorage.removeItem("user");
+        localStorage.removeItem("admin");
         setIsLogin(false);
         history.push("/login");
       })

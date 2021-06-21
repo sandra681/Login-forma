@@ -9,7 +9,8 @@ import SearchBar from "../SearchBar";
 import "./Homepage.css";
 
 const Homepage = (props) => {
-  const { token, adminUser } = props;
+  const { token, admin } = props;
+  console.log(admin);
   const [loadMore, setLoadMore] = useState(false);
   const [homes, setHomes] = useState([]); // Za All Category
   const [likedHomes, setLikedHomes] = useState([]);
@@ -125,7 +126,7 @@ const Homepage = (props) => {
         <div className="search">
           <SearchBar input={input} onChange={updateInput}></SearchBar>
         </div>
-        {adminUser && (
+        {admin && (
           <button
             type="button"
             className="btn btn-danger"
@@ -173,7 +174,7 @@ const Homepage = (props) => {
                     removeHome={removeHome}
                     addLikedHome={addLikedHome}
                     deleteHome={handleDeleteHome}
-                    adminUser={adminUser}
+                    admin={admin}
                     editHome={editHome}
                     home1={home1}
                     {...home1}
@@ -193,7 +194,7 @@ const Homepage = (props) => {
           </section>
 
           <div>
-            {!adminUser && (
+            {!admin && (
               <LikedHomes
                 token={token}
                 removeAllLikedHomes={removeAllLikedHomes}
