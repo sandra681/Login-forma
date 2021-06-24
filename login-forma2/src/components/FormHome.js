@@ -3,6 +3,7 @@ import { Card, Form, Button, FormGroup, Row, Col } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./FormHome.css";
 import axios from "axios";
+import { Link } from "react-router-dom";
 function FormHome() {
   const token = localStorage.getItem("token");
   const imageRef = useRef();
@@ -16,10 +17,8 @@ function FormHome() {
   const roomsRef = useRef();
   const parkingRef = useRef();
   const user = JSON.parse(localStorage.getItem("user"));
-  console.log(user.id);
 
   const [loading, setLoading] = useState(false);
-
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -57,9 +56,10 @@ function FormHome() {
         console.log(error.message);
       });
   }
-  
-  document.body.style.background='-webkit-linear-gradient(left, #0072ff, #00c6ff)'
-  
+
+  document.body.style.background =
+    "-webkit-linear-gradient(left, #0072ff, #00c6ff)";
+
   return (
     <>
       <Card className="container forma ">
@@ -176,11 +176,10 @@ function FormHome() {
             </FormGroup>
             <br />
 
-
             <div className="dugme">
-              <Button disabled={loading} type="submit">
-                Add
-              </Button>
+                <Button disabled={loading} type="submit">
+                  Add
+                </Button>
             </div>
           </Form>
         </Card.Body>
