@@ -5,8 +5,6 @@ import {
   LOGIN_FAIL,
   LOGOUT,
   SET_MESSAGE,
-  GET_USER,
-  GET_USER_FAIL,
 } from "./types";
 import authService from "../services/auth.service";
 
@@ -49,7 +47,7 @@ export const register = (name, email, password) => (dispatch) => {
 export const login = (email, password) => (dispatch) => {
   return authService.login(email, password).then(
     (response) => {
-      dispatch({ type: LOGIN_SUCCESS, payload: { user: response } });
+      dispatch({ type: LOGIN_SUCCESS, payload: { token: response } });
       return Promise.resolve();
     },
     (error) => {
@@ -66,19 +64,4 @@ export const logout = () => (dispatch) => {
   dispatch({
     type: LOGOUT,
   });
-};
-export const getUser = () => (dispatch) => {
-  authService.getUser().then(
-    (response) => {
-      console.log(response.data);
-      dispatch({ type: GET_USER, payload: { user: response.data } });
-      return Promise.resolve();
-    },
-    (error) => {
-      const message = "Error";
-      dispatch({ type: GET_USER_FAIL });
-      dispatch({ type: SET_MESSAGE, payload: message });
-      return Promise.reject();
-    }
-  );
 };

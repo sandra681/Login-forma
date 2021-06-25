@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 const Header = (props) => {
   //Treba mi korisnik za email-adresu da bi se prikazala
   const { isLoggedIn } = useSelector((state) => state.authReducer);
+  const user = useSelector((state) => state.userReducer);
   const activeStyle = { color: "#F15B2A" };
   const [menu, setMenu] = useState(false);
 
@@ -83,7 +84,8 @@ const Header = (props) => {
                 loading="lazy"
               />
               {/* <p>{user === null ? "email" : user["email"]}</p> */}
-              <p>email</p> {/**Umesto email treba da stoji user.email */}
+              <p>{user ? user.user.email : "email"}</p>{" "}
+              {/**Umesto email treba da stoji user.email */}
             </Link>
             <ul
               className={"dropdown-menu dropdown-menu-end " + show}

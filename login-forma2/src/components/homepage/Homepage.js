@@ -9,7 +9,9 @@ import SearchBar from "../SearchBar";
 import "./Homepage.css";
 
 const Homepage = (props) => {
-  const token = localStorage.getItem("token");
+  const token = JSON.parse(localStorage.getItem("token"));
+  const user = useSelector((state) => state.userReducer);
+  console.log(user);
   const admin = false;
   const [loadMore, setLoadMore] = useState(false);
   const [homes, setHomes] = useState([]); // Za All Category

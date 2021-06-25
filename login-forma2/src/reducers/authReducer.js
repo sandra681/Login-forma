@@ -8,7 +8,7 @@ import {
   GET_USER_FAIL,
 } from "../actions/types";
 
-const token = localStorage.getItem("token");
+const token = JSON.parse(localStorage.getItem("token"));
 
 const initalState = token
   ? { isLoggedIn: true, token, user: null }
@@ -28,7 +28,7 @@ export default function authReducer(state = initalState, action) {
     case LOGOUT:
       return { ...state, isLogin: false, token: null };
     case GET_USER:
-      return { ...state, isLogin: true, token, user: payload.user };
+      return { ...state, isLogin: true, token, user: payload.token };
     case GET_USER_FAIL:
       return { ...state, isLogin: false, token: null };
     default:

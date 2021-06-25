@@ -1,11 +1,12 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { Form, Button, Card, Alert } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
 
-import { login, getUser } from "../actions/auth";
+import { login } from "../actions/auth";
+import { getLoggedUser } from "../actions/user";
 
 function Login(props) {
   const emailRef = useRef();
@@ -31,6 +32,19 @@ function Login(props) {
         setLoading(false);
       });
   }
+  function handleUser() {
+    const token = JSON.parse(localStorage.getItem("token"));
+
+    if (token) {
+      dispatch(getLoggedUser())
+        .then(() => console.log("User is set"))
+        .catch((error) => console.log(error));
+    }
+  }
+  useEffect(() => {
+    handleUser();
+    console.log("Hello ");
+  }, [isLoggedIn]);
   if (isLoggedIn) {
     return <Redirect exact to="/" />;
   }

@@ -5,7 +5,7 @@ import "./FormHome.css";
 import axios from "axios";
 
 function FormHome() {
-  const token = localStorage.getItem("token");
+  const token = JSON.parse(localStorage.getItem("token"));
   const imageRef = useRef();
   const nameRef = useRef();
   const streetRef = useRef();
