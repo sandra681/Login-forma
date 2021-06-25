@@ -34,16 +34,13 @@ function Login(props) {
   }
   function handleUser() {
     const token = JSON.parse(localStorage.getItem("token"));
-
+    
     if (token) {
-      dispatch(getLoggedUser())
-        .then(() => console.log("User is set"))
-        .catch((error) => console.log(error));
+      dispatch(getLoggedUser());
     }
   }
   useEffect(() => {
     handleUser();
-    console.log("Hello ");
   }, [isLoggedIn]);
   if (isLoggedIn) {
     return <Redirect exact to="/" />;

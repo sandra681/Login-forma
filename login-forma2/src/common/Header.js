@@ -84,7 +84,7 @@ const Header = (props) => {
                 loading="lazy"
               />
               {/* <p>{user === null ? "email" : user["email"]}</p> */}
-              <p>{user ? user.user.email : "email"}</p>{" "}
+              <p>{user.user !== null ? user.user.email : "email"}</p>{" "}
               {/**Umesto email treba da stoji user.email */}
             </Link>
             <ul
