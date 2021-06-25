@@ -1,34 +1,19 @@
-import axios from "axios";
 import React, { useState, useEffect } from "react";
-import { NavLink, Link, useHistory } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
-const Header = () => {
-  const token = localStorage.getItem("token");
-  const [isLogin, setIsLogin] = useState(localStorage.getItem("isLogin"));
-  const history = useHistory();
+const Header = (props) => {
+  //Treba mi korisnik za email-adresu da bi se prikazala
+  const { isLoggedIn } = useSelector((state) => state.authReducer);
   const activeStyle = { color: "#F15B2A" };
   const [menu, setMenu] = useState(false);
-  const user = JSON.parse(localStorage.getItem("user"));
+
   const toggleMenu = () => {
     setMenu(!menu);
   };
+  //Funkcija za logout
   async function toggleLogoutMenu() {
-    await axios
-      .get("http://127.0.0.1:8000/api/auth/logout", {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then((response) => {
-        toggleMenu();
-        localStorage.removeItem("isLogin");
-        localStorage.removeItem("token");
-        localStorage.removeItem("user");
-        localStorage.removeItem("admin");
-        setIsLogin(false);
-        history.push("/login");
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    props.logout();
   }
 
   const show = menu ? "show" : ""; //For toggle menu oke oke
@@ -37,8 +22,7 @@ const Header = () => {
     setMenu(false);
   }, []);
 
-  // useEffect(() => {}, [isLogin]);
-  if (isLogin) {
+  if (isLoggedIn) {
     return (
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
         <div className="container-fluid">
@@ -98,7 +82,8 @@ const Header = () => {
                 alt=""
                 loading="lazy"
               />
-              <p>{user === null ? "email" : user["email"]}</p>
+              {/* <p>{user === null ? "email" : user["email"]}</p> */}
+              <p>email</p> {/**Umesto email treba da stoji user.email */}
             </Link>
             <ul
               className={"dropdown-menu dropdown-menu-end " + show}

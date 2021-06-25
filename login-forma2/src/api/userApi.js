@@ -1,9 +1,10 @@
 import { handleError, handleResponse } from "./apiUtils";
+import { useSelector } from "react-redux";
 
 const baseUrl = "http://127.0.0.1:8000/api/auth/user";
-// csonst token = localStorage.getItem("token");
 
 export function getUser(token) {
+
   if (!token) {
     return null;
   }
@@ -13,4 +14,3 @@ export function getUser(token) {
     .then(handleResponse)
     .catch(handleError);
 }
-

@@ -3,7 +3,7 @@ import { Card, Form, Button, FormGroup, Row, Col } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./FormHome.css";
 import axios from "axios";
-import { Link } from "react-router-dom";
+
 function FormHome() {
   const token = localStorage.getItem("token");
   const imageRef = useRef();
@@ -16,7 +16,7 @@ function FormHome() {
   const squareFootageRef = useRef();
   const roomsRef = useRef();
   const parkingRef = useRef();
-  const user = JSON.parse(localStorage.getItem("user"));
+  // const user = JSON.parse(localStorage.getItem("user")); OVDE SE MORA VRATITI KORISNIK
 
   const [loading, setLoading] = useState(false);
 
@@ -36,7 +36,7 @@ function FormHome() {
           rooms_number: roomsRef.current.value,
           parking_spaces: parkingRef.current.value,
           image: imageRef.current.value,
-          user_id: user.id,
+          // user_id: user.id,
         },
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -177,9 +177,9 @@ function FormHome() {
             <br />
 
             <div className="dugme">
-                <Button disabled={loading} type="submit">
-                  Add
-                </Button>
+              <Button disabled={loading} type="submit">
+                Add
+              </Button>
             </div>
           </Form>
         </Card.Body>

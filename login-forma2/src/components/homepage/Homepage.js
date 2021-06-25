@@ -3,14 +3,14 @@ import Categories from "../../common/Categories";
 import Home from "../../homes/Home";
 import { getHomes, deleteHome } from "../../api/residentialBuildingsApi";
 import LikedHomes from "../../homes/LikedHome";
-import { useHistory } from "react-router";
+import { useSelector, useDispatch } from "react-redux";
 // import SearchBox from "../common/SearchBox";
 import SearchBar from "../SearchBar";
 import "./Homepage.css";
 
 const Homepage = (props) => {
-  const { token, admin } = props;
-  console.log(admin);
+  const token = localStorage.getItem("token");
+  const admin = false;
   const [loadMore, setLoadMore] = useState(false);
   const [homes, setHomes] = useState([]); // Za All Category
   const [likedHomes, setLikedHomes] = useState([]);
@@ -21,10 +21,9 @@ const Homepage = (props) => {
   const [order, setOrder] = useState("asc");
   const [input, setInput] = useState("");
   const [remeberFiletrHomes, setRemeberFilterHomes] = useState(); //ovim pamtimo filtrirane za Search Adress
-  const history = useHistory();
 
   function editHome() {
-    history.push("/addpage");
+    props.history.push("/addpage"); // i ovde proveriti oko history da li moze ovako ili je potrebno da uvezemo history
   }
 
   useEffect(() => {
