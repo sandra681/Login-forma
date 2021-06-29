@@ -304,6 +304,7 @@ main {
   display: flex;
   justify-content: center;
 }
+
 .filter-btn {
   background: transparent;
   border-color: transparent;
@@ -317,9 +318,9 @@ main {
   transition: var(--transition);
   border-radius: var(--radius);
 }
-.filter-btn:hover {
-  background: var(--clr-gold);
-  color: var(--clr-white);
+.selected {
+  color: white;
+  background: var(--clr-primary-3);
 }
 
 .apartment-contact {

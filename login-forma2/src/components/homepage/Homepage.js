@@ -3,15 +3,12 @@ import Categories from "../../common/Categories";
 import Home from "../../homes/Home";
 import { getHomes, deleteHome } from "../../api/residentialBuildingsApi";
 import LikedHomes from "../../homes/LikedHome";
-import { useSelector, useDispatch } from "react-redux";
 // import SearchBox from "../common/SearchBox";
 import SearchBar from "../SearchBar";
 import "./Homepage.css";
 
 const Homepage = (props) => {
   const token = JSON.parse(localStorage.getItem("token"));
-  const user = useSelector((state) => state.userReducer);
-  console.log(user);
   const admin = false;
   const [loadMore, setLoadMore] = useState(false);
   const [homes, setHomes] = useState([]); // Za All Category
@@ -27,7 +24,6 @@ const Homepage = (props) => {
   function editHome() {
     props.history.push("/addpage"); // i ovde proveriti oko history da li moze ovako ili je potrebno da uvezemo history
   }
-
   useEffect(() => {
     if (loadMore === true || num === 10) {
       getHomes(sort, order, num).then(
@@ -44,6 +40,7 @@ const Homepage = (props) => {
       );
     }
   }, [loadMore, sort, order]);
+
   async function updateInput(input) {
     if (input === "") {
       setFilterHomes(remeberFiletrHomes);

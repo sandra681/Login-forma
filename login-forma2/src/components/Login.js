@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState } from "react";
 import { Form, Button, Card, Alert } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
@@ -15,7 +15,6 @@ function Login(props) {
   const [loading, setLoading] = useState(false);
 
   const { isLoggedIn } = useSelector((state) => state.authReducer);
-  const { message } = useSelector((state) => state.messageReducer);
 
   const dispatch = useDispatch();
 
@@ -24,7 +23,8 @@ function Login(props) {
     setLoading(true);
 
     dispatch(login(emailRef.current.value, passwordRef.current.value))
-      .then(() => {
+      .then((response) => {
+        handleUser();
         props.history.push("/");
         window.location.reload();
       })
@@ -33,15 +33,11 @@ function Login(props) {
       });
   }
   function handleUser() {
-    const token = JSON.parse(localStorage.getItem("token"));
-    
-    if (token) {
-      dispatch(getLoggedUser());
-    }
+    dispatch(getLoggedUser())
+      .then(() => {})
+      .catch(() => console.log("Greska"));
   }
-  useEffect(() => {
-    handleUser();
-  }, [isLoggedIn]);
+
   if (isLoggedIn) {
     return <Redirect exact to="/" />;
   }
