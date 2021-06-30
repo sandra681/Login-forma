@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from "react";
 import Categories from "../../common/Categories";
 import Home from "../../homes/Home";
-import { getHomes, deleteHome } from "../../api/residentialBuildingsApi";
+import {
+  deleteHome,
+  getCategories,
+  getFilteredHomes,
+} from "../../api/residentialBuildingsApi";
 import LikedHomes from "../../homes/LikedHome";
 // import SearchBox from "../common/SearchBox";
 import SearchBar from "../SearchBar";
@@ -10,36 +14,37 @@ import "./Homepage.css";
 const Homepage = (props) => {
   const token = JSON.parse(localStorage.getItem("token"));
   const admin = false;
-  const [loadMore, setLoadMore] = useState(false);
-  const [homes, setHomes] = useState([]); // Za All Category
+  const [categories, setCategories] = useState([]); //Za sve kategorije to uzimamo dmah na pocetku
+
   const [likedHomes, setLikedHomes] = useState([]);
-  const [categories, setCategories] = useState([]);
+
   const [filterHomes, setFilterHomes] = useState([]); //Ove za sve
-  const [num, setNum] = useState(10);
+
+  const [num, setNum] = useState(10); //broj da se prikaze
+
+  const [filter, setFilter] = useState("");
   const [sort, setSort] = useState("name");
   const [order, setOrder] = useState("asc");
   const [input, setInput] = useState("");
+
   const [remeberFiletrHomes, setRemeberFilterHomes] = useState(); //ovim pamtimo filtrirane za Search Adress
+
+  useEffect(() => {
+    getCategories().then((result) => {
+      const niz = result.map((one) => one.category);
+      setCategories(["All", ...niz]);
+    });
+  }, []);
+
+  useEffect(() => {
+    getFilteredHomes(filter, sort, order, num).then((result) => {
+      setFilterHomes(result);
+    });
+  }, [sort, order, filter, num]);
 
   function editHome() {
     props.history.push("/addpage"); // i ovde proveriti oko history da li moze ovako ili je potrebno da uvezemo history
   }
-  useEffect(() => {
-    if (loadMore === true || num === 10) {
-      getHomes(sort, order, num).then(
-        (result) => {
-          setFilterHomes(result);
-          setRemeberFilterHomes(result);
-          setHomes(result);
-          setLoadMore(false);
-          setCategories(["all", ...new Set(result.map((one) => one.category))]);
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
-    }
-  }, [loadMore, sort, order]);
 
   async function updateInput(input) {
     if (input === "") {
@@ -82,18 +87,17 @@ const Homepage = (props) => {
   };
 
   function categoryFilter(category) {
-    if (category === "all") {
-      setFilterHomes(homes);
+    if (category === "All") {
+      setFilter("");
       return;
     }
-    setFilterHomes(homes.filter((home) => home.category === category));
+    setFilter(category);
   }
 
   function handleDeleteHome(id) {
     deleteHome(id).then((response) => {
       if (response.status === 204) {
         setNum(10);
-        setLoadMore(true);
         setTimeout(() => {}, 2000);
         return;
       } else {
@@ -183,7 +187,6 @@ const Homepage = (props) => {
             <button
               className="loadMore"
               onClick={() => {
-                setLoadMore(true);
                 setNum(num + 10);
               }}
             >
