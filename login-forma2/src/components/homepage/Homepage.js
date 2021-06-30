@@ -10,11 +10,12 @@ import LikedHomes from "../../homes/LikedHome";
 // import SearchBox from "../common/SearchBox";
 import SearchBar from "../SearchBar";
 import "./Homepage.css";
+import { useSelector } from "react-redux";
 
 const Homepage = (props) => {
 
   const token = JSON.parse(localStorage.getItem("token"));
-  const admin = false;
+  const isAdmin = useSelector(state=>state.userReducer);
   const [categories, setCategories] = useState([]); //Za sve kategorije to uzimamo dmah na pocetku
 
 
@@ -46,7 +47,7 @@ const Homepage = (props) => {
 
   function editHome() {
 
-    // history.push("/form-home");
+     props.history.push("/form-home");
   }
   
 /*   function getData() {
@@ -182,7 +183,7 @@ const Homepage = (props) => {
       </div>
 
       <div className="btn-add-home">
-      {admin && (
+      {isAdmin && (
           <button
             type="button"
             className=" btn btn-danger"
@@ -204,7 +205,7 @@ const Homepage = (props) => {
                     removeHome={removeHome}
                     addLikedHome={addLikedHome}
                     deleteHome={handleDeleteHome}
-                    admin={admin}
+                    admin={isAdmin}
                     editHome={editHome}
                     home1={home1}
                     {...home1}
@@ -223,7 +224,7 @@ const Homepage = (props) => {
           </section>
 
           <div>
-            {!admin && (
+            {!isAdmin && (
               <LikedHomes
                 token={token}
                 removeAllLikedHomes={removeAllLikedHomes}
