@@ -318,10 +318,7 @@ main {
   transition: var(--transition);
   border-radius: var(--radius);
 }
-<<<<<<< HEAD
 
-=======
->>>>>>> origin/filterBranch
 .selected {
   color: white;
   background: var(--clr-primary-3);

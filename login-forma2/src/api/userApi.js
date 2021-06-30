@@ -10,23 +10,7 @@ export function getUser(token) {
   if (!token) {
     return null;
   }
-<<<<<<< HEAD
 
-  return axios.get(baseUrl, {
-    headers: { Authorization: `Bearer ${token}` },
-  }) 
-   .then(handleResponse)
-    .catch(handleError);
-
-/*   return fetch(baseUrl, {
-    headers: { Authorization: `Bearer ${token}` },
-  }) 
-   .then(handleResponse)
-    .catch(handleError);
-} */
-
-}
-=======
   return axios
     .get(baseUrl, {
       headers: { Authorization: `Bearer ${token}` },
@@ -34,4 +18,4 @@ export function getUser(token) {
     .then(handleResponse)
     .catch(handleError);
 }
->>>>>>> origin/filterBranch
+

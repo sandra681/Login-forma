@@ -2,15 +2,13 @@ import React, { useRef, useState } from "react";
 import { Card, Form, Button, FormGroup, Row, Col } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./FormHome.css";
-<<<<<<< HEAD
+
 import {useHistory} from 'react-router'
 import {Link} from 'react-router-dom'
 
 //import { axios } from "axios";
 import axios from 'axios';
-=======
-import axios from "axios";
->>>>>>> origin/filterBranch
+
 
 function FormHome() {
   const token = JSON.parse(localStorage.getItem("token"));
@@ -24,25 +22,18 @@ function FormHome() {
   const squareFootageRef = useRef();
   const roomsRef = useRef();
   const parkingRef = useRef();
-<<<<<<< HEAD
-  const user = JSON.parse(localStorage.getItem("user"));
-  const history=useHistory()
-  // console.log(user.id);
-=======
-  // const user = JSON.parse(localStorage.getItem("user")); OVDE SE MORA VRATITI KORISNIK
->>>>>>> origin/filterBranch
+
 
   const [loading, setLoading] = useState(false);
   const [file, setFile]=useState(null)
 
-<<<<<<< HEAD
+
   function fileSelectedHandler(e){
     setFile(e.target.files[0])
     
   }
 
-=======
->>>>>>> origin/filterBranch
+
   async function handleSubmit(e) {
     e.preventDefault();
 
@@ -63,15 +54,10 @@ function FormHome() {
           square_footage: squareFootageRef.current.value,
           rooms_number: roomsRef.current.value,
           parking_spaces: parkingRef.current.value,
-<<<<<<< HEAD
+
           //image: imageRef.current.value,
 
-          user_id: user.id,
-
-=======
-          image: imageRef.current.value,
           // user_id: user.id,
->>>>>>> origin/filterBranch
         },
         files,
         {
@@ -94,16 +80,7 @@ function FormHome() {
         console.log(error.message);
       });
   }
-<<<<<<< HEAD
-  
- 
-  
-=======
 
-  document.body.style.background =
-    "-webkit-linear-gradient(left, #0072ff, #00c6ff)";
-
->>>>>>> origin/filterBranch
   return (
     <>
     

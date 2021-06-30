@@ -46,7 +46,7 @@ const Homepage = (props) => {
 
   function editHome() {
 
-    history.push("/form-home");
+    // history.push("/form-home");
   }
   
 /*   function getData() {
@@ -57,7 +57,7 @@ const Homepage = (props) => {
         setHomes(result.data);
         setCategories(["all", ...new Set(result.data.map((one) => one.category))]);
       },
-      (error) => {
+      (error) => 
         console.log(error);
       }
     );
