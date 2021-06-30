@@ -31,14 +31,14 @@ const Homepage = (props) => {
 
   useEffect(() => {
     getCategories().then((result) => {
-      const niz = result.map((one) => one.category);
+      const niz = result.data.map((one) => one.category);
       setCategories(["All", ...niz]);
     });
   }, []);
 
   useEffect(() => {
     getFilteredHomes(filter, sort, order, num).then((result) => {
-      setFilterHomes(result);
+      setFilterHomes(result.data);
     });
   }, [sort, order, filter, num]);
 
