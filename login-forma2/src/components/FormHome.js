@@ -25,10 +25,19 @@ function FormHome() {
   // console.log(user.id);
 
   const [loading, setLoading] = useState(false);
+  const [file, setFile]=useState(null)
 
+  function fileSelectedHandler(e){
+    setFile(e.target.files[0])
+    
+  }
 
   async function handleSubmit(e) {
     e.preventDefault();
+
+    const files=new FormData()
+    files.append("file", file)
+   
     await axios
    
       .post(
@@ -43,17 +52,19 @@ function FormHome() {
           square_footage: squareFootageRef.current.value,
           rooms_number: roomsRef.current.value,
           parking_spaces: parkingRef.current.value,
-          image: imageRef.current.value,
+          //image: imageRef.current.value,
 
           user_id: user.id,
 
         },
+        files,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
       )
       .then((response) => {
         setLoading(false);
+        setFile({file:''})
         if (response.data.status === 200) {
           console.log("OK");
           
@@ -68,15 +79,20 @@ function FormHome() {
       });
   }
   
-  document.body.style.background='-webkit-linear-gradient(left, #0072ff, #00c6ff)'
+ 
   
   return (
     <>
-      <Card className="container forma ">
+    
+    <div className="wrap">
+      
+      <div className="container forma" >
+        
+        
         <div className="img-home">
           <img
             src="https://t4.ftcdn.net/jpg/01/35/38/75/360_F_135387578_vKyGn4NM9E2ipUS9j1GRCDLs40CwRNyC.jpg"
-            alt="profile"
+            
           />
         </div>
         <Card.Body>
@@ -186,7 +202,7 @@ function FormHome() {
             <br />
             <FormGroup>
               <Form.Label>Image:</Form.Label>
-              <Form.File ref={imageRef}></Form.File>
+              <Form.Control type="file"  onChange={fileSelectedHandler} required></Form.Control>
             </FormGroup>
             <br />
 
@@ -200,7 +216,11 @@ function FormHome() {
 
           </Form>
         </Card.Body>
-      </Card>
+        
+      </div>
+     
+      </div>
+
     </>
   );
 

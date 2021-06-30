@@ -11,7 +11,6 @@ import "./Homepage.css";
 const Homepage = (props) => {
   const { token, admin } = props;
   console.log(admin);
-  const [loadMore, setLoadMore] = useState(false);
   const [homes, setHomes] = useState([]); // Za All Category
   const [likedHomes, setLikedHomes] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -24,25 +23,27 @@ const Homepage = (props) => {
   const history = useHistory();
 
   function editHome() {
-    history.push("/addpage");
+    history.push("/form-home");
+  }
+  
+  function getData() {
+    getHomes(sort, order, num).then(
+      (result) => {
+        setFilterHomes(result.data);
+        setRemeberFilterHomes(result.data);
+        setHomes(result.data);
+        setCategories(["all", ...new Set(result.data.map((one) => one.category))]);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   }
 
   useEffect(() => {
-    if (loadMore === true || num === 10) {
-      getHomes(sort, order, num).then(
-        (result) => {
-          setFilterHomes(result);
-          setRemeberFilterHomes(result);
-          setHomes(result);
-          setLoadMore(false);
-          setCategories(["all", ...new Set(result.map((one) => one.category))]);
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
-    }
-  }, [loadMore, sort, order]);
+    getData();
+  }, [sort, order, num]);
+
   async function updateInput(input) {
     if (input === "") {
       setFilterHomes(remeberFiletrHomes);
@@ -57,6 +58,7 @@ const Homepage = (props) => {
   }
 
   function sortByInput(e) {
+    debugger
     const value = e.target.value.split("_")[0];
     const order = e.target.value.split("_")[1];
     setSort(value);
@@ -95,7 +97,6 @@ const Homepage = (props) => {
     deleteHome(id).then((response) => {
       if (response.status === 204) {
         setNum(10);
-        setLoadMore(true);
         setTimeout(() => {}, 2000);
         return;
       } else {
@@ -106,7 +107,7 @@ const Homepage = (props) => {
     });
   }
 
-  document.body.style.background = "#fff";
+  
   return (
     <div className="homepage">
       <header
@@ -126,16 +127,7 @@ const Homepage = (props) => {
         <div className="search">
           <SearchBar input={input} onChange={updateInput}></SearchBar>
         </div>
-        {admin && (
-          <button
-            type="button"
-            className="btn btn-danger"
-            style={{ marginLeft: "90vw" }}
-            onClick={() => editHome()}
-          >
-            Add Home
-          </button>
-        )}
+        
       </header>
 
       <div className="filter-container">
@@ -163,6 +155,19 @@ const Homepage = (props) => {
           </select>
         </div>
       </div>
+
+      <div className="btn-add-home">
+      {admin && (
+          <button
+            type="button"
+            className=" btn btn-danger"
+           
+            onClick={() => editHome()}
+          >
+            Add Home
+          </button>
+        )}
+      </div>
       <div className="box">
         <main>
           <section className="menu section">
@@ -185,7 +190,6 @@ const Homepage = (props) => {
             <button
               className="loadMore"
               onClick={() => {
-                setLoadMore(true);
                 setNum(num + 10);
               }}
             >

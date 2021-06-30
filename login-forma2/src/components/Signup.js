@@ -48,7 +48,7 @@ function Signup() {
         }
       });
   }
-  document.body.style.background = "#fff";
+ 
   return (
     <>
       <Card>
