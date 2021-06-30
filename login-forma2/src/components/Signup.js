@@ -1,52 +1,40 @@
-import axios from "axios";
 import React, { useRef, useState } from "react";
-import { Form, Button, Card, Alert } from "react-bootstrap";
-import { Link, useHistory } from "react-router-dom";
+import { Form, Button, Card } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
-function Signup() {
+import { useDispatch, useSelector } from "react-redux";
+
+import { register } from "../actions/auth";
+
+function Signup(props) {
   const emailRef = useRef();
   const passwordRef = useRef();
   const passwordConfirmRef = useRef();
-  const [singupData, setSignupData] = useState({});
   const [loading, setLoading] = useState(false);
-  const history = useHistory();
-  const [error, setError] = useState("");
 
-  async function handleSubmit(e, key) {
+  const { message } = useSelector((state) => state.messageReducer);
+  const dispatch = useDispatch();
+  const [successful, setSuccessful] = useState(false);
+
+  function handleSubmit(e) {
     e.preventDefault();
+
     setLoading(true);
-    axios
-      .post(
-        "http://127.0.0.1:8000/api/auth/register",
-        {
-          name: "Korisnik",
-          email: emailRef.current.value,
-          password: passwordRef.current.value,
-        },
-        {
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-        }
+    setSuccessful(false);
+    dispatch(
+      register(
+        emailRef.current.value,
+        emailRef.current.value,
+        passwordRef.current.value
       )
-      .then((response) => {
-        setLoading(false);
-        console.log(response.status);
-        if (response.status === 201) {
-          setSignupData({
-            emailRef: "",
-            passwordRef: "",
-            passwordConfirmRef: "",
-          });
-          history.push("/");
-        } else {
-          console.log("failed");
-          setTimeout(() => {
-            setError("failed");
-          }, 2000);
-        }
-      });
+    )
+      .then(() => {
+        console.log(message);
+        props.history.push("/login");
+        window.location.reload();
+        setSuccessful(true);
+      })
+      .catch(() => setSuccessful(false));
   }
  
   return (
@@ -54,13 +42,7 @@ function Signup() {
       <Card>
         <Card.Body>
           <h2 className="text-center mb-4">Sign Up</h2>
-
-          {/* {error && <Alert variant="danger">{error}</Alert>} */}
           <Form onSubmit={handleSubmit}>
-            {/* <input type="hidden" name="_csrf" value={cfrToken} /> */}
-
-
-            
             <Form.Group id="email">
               <Form.Label>Email</Form.Label>
               <Form.Control type="email" ref={emailRef} required />

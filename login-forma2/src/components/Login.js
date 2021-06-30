@@ -1,33 +1,45 @@
 import React, { useRef, useState } from "react";
 import { Form, Button, Card, Alert } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import axios from "axios";
 
-//use history koristimo onda da kad se ulogujemo da nam se otvori  druga strana
+import { useDispatch, useSelector } from "react-redux";
+import { Redirect } from "react-router-dom";
+
+import { login } from "../actions/auth";
+import { getLoggedUser } from "../actions/user";
 
 function Login(props) {
-  const { login } = props;
   const emailRef = useRef();
   const passwordRef = useRef();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  async function handleSubmit(e) {
+
+  const { isLoggedIn } = useSelector((state) => state.authReducer);
+
+  const dispatch = useDispatch();
+
+  function handleSubmit(e) {
     e.preventDefault();
-    await axios
-      .post("http://127.0.0.1:8000/api/auth/login", {
-        email: emailRef.current.value,
-        password: passwordRef.current.value,
-      })
+    setLoading(true);
+
+    dispatch(login(emailRef.current.value, passwordRef.current.value))
       .then((response) => {
-        setLoading(false);
-        const jwt_token = response.data;
-        login(jwt_token);
-        console.log(jwt_token);
+        handleUser();
+        props.history.push("/");
+        window.location.reload();
       })
-      .catch((error) => {
-        setError(error);
-        console.log(error);
+      .catch(() => {
+        setLoading(false);
       });
+  }
+  function handleUser() {
+    dispatch(getLoggedUser())
+      .then(() => {})
+      .catch(() => console.log("Greska"));
+  }
+
+  if (isLoggedIn) {
+    return <Redirect exact to="/" />;
   }
 
   
@@ -42,11 +54,21 @@ function Login(props) {
           <Form onSubmit={handleSubmit}>
             <Form.Group id="email">
               <Form.Label>Email</Form.Label>
-              <Form.Control type="email" ref={emailRef} required />
+              <Form.Control
+                type="email"
+                ref={emailRef}
+                value="test@test.com"
+                required
+              />
             </Form.Group>
             <Form.Group id="password">
               <Form.Label>Password</Form.Label>
-              <Form.Control type="password" ref={passwordRef} required />
+              <Form.Control
+                type="password"
+                ref={passwordRef}
+                value="123456789"
+                required
+              />
             </Form.Group>
 
             <Button disabled={loading} className="w-100" type="submit">

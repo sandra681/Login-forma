@@ -1,14 +1,16 @@
 import axios from "axios";
 import { handleError, handleResponse } from "./apiUtils";
+import { useSelector } from "react-redux";
+import axios from "axios";
 
 
 const baseUrl = "http://127.0.0.1:8000/api/auth/user";
-// csonst token = localStorage.getItem("token");
 
 export function getUser(token) {
   if (!token) {
     return null;
   }
+<<<<<<< HEAD
 
   return axios.get(baseUrl, {
     headers: { Authorization: `Bearer ${token}` },
@@ -24,3 +26,12 @@ export function getUser(token) {
 } */
 
 }
+=======
+  return axios
+    .get(baseUrl, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+    .then(handleResponse)
+    .catch(handleError);
+}
+>>>>>>> origin/filterBranch
