@@ -2,7 +2,13 @@ import React, { useRef, useState } from "react";
 import { Card, Form, Button, FormGroup, Row, Col } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./FormHome.css";
-import axios from "axios";
+
+import {useHistory} from 'react-router'
+import {Link} from 'react-router-dom'
+
+//import { axios } from "axios";
+import axios from 'axios';
+
 
 function FormHome() {
   const token = JSON.parse(localStorage.getItem("token"));
@@ -16,13 +22,26 @@ function FormHome() {
   const squareFootageRef = useRef();
   const roomsRef = useRef();
   const parkingRef = useRef();
-  // const user = JSON.parse(localStorage.getItem("user")); OVDE SE MORA VRATITI KORISNIK
+
 
   const [loading, setLoading] = useState(false);
+  const [file, setFile]=useState(null)
+
+
+  function fileSelectedHandler(e){
+    setFile(e.target.files[0])
+    
+  }
+
 
   async function handleSubmit(e) {
     e.preventDefault();
+
+    const files=new FormData()
+    files.append("file", file, file.name)
+   
     await axios
+   
       .post(
         "http://127.0.0.1:8000/api/auth/home",
         {
@@ -35,17 +54,22 @@ function FormHome() {
           square_footage: squareFootageRef.current.value,
           rooms_number: roomsRef.current.value,
           parking_spaces: parkingRef.current.value,
-          image: imageRef.current.value,
+
+          //image: imageRef.current.value,
+
           // user_id: user.id,
         },
+        files,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
       )
       .then((response) => {
         setLoading(false);
+        setFile({file:''})
         if (response.data.status === 200) {
           console.log("OK");
+          
         }
         if (response.data.status === "failed") {
           setTimeout(() => {}, 2000);
@@ -57,21 +81,23 @@ function FormHome() {
       });
   }
 
-  document.body.style.background =
-    "-webkit-linear-gradient(left, #0072ff, #00c6ff)";
-
   return (
     <>
-      <Card className="container forma ">
+    
+    <div className="wrap">
+      
+      <div className="container forma" >
+        
+        
         <div className="img-home">
           <img
             src="https://t4.ftcdn.net/jpg/01/35/38/75/360_F_135387578_vKyGn4NM9E2ipUS9j1GRCDLs40CwRNyC.jpg"
-            alt="profile"
+            
           />
         </div>
         <Card.Body>
           <h2 className="text-center mb-4">Add New Home</h2>
-          <Form className="form1" onSubmit={handleSubmit}>
+          <Form className="form1" onSubmit={handleSubmit} >
             <FormGroup>
               {/*  <Form.Label >Name:</Form.Label> */}
               <Form.Control
@@ -92,6 +118,7 @@ function FormHome() {
                   placeholder="Street"
                 ></Form.Control>
               </FormGroup>
+              <br />
               <FormGroup as={Col}>
                 {/*  <Form.Label >City:</Form.Label> */}
                 <Form.Control
@@ -116,9 +143,10 @@ function FormHome() {
                   placeholder="Price"
                 ></Form.Control>
               </FormGroup>
+              <br />
               <FormGroup as={Col}>
-                <Form.Control ref={categoryRef} as="select" required>
-                  <option defaultValue disabled hidden></option>
+                <Form.Control ref={categoryRef} as="select" defaultValue="" required>
+                  <option value=""  >--Choose Category--</option>
                   <option>Rent</option>
                   <option>Sell</option>
                 </Form.Control>
@@ -137,6 +165,7 @@ function FormHome() {
                   placeholder="Square Footage"
                 ></Form.Control>
               </FormGroup>
+              <br />
               <FormGroup as={Col}>
                 <Form.Control
                   ref={roomsRef}
@@ -147,6 +176,7 @@ function FormHome() {
                   placeholder="Number of Rooms"
                 ></Form.Control>
               </FormGroup>
+              <br />
               <FormGroup as={Col}>
                 <Form.Control
                   ref={parkingRef}
@@ -172,20 +202,27 @@ function FormHome() {
             <br />
             <FormGroup>
               <Form.Label>Image:</Form.Label>
-              <Form.File ref={imageRef}></Form.File>
+              <Form.Control type="file" name="file" onChange={fileSelectedHandler} required></Form.Control>
             </FormGroup>
             <br />
 
             <div className="dugme">
-              <Button disabled={loading} type="submit">
-                Add
+              <Button disabled={loading} type="submit"  >
+               
+               Add
               </Button>
             </div>
+
           </Form>
         </Card.Body>
-      </Card>
+        
+      </div>
+     
+      </div>
+
     </>
   );
+
 }
 
 export default FormHome;

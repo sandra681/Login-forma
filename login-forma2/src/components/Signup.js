@@ -36,6 +36,7 @@ function Signup(props) {
       })
       .catch(() => setSuccessful(false));
   }
+ 
   return (
     <>
       <Card>

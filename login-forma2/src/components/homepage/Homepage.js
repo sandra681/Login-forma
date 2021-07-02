@@ -10,11 +10,14 @@ import LikedHomes from "../../homes/LikedHome";
 // import SearchBox from "../common/SearchBox";
 import SearchBar from "../SearchBar";
 import "./Homepage.css";
+import { useSelector } from "react-redux";
 
 const Homepage = (props) => {
+
   const token = JSON.parse(localStorage.getItem("token"));
-  const admin = false;
+  const isAdmin = useSelector(state=>state.userReducer);
   const [categories, setCategories] = useState([]); //Za sve kategorije to uzimamo dmah na pocetku
+
 
   const [likedHomes, setLikedHomes] = useState([]);
 
@@ -43,8 +46,29 @@ const Homepage = (props) => {
   }, [sort, order, filter, num]);
 
   function editHome() {
-    props.history.push("/addpage"); // i ovde proveriti oko history da li moze ovako ili je potrebno da uvezemo history
+
+     props.history.push("/form-home");
   }
+  
+/*   function getData() {
+    getHomes(sort, order, num).then(
+      (result) => {
+        setFilterHomes(result.data);
+        setRemeberFilterHomes(result.data);
+        setHomes(result.data);
+        setCategories(["all", ...new Set(result.data.map((one) => one.category))]);
+      },
+      (error) => 
+        console.log(error);
+      }
+    );
+  }
+
+  useEffect(() => {
+    getData();
+  }, [sort, order, num]);
+     */
+  
 
   async function updateInput(input) {
     if (input === "") {
@@ -60,6 +84,7 @@ const Homepage = (props) => {
   }
 
   function sortByInput(e) {
+    debugger
     const value = e.target.value.split("_")[0];
     const order = e.target.value.split("_")[1];
     setSort(value);
@@ -108,7 +133,7 @@ const Homepage = (props) => {
     });
   }
 
-  document.body.style.background = "#fff";
+  
   return (
     <div className="homepage">
       <header
@@ -128,16 +153,7 @@ const Homepage = (props) => {
         <div className="search">
           <SearchBar input={input} onChange={updateInput}></SearchBar>
         </div>
-        {admin && (
-          <button
-            type="button"
-            className="btn btn-danger"
-            style={{ marginLeft: "90vw" }}
-            onClick={() => editHome()}
-          >
-            Add Home
-          </button>
-        )}
+        
       </header>
 
       <div className="filter-container">
@@ -165,6 +181,19 @@ const Homepage = (props) => {
           </select>
         </div>
       </div>
+
+      <div className="btn-add-home">
+      {isAdmin && (
+          <button
+            type="button"
+            className=" btn btn-danger"
+           
+            onClick={() => editHome()}
+          >
+            Add Home
+          </button>
+        )}
+      </div>
       <div className="box">
         <main>
           <section className="menu section">
@@ -176,7 +205,7 @@ const Homepage = (props) => {
                     removeHome={removeHome}
                     addLikedHome={addLikedHome}
                     deleteHome={handleDeleteHome}
-                    admin={admin}
+                    admin={isAdmin}
                     editHome={editHome}
                     home1={home1}
                     {...home1}
@@ -195,7 +224,7 @@ const Homepage = (props) => {
           </section>
 
           <div>
-            {!admin && (
+            {!isAdmin && (
               <LikedHomes
                 token={token}
                 removeAllLikedHomes={removeAllLikedHomes}

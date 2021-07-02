@@ -318,6 +318,7 @@ main {
   transition: var(--transition);
   border-radius: var(--radius);
 }
+
 .selected {
   color: white;
   background: var(--clr-primary-3);
@@ -437,4 +438,8 @@ option:hover {
     margin: 0;
     max-width: 100%;
   }
+}
+.btn-add-home {
+  display: flex;
+  justify-content: center;
 }
