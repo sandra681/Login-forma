@@ -38,7 +38,7 @@ function FormHome() {
     e.preventDefault();
 
     const files=new FormData()
-    files.append("file", file)
+    files.append("file", file, file.name)
    
     await axios
    
@@ -202,7 +202,7 @@ function FormHome() {
             <br />
             <FormGroup>
               <Form.Label>Image:</Form.Label>
-              <Form.Control type="file"  onChange={fileSelectedHandler} required></Form.Control>
+              <Form.Control type="file" name="file" onChange={fileSelectedHandler} required></Form.Control>
             </FormGroup>
             <br />
 
