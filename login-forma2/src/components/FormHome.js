@@ -200,6 +200,7 @@ function FormHome() {
               ></Form.Control>
             </FormGroup>
             <br />
+            
             <FormGroup>
               <Form.Label>Image:</Form.Label>
               <Form.Control type="file" name="file" onChange={fileSelectedHandler} required></Form.Control>
