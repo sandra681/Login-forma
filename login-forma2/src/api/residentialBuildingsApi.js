@@ -1,17 +1,10 @@
 import axios from "axios";
 import { handleResponse, handleError } from "./apiUtils";
-const baseUrl = "http://127.0.0.1:8000/api/home/";
 
-// export function getHomes(sort = "name", order = "asc", page = "10") {
-//   console.log(baseUrl + sort + "/" + order + "/" + page);
-//   return fetch(baseUrl + sort + "/" + order + "/" + page)
-//     .then(handleResponse)
-//     .catch(handleError);
-// }
 export function getFilteredHomes(filter, sort, order, search, page) {
   if (filter === "") {
     return axios
-      .get(baseUrl, {
+      .get(process.env.REACT_APP_BASE_URL + "home", {
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
@@ -27,7 +20,7 @@ export function getFilteredHomes(filter, sort, order, search, page) {
       .catch(handleError);
   }
   return axios
-    .get(baseUrl, {
+    .get(process.env.REACT_APP_BASE_URL + "home", {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
@@ -45,18 +38,13 @@ export function getFilteredHomes(filter, sort, order, search, page) {
 }
 
 export function getCategories() {
-  console.log(baseUrl + "categories");
   return axios
-    .get(baseUrl + "categories")
+    .get(process.env.REACT_APP_BASE_URL + "home/" + "categories")
     .then(handleResponse)
     .catch(handleError);
 }
-// export function getSomeHomes(page) {
-//   const url = baseUrl + page;
-//   return fetch(url).then(handleResponse).catch(handleError);
-// }
 export function deleteHome(home) {
-  const url = baseUrl + home;
+  const url = process.env.REACT_APP_BASE_URL + "home/" + home;
   return axios
     .get(url, {
       method: "DELETE",

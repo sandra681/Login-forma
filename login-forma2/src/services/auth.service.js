@@ -2,11 +2,10 @@ import axios from "axios";
 import { handleResponse, handleError } from "../api/apiUtils";
 import authHeader from "../services/auth-header";
 
-const API_URL = "http://127.0.0.1:8000/api/auth/";
 
 const register = (name, email, password) => {
   return axios.post(
-    API_URL + "register",
+    process.env.REACT_APP_BASE_URL_AUTH + "register",
     {
       name,
       email,
@@ -24,7 +23,7 @@ const register = (name, email, password) => {
 const login = (email, password) => {
   return axios
     .post(
-      API_URL + "login",
+      process.env.REACT_APP_BASE_URL_AUTH + "login",
       { email, password },
       {
         headers: {
@@ -47,7 +46,7 @@ const logout = () => {
 
 const getUser = () => {
   return axios
-    .get(API_URL + "user", {
+    .get(process.env.REACT_APP_BASE_URL_AUTH + "user", {
       headers: authHeader(),
     })
     .then(handleResponse)

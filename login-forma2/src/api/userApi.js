@@ -1,10 +1,5 @@
 import axios from "axios";
 import { handleError, handleResponse } from "./apiUtils";
-import { useSelector } from "react-redux";
-import axios from "axios";
-
-
-const baseUrl = "http://127.0.0.1:8000/api/auth/user";
 
 export function getUser(token) {
   if (!token) {
@@ -12,10 +7,9 @@ export function getUser(token) {
   }
 
   return axios
-    .get(baseUrl, {
+    .get(process.env.REACT_APP_BASE_URL + "auth/user", {
       headers: { Authorization: `Bearer ${token}` },
     })
     .then(handleResponse)
     .catch(handleError);
 }
-
