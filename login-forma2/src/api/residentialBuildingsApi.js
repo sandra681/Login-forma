@@ -2,13 +2,13 @@ import axios from "axios";
 import { handleResponse, handleError } from "./apiUtils";
 const baseUrl = "http://127.0.0.1:8000/api/home/";
 
-// export function getHomes(sort = "name", order = "asc", num = "10") {
-//   console.log(baseUrl + sort + "/" + order + "/" + num);
-//   return fetch(baseUrl + sort + "/" + order + "/" + num)
+// export function getHomes(sort = "name", order = "asc", page = "10") {
+//   console.log(baseUrl + sort + "/" + order + "/" + page);
+//   return fetch(baseUrl + sort + "/" + order + "/" + page)
 //     .then(handleResponse)
 //     .catch(handleError);
 // }
-export function getFilteredHomes(filter, sort, order, num) {
+export function getFilteredHomes(filter, sort, order, search, page) {
   if (filter === "") {
     return axios
       .get(baseUrl, {
@@ -17,9 +17,10 @@ export function getFilteredHomes(filter, sort, order, num) {
           "Content-Type": "application/json",
         },
         params: {
+          search,
           sort,
           order,
-          num,
+          page,
         },
       })
       .then(handleResponse)
@@ -32,10 +33,11 @@ export function getFilteredHomes(filter, sort, order, num) {
         "Content-Type": "application/json",
       },
       params: {
+        search,
         filter,
         sort,
         order,
-        num,
+        page,
       },
     })
     .then(handleResponse)
@@ -49,8 +51,8 @@ export function getCategories() {
     .then(handleResponse)
     .catch(handleError);
 }
-// export function getSomeHomes(num) {
-//   const url = baseUrl + num;
+// export function getSomeHomes(page) {
+//   const url = baseUrl + page;
 //   return fetch(url).then(handleResponse).catch(handleError);
 // }
 export function deleteHome(home) {

@@ -24,7 +24,6 @@ function Login(props) {
 
     dispatch(login(emailRef.current.value, passwordRef.current.value))
       .then((response) => {
-        handleUser();
         props.history.push("/");
         window.location.reload();
       })
@@ -32,17 +31,10 @@ function Login(props) {
         setLoading(false);
       });
   }
-  function handleUser() {
-    dispatch(getLoggedUser())
-      .then(() => {})
-      .catch(() => console.log("Greska"));
-  }
 
   if (isLoggedIn) {
     return <Redirect exact to="/" />;
   }
-
-  
 
   return (
     <>
@@ -57,7 +49,6 @@ function Login(props) {
               <Form.Control
                 type="email"
                 ref={emailRef}
-                value="test@test.com"
                 required
               />
             </Form.Group>

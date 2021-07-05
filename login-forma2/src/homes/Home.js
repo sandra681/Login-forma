@@ -1,5 +1,6 @@
-import React, { useState } from "react";
-
+import axios from "axios";
+import React, { useState, useEffect } from "react";
+import authHeader from "../services/auth-header";
 const Home = (props) => {
   const {
     id,
@@ -15,9 +16,23 @@ const Home = (props) => {
     admin,
   } = props;
   const [readMore, setReadMore] = useState(false);
+  const backendUrl = "http://127.0.0.1:8000/images/";
+  const [imageName, setImageName] = useState("");
+  useEffect(() => {
+    axios
+      .get("http://127.0.0.1:8000/api/fileupload/" + image, {
+        headers: authHeader(),
+      })
+      .then((response) => {
+        setImageName(response.data[0].filename);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
   return (
     <article className="single-apartment">
-      <img src={image} alt={name}></img>
+      <img src={backendUrl + imageName} alt={name}></img>
       <footer>
         <div className="apartment-info">
           <h4>{name}</h4>

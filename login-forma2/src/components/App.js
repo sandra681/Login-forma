@@ -1,6 +1,6 @@
-import React, {useEffect } from "react";
+import React, { useEffect } from "react";
 import Signup from "./Signup";
-import { Switch, Route,Router } from "react-router-dom";
+import { Switch, Route, Router } from "react-router-dom";
 import Login from "./Login";
 import ForgotPassword from "./ForgotPassword";
 import Homepage from "./homepage/Homepage";
@@ -10,20 +10,24 @@ import PrivateRoute from "./PrivateRoute";
 
 //history
 import history from "../helpers/history";
-import { useDispatch} from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { clearMessage } from "../actions/message";
 import { logout } from "../actions/auth";
+import { getLoggedUser } from "../actions/user";
 
 function App() {
-
   const dispatch = useDispatch();
-
+  const isLoggedIn = useSelector((state) => state.authReducer);
+  useEffect(() => {
+    if (isLoggedIn.isLoggedIn) {
+      dispatch(getLoggedUser());
+    }
+  }, []);
   useEffect(() => {
     history.listen((location) => {
       dispatch(clearMessage()); // clear message when changing location
     });
   }, [dispatch]);
-  
 
   const logOutD = () => {
     dispatch(logout());

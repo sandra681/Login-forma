@@ -11,26 +11,26 @@ import LikedHomes from "../../homes/LikedHome";
 import SearchBar from "../SearchBar";
 import "./Homepage.css";
 import { useSelector } from "react-redux";
+import { Pagination } from "react-bootstrap";
 
 const Homepage = (props) => {
-
   const token = JSON.parse(localStorage.getItem("token"));
-  const isAdmin = useSelector(state=>state.userReducer);
-  const [categories, setCategories] = useState([]); //Za sve kategorije to uzimamo dmah na pocetku
+  const isAdmin = useSelector((state) => state.userReducer);
 
+  const [categories, setCategories] = useState([]); //Za sve kategorije to uzimamo dmah na pocetku
 
   const [likedHomes, setLikedHomes] = useState([]);
 
   const [filterHomes, setFilterHomes] = useState([]); //Ove za sve
 
-  const [num, setNum] = useState(10); //broj da se prikaze
+  const [page, setPage] = useState(1); //koja je strana u pitanju
+  const [pageCount, setPageCount] = useState(1);
 
   const [filter, setFilter] = useState("");
   const [sort, setSort] = useState("name");
   const [order, setOrder] = useState("asc");
-  const [input, setInput] = useState("");
-
-  const [remeberFiletrHomes, setRemeberFilterHomes] = useState(); //ovim pamtimo filtrirane za Search Adress
+  // const [input, setInput] = useState("");
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     getCategories().then((result) => {
@@ -40,51 +40,31 @@ const Homepage = (props) => {
   }, []);
 
   useEffect(() => {
-    getFilteredHomes(filter, sort, order, num).then((result) => {
-      setFilterHomes(result.data);
+    getFilteredHomes(filter, sort, order, search, page).then((result) => {
+      setFilterHomes(result.data.data);
+      setPageCount(result.data["last_page"]);
     });
-  }, [sort, order, filter, num]);
+  }, [sort, order, filter, search, page]);
 
   function editHome() {
-
-     props.history.push("/form-home");
+    props.history.push("/form-home");
   }
-  
-/*   function getData() {
-    getHomes(sort, order, num).then(
-      (result) => {
-        setFilterHomes(result.data);
-        setRemeberFilterHomes(result.data);
-        setHomes(result.data);
-        setCategories(["all", ...new Set(result.data.map((one) => one.category))]);
-      },
-      (error) => 
-        console.log(error);
-      }
+
+  let items = [];
+
+  for (let i = 1; i < pageCount + 1; i++) {
+    items.push(
+      <Pagination.Item key={i} active={page === i} onClick={() => setPage(i)}>
+        {i}
+      </Pagination.Item>
     );
   }
 
-  useEffect(() => {
-    getData();
-  }, [sort, order, num]);
-     */
-  
-
   async function updateInput(input) {
-    if (input === "") {
-      setFilterHomes(remeberFiletrHomes);
-      setInput("");
-      //  return;
-    }
-    const filtered = filterHomes.filter((street) => {
-      return street.street.toLowerCase().includes(input.toLowerCase());
-    });
-    setInput(input);
-    setFilterHomes(filtered); //setFilterHomes
+    setSearch(input);
   }
 
   function sortByInput(e) {
-    debugger
     const value = e.target.value.split("_")[0];
     const order = e.target.value.split("_")[1];
     setSort(value);
@@ -116,44 +96,34 @@ const Homepage = (props) => {
       setFilter("");
       return;
     }
+    setPage(1);
     setFilter(category);
   }
-
+  //Ovo ne radi
   function handleDeleteHome(id) {
     deleteHome(id).then((response) => {
       if (response.status === 204) {
-        setNum(10);
+        setPage(10);
         setTimeout(() => {}, 2000);
         return;
       } else {
-        setNum(10);
+        setPage(10);
         console.log("Failed to delete");
         return;
       }
     });
   }
 
-  
   return (
     <div className="homepage">
-      <header
-        className="head"
-
-        /* style={{backgroundImage:` url("https://assets.architecturaldigest.in/photos/60084bc8d0435267a8df97f8/16:9/w_2560%2Cc_limit/The-Drawing-Studio-mumbai-interior-design_2-1366x768.jpg")`,
-  height: "500px",
-  maxWidth: "2000px",
-  backgroundSize:"cover",
-  backgroundRepeat:"no-repeat"
- }} */
-      >
+      <header className="head">
         <div className="title">
           <h2>Find Home</h2>
           <div className="underline"></div>
         </div>
         <div className="search">
-          <SearchBar input={input} onChange={updateInput}></SearchBar>
+          <SearchBar input={search} onChange={updateInput}></SearchBar>
         </div>
-        
       </header>
 
       <div className="filter-container">
@@ -183,11 +153,10 @@ const Homepage = (props) => {
       </div>
 
       <div className="btn-add-home">
-      {isAdmin && (
+        {isAdmin.isAdmin && (
           <button
             type="button"
             className=" btn btn-danger"
-           
             onClick={() => editHome()}
           >
             Add Home
@@ -205,7 +174,7 @@ const Homepage = (props) => {
                     removeHome={removeHome}
                     addLikedHome={addLikedHome}
                     deleteHome={handleDeleteHome}
-                    admin={isAdmin}
+                    admin={isAdmin.isAdmin}
                     editHome={editHome}
                     home1={home1}
                     {...home1}
@@ -213,18 +182,33 @@ const Homepage = (props) => {
                 );
               })}
             </div>
-            <button
+            <Pagination>
+              <Pagination.First onClick={() => setPage(1)} />
+              <Pagination.Prev
+                onClick={() => {
+                  page === 1 ? setPage(1) : setPage(page - 1);
+                }}
+              />
+              {items}
+              <Pagination.Next
+                onClick={() =>
+                  page === pageCount ? setPage(page) : setPage(page + 1)
+                }
+              />
+              <Pagination.Last onClick={() => setPage(pageCount)} />
+            </Pagination>
+            {/* <button
               className="loadMore"
               onClick={() => {
-                setNum(num + 10);
+                setPage(page + 10);
               }}
             >
               Load more
-            </button>
+            </button> */}
           </section>
 
           <div>
-            {!isAdmin && (
+            {!isAdmin.isAdmin && (
               <LikedHomes
                 token={token}
                 removeAllLikedHomes={removeAllLikedHomes}
