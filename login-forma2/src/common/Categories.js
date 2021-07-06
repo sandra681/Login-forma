@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 const Categories = (props) => {
   const { categories, categoryFilter } = props;
-  const [buttonKey, setButtonKey] = useState(null);
+  const [buttonKey, setButtonKey] = useState(0);
   return (
     <div className="btn-container">
       {categories.map((category, index) => {
