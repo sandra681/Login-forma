@@ -39,7 +39,12 @@ function App() {
     <Router history={history}>
       <Header logout={logOutD} />
       <Switch>
-        <PrivateRoute path="/form-home" component={FormHome}></PrivateRoute>
+        <PrivateRoute
+          exact
+          path="/form-home"
+          component={FormHome}
+        ></PrivateRoute>
+        <PrivateRoute path="/form-home/:id" component={FormHome}></PrivateRoute>
         <Route exact path="/" component={Homepage}></Route>
         <Route path="/signup" component={Signup}></Route>
         <Route path="/login" component={Login}></Route>

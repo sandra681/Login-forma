@@ -1,12 +1,9 @@
 import React, { useRef, useState } from "react";
 import { Form, Button, Card, Alert } from "react-bootstrap";
 import { Link } from "react-router-dom";
-
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
-
 import { login } from "../actions/auth";
-import { getLoggedUser } from "../actions/user";
 
 function Login(props) {
   const emailRef = useRef();

@@ -7,3 +7,5 @@ export const SET_MESSAGE = "SET_MESSAGE";
 export const CLEAR_MESSAGE = "CLEAR_MESSAGE";
 export const GET_USER = "GET_USER";
 export const GET_USER_FAIL = "GET_USER_FAIL";
+export const GET_APARTMENT_FAIL = "GET_APARTMENT_FAIL";
+export const GET_APARTMENT_SUCCESS = "GET_USER_SUCCESS";

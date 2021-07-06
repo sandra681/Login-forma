@@ -1,17 +1,14 @@
 import React, { useState, useEffect } from "react";
 import Categories from "../../common/Categories";
 import Home from "../../homes/Home";
-import {
-  deleteHome,
-  getCategories,
-  getFilteredHomes,
-} from "../../api/residentialBuildingsApi";
+import { deleteHome, getCategories } from "../../api/residentialBuildingsApi";
 import LikedHomes from "../../homes/LikedHome";
 // import SearchBox from "../common/SearchBox";
 import SearchBar from "../SearchBar";
 import "./Homepage.css";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Pagination } from "react-bootstrap";
+import { getApartments } from "../../actions/apartments";
 
 const Homepage = (props) => {
   const token = JSON.parse(localStorage.getItem("token"));
@@ -32,6 +29,7 @@ const Homepage = (props) => {
   // const [input, setInput] = useState("");
   const [search, setSearch] = useState("");
 
+  const dispatch = useDispatch();
   useEffect(() => {
     getCategories().then((result) => {
       const niz = result.data.map((one) => one.category);
@@ -40,16 +38,22 @@ const Homepage = (props) => {
   }, []);
 
   useEffect(() => {
-    getFilteredHomes(filter, sort, order, search, page).then((result) => {
-      setFilterHomes(result.data.data);
-      setPageCount(result.data["last_page"]);
-    });
+    dispatch(getApartments(filter, sort, order, search, page))
+      .then((response) => {
+        console.log(response.data.data);
+        setFilterHomes(response.data.data);
+        setPageCount(response.data["last_page"]);
+      })
+      .catch((error) => console.log(error));
+    // getFilteredHomes(filter, sort, order, search, page).then((result) => {
+    //   setFilterHomes(result.data.data);
+    //   setPageCount(result.data["last_page"]);
+    // });
   }, [sort, order, filter, search, page]);
 
-  function editHome() {
-    props.history.push("/form-home");
+  function addHome() {
+    props.history.push("/form-home/");
   }
-
   let items = [];
 
   for (let i = 1; i < pageCount + 1; i++) {
@@ -157,7 +161,7 @@ const Homepage = (props) => {
           <button
             type="button"
             className=" btn btn-danger"
-            onClick={() => editHome()}
+            onClick={() => addHome()}
           >
             Add Home
           </button>
@@ -174,9 +178,8 @@ const Homepage = (props) => {
                     removeHome={removeHome}
                     addLikedHome={addLikedHome}
                     deleteHome={handleDeleteHome}
-                    admin={isAdmin.isAdmin}
-                    editHome={editHome}
                     home1={home1}
+                    history={props.history}
                     {...home1}
                   />
                 );
@@ -197,14 +200,6 @@ const Homepage = (props) => {
               />
               <Pagination.Last onClick={() => setPage(pageCount)} />
             </Pagination>
-            {/* <button
-              className="loadMore"
-              onClick={() => {
-                setPage(page + 10);
-              }}
-            >
-              Load more
-            </button> */}
           </section>
 
           <div>

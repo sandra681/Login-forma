@@ -2,16 +2,15 @@ import React, { useRef, useState } from "react";
 import { Card, Form, Button, FormGroup, Row, Col } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./FormHome.css";
-
-import { useHistory } from "react-router";
-import { Link } from "react-router-dom";
-
-//import { axios } from "axios";
 import axios from "axios";
+import { useSelector } from "react-redux";
 
-function FormHome() {
+function FormHome({ history, match }) {
+  const { id } = match.params;
+  const isAddMode = !id;
+
   const token = JSON.parse(localStorage.getItem("token"));
-  const imageRef = useRef();
+  const user = useSelector((state) => state.userReducer);
   const nameRef = useRef();
   const streetRef = useRef();
   const cityRef = useRef();
@@ -38,6 +37,9 @@ function FormHome() {
 
   async function handleSubmit(e) {
     e.preventDefault();
+    return isAddMode ? createApartment(e) : updateApartment(e);
+  }
+  async function createApartment(e) {
     const formData = { file };
     await axios
       .post(
@@ -75,7 +77,7 @@ function FormHome() {
           rooms_number: roomsRef.current.value,
           parking_spaces: parkingRef.current.value,
           image: path,
-          user_id: 1, // OVO MORA DA SE PROMENI!!
+          user_id: user.user.id,
         },
         {
           headers: { Authorization: `Bearer ${token.access_token}` },
@@ -97,15 +99,22 @@ function FormHome() {
       });
   }
 
+  async function updateApartment(e) {}
+
   return (
     <>
       <div className="wrap">
         <div className="container forma">
           <div className="img-home">
-            <img src="https://t4.ftcdn.net/jpg/01/35/38/75/360_F_135387578_vKyGn4NM9E2ipUS9j1GRCDLs40CwRNyC.jpg" />
+            <img
+              src="https://t4.ftcdn.net/jpg/01/35/38/75/360_F_135387578_vKyGn4NM9E2ipUS9j1GRCDLs40CwRNyC.jpg"
+              alt=""
+            />
           </div>
           <Card.Body>
-            <h2 className="text-center mb-4">Add New Home</h2>
+            <h2 className="text-center mb-4">
+              {isAddMode ? "Add New Home" : "Edit home"}
+            </h2>
             <Form className="form1" onSubmit={handleSubmit}>
               <FormGroup>
                 {/*  <Form.Label >Name:</Form.Label> */}
@@ -226,7 +235,7 @@ function FormHome() {
 
               <div className="dugme">
                 <Button disabled={loading} type="submit">
-                  Add
+                  {isAddMode ? "Add" : "Edit"}
                 </Button>
               </div>
             </Form>

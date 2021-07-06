@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import authHeader from "../services/auth-header";
 const Home = (props) => {
   const {
@@ -12,12 +13,12 @@ const Home = (props) => {
     removeHome,
     addLikedHome,
     deleteHome,
-    editHome,
-    admin,
+    history,
   } = props;
   const [readMore, setReadMore] = useState(false);
   const backendUrl = "http://127.0.0.1:8000/images/";
   const [imageName, setImageName] = useState("");
+  const admin = useSelector((state) => state.userReducer).isAdmin;
   useEffect(() => {
     axios
       .get("http://127.0.0.1:8000/api/fileupload/" + image, {
@@ -30,6 +31,9 @@ const Home = (props) => {
         console.log(error);
       });
   }, []);
+  function editHome(id) {
+    props.history.push("/form-home/" + id);
+  }
   return (
     <article className="single-apartment">
       <img src={backendUrl + imageName} alt={name}></img>

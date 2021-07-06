@@ -39,7 +39,7 @@ export function getFilteredHomes(filter, sort, order, search, page) {
 
 export function getCategories() {
   return axios
-    .get(process.env.REACT_APP_BASE_URL + "home/" + "categories")
+    .get(process.env.REACT_APP_BASE_URL + "home/categories")
     .then(handleResponse)
     .catch(handleError);
 }
