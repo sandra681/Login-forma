@@ -10,7 +10,8 @@ import LikedHomes from "../../homes/LikedHome";
 // import SearchBox from "../common/SearchBox";
 import SearchBar from "../SearchBar";
 import "./Homepage.css";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { getApartments } from "../../actions/aparments";
 
 const Homepage = (props) => {
 
@@ -29,6 +30,9 @@ const Homepage = (props) => {
   const [sort, setSort] = useState("name");
   const [order, setOrder] = useState("asc");
   const [input, setInput] = useState("");
+  const [search, setSearch]=useState("")
+  
+  const dispatch=useDispatch()
 
   const [remeberFiletrHomes, setRemeberFilterHomes] = useState(); //ovim pamtimo filtrirane za Search Adress
 
@@ -40,9 +44,16 @@ const Homepage = (props) => {
   }, []);
 
   useEffect(() => {
-    getFilteredHomes(filter, sort, order, num).then((result) => {
+    
+    dispatch(getApartments(filter, sort, order, search))
+    .then((response)=>{
+      setFilterHomes(response.data.data)
+    })
+    .catch((error) => console.log(error));
+
+   /*  getFilteredHomes(filter, sort, order, num).then((result) => {
       setFilterHomes(result.data);
-    });
+    }); */
   }, [sort, order, filter, num]);
 
   function editHome() {
