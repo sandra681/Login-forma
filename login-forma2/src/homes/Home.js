@@ -36,7 +36,7 @@ const Home = (props) => {
   }
   return (
     <article className="single-apartment">
-      <img src={backendUrl + imageName} alt={name}></img>
+      <img src={image} alt={name}></img>
       <footer>
         <div className="apartment-info">
           <h4>{name}</h4>

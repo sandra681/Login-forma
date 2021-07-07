@@ -415,8 +415,8 @@ option:hover {
 }
 
 .head {
-  background-image: url("https://i.pinimg.com/originals/88/08/59/880859c96b1c82b281dd6173f9a2e901.jpg");
-  height: 500px;
+  background-image: url("https://images.unsplash.com/photo-1533090161767-e6ffed986c88?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1500&q=80");
+  height: 90vh;
   max-width: 100%;
   background-repeat: no-repeat;
   background-size: cover;
@@ -424,11 +424,7 @@ option:hover {
   background-attachment: fixed;
 }
 
-.navbar {
-  overflow: hidden;
-  position: fixed;
-  width: 100%;
-}
+
 .card {
   margin: 5% 30% 0 30%;
   max-width: 30vw;
