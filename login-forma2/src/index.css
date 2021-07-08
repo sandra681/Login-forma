@@ -423,19 +423,14 @@ option:hover {
   /* background-image: url("https://images.unsplash.com/photo-1493606371202-6275828f90f3?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1951&q=80"); */
   background-image: url("https://images.unsplash.com/photo-1511389026070-a14ae610a1be?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80");
   height: 80vh;
+
   max-width: 100%;
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
 }
-/* 
-.navbar {
-  overflow: hidden;
-  position: fixed;
-  width: 100%;
-  background: transparent;
-} */
+
 .card {
   margin: 5% 30% 0 30%;
   max-width: 30vw;
