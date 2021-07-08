@@ -1,7 +1,28 @@
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import authHeader from "../services/auth-header";
 
 const LikedHomes = (props) => {
   const { token, removeAllLikedHomes, likedHomes, removeLikedHome } = props;
+  const backendUrl = "http://127.0.0.1:8000/images/";
+  const [imageName, setImageName] = useState ("");
+  
+    const {
+      image
+    }=props
+    
+  useEffect(() => {
+    axios
+      .get("http://127.0.0.1:8000/api/fileupload/" + image, {
+        headers: authHeader(),
+      })
+      .then((response) => {
+        setImageName(response.data[0].filename);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
   if (token !== "") {
     return (
       <section   className="interested">
@@ -11,7 +32,7 @@ const LikedHomes = (props) => {
           return (
             
             <article key={home.id} className="in_apart">
-              <img src={home.image} alt={home.name} />
+              <img src={backendUrl + imageName} alt={home.name} />
               <div >
                 <h4>{home.name}</h4>
                 <div style={{ display: "contents" }}>
