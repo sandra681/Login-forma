@@ -228,7 +228,9 @@ const Homepage = (props) => {
               <Pagination.Last onClick={() => setPage(pageCount)} />
             </Pagination>
           </section>
-
+        </main>
+       
+      </div>
           <div>
             {!user.isAdmin && (
               <LikedHomes
@@ -239,8 +241,6 @@ const Homepage = (props) => {
               />
             )}
           </div>
-        </main>
-      </div>
     </div>
   );
 };
