@@ -122,15 +122,31 @@ const Homepage = (props) => {
     <div className="homepage">
       <header className="head">
         <div className="title">
-          <h2>Find Home</h2>
-          <div className="underline"></div>
+          <h2>
+            {" "}
+            Find your<br></br>Perfect home
+          </h2>
+          {/* <div className="underline"></div> */}
+        </div>
+        <div className="filter-container">
+          <div className="aa"></div>
+
+          <div className="category">
+            <Categories
+              categories={categories}
+              categoryFilter={categoryFilter}
+            />
+          </div>
         </div>
         <div className="search">
           <SearchBar input={search} onChange={updateInput}></SearchBar>
         </div>
       </header>
+      <div className="slider">
+        <h2> SLider</h2>
+      </div>
 
-      <div className="filter-container">
+      {/* <div className="filter-container">
         <div className="aa"></div>
 
         <div className="category">
@@ -154,6 +170,23 @@ const Homepage = (props) => {
             <option value="price_desc">Price - Highest to Lowest</option>
           </select>
         </div>
+      </div> */}
+      <div className="sort">
+        <select
+          defaultValue=""
+          className="sort-select"
+          onChange={(e) => {
+            sortByInput(e);
+          }}
+        >
+          <option value="" disabled>
+            -Sort By-
+          </option>
+          <option value="name_asc">Name - A - Z</option>
+          <option value="name_desc">Name - Z - A</option>
+          <option value="price_asc">Price - Lowest to Highest</option>
+          <option value="price_desc">Price - Highest to Lowest</option>
+        </select>
       </div>
 
       <div className="btn-add-home">

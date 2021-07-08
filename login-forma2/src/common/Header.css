@@ -1,0 +1,25 @@
+.p {
+  margin-top: 1vh;
+  font-family: "Encode Sans SC", sans-serif;
+  color: white;
+}
+.email {
+  text-decoration: none;
+  padding-top: 1.5vh;
+  margin-left: 10%;
+  margin-right: 10%;
+  color: white;
+  font-family: "Encode Sans SC", sans-serif;
+}
+@media screen and (max-width: 650px) {
+}
+
+.nav-item {
+  display: flex;
+  flex-direction: row;
+  font-family: "Encode Sans SC", sans-serif;
+  font-size: 20px;
+}
+.navbar-items {
+  width: 50vw;
+}
