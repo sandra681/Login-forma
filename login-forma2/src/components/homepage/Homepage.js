@@ -10,14 +10,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { Pagination } from "react-bootstrap";
 import { getApartments } from "../../actions/apartments";
 import { ADD_LIKED_APARTMENT } from "../../actions/types";
+import apartmentServices from "../../services/apartment.services";
 
 const Homepage = (props) => {
   const token = JSON.parse(localStorage.getItem("token"));
-  const isAdmin = useSelector((state) => state.userReducer);
+  const user = useSelector((state) => state.userReducer);
 
   const [categories, setCategories] = useState([]); //Za sve kategorije to uzimamo dmah na pocetku
 
-  const [likedHomes, setLikedHomes] = useState([]);
+  const likedHomes = useSelector(
+    (state) => state.apartmentsReducer
+  ).likedApartments;
 
   const [filterHomes, setFilterHomes] = useState([]); //Ove za sve
 
@@ -72,25 +75,29 @@ const Homepage = (props) => {
     setOrder(order);
   }
   function removeAllLikedHomes() {
-    setLikedHomes([]);
+    //nothing for now
   }
   function removeLikedHome(id) {
-    setLikedHomes(likedHomes.filter((home) => home.id !== id));
+    //nothing for now
   }
   function removeHome(id) {
     setFilterHomes(filterHomes.filter((home) => home.id !== id));
   }
   const addLikedHome = (id) => {
-    if (likedHomes.filter((home) => home.id === id).length > 0) {
+    if (
+      likedHomes !== null &&
+      likedHomes.filter((home) => home.id === id).length > 0
+    ) {
       return;
     }
-    dispatch({ type: ADD_LIKED_APARTMENT });
-    const likedhome = [
-      ...likedHomes,
-      filterHomes.filter((home) => home.id === id)[0],
-    ];
-    setLikedHomes(likedhome);
-    console.log(likedHomes);
+    apartmentServices
+      .storeLikedApartments(id, user.user.id)
+      .then(() => {
+        console.log("Liked home is stored");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   function categoryFilter(category) {
@@ -223,7 +230,7 @@ const Homepage = (props) => {
           </section>
 
           <div>
-            {!isAdmin.isAdmin && (
+            {!user.isAdmin && (
               <LikedHomes
                 token={token}
                 removeAllLikedHomes={removeAllLikedHomes}
