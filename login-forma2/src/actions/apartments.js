@@ -13,7 +13,7 @@ export const getApartments =
         (response) => {
           dispatch({
             type: GET_APARTMENT_SUCCESS,
-            payload: { apartments: response.data },
+            payload: { apartments: response.data.data },
           });
 
           dispatch({

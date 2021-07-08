@@ -9,6 +9,7 @@ import "./Homepage.css";
 import { useDispatch, useSelector } from "react-redux";
 import { Pagination } from "react-bootstrap";
 import { getApartments } from "../../actions/apartments";
+import { ADD_LIKED_APARTMENT } from "../../actions/types";
 
 const Homepage = (props) => {
   const token = JSON.parse(localStorage.getItem("token"));
@@ -40,7 +41,6 @@ const Homepage = (props) => {
   useEffect(() => {
     dispatch(getApartments(filter, sort, order, search, page))
       .then((response) => {
-        console.log(response.data.data);
         setFilterHomes(response.data.data);
         setPageCount(response.data["last_page"]);
       })
@@ -51,9 +51,6 @@ const Homepage = (props) => {
     // });
   }, [sort, order, filter, search, page]);
 
-  function addHome() {
-    props.history.push("/form-home/");
-  }
   let items = [];
 
   for (let i = 1; i < pageCount + 1; i++) {
@@ -87,6 +84,7 @@ const Homepage = (props) => {
     if (likedHomes.filter((home) => home.id === id).length > 0) {
       return;
     }
+    dispatch({ type: ADD_LIKED_APARTMENT });
     const likedhome = [
       ...likedHomes,
       filterHomes.filter((home) => home.id === id)[0],
@@ -143,7 +141,7 @@ const Homepage = (props) => {
         </div>
       </header>
       <div className="slider">
-        <h2> SLider</h2>
+        <p> slider </p>
       </div>
 
       {/* <div className="filter-container">
@@ -189,17 +187,6 @@ const Homepage = (props) => {
         </select>
       </div>
 
-      <div className="btn-add-home">
-        {isAdmin.isAdmin && (
-          <button
-            type="button"
-            className=" btn btn-danger"
-            onClick={() => addHome()}
-          >
-            Add Home
-          </button>
-        )}
-      </div>
       <div className="box">
         <main>
           <section className="menu section">

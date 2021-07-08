@@ -65,7 +65,7 @@ export const NavMenu = styled.ul`
 export const NavItem = styled.li`
   height: 80px;
 `;
-export const NavLinks = styled(LinkS)`
+export const NavLinks = styled(LinkR)`
   color: red;
   display: flex;
   align-items: center;
@@ -86,6 +86,24 @@ export const NavBtn = styled.nav`
   }
 `;
 export const NavBtnLink = styled(LinkR)`
+  border-radius: 50px;
+  background: 01bf71;
+  white-space: nowrap;
+  padding: 10px 22px;
+  color: #010606;
+  font-size: 16px;
+  outline: none;
+  border: none;
+  cusrsor: pointer;
+  transition: all 0.2s ease-in-out;
+  text-decoration: none;
+  &:hover {
+    transition: all 0.2s ease-in-out;
+    background: #fff;
+    color: #010606;
+  }
+`;
+export const NavBtnBtn = styled.button`
   border-radius: 50px;
   background: 01bf71;
   white-space: nowrap;
