@@ -9,14 +9,18 @@ import "./Homepage.css";
 import { useDispatch, useSelector } from "react-redux";
 import { Pagination } from "react-bootstrap";
 import { getApartments } from "../../actions/apartments";
+import { ADD_LIKED_APARTMENT } from "../../actions/types";
+import apartmentServices from "../../services/apartment.services";
 
 const Homepage = (props) => {
   const token = JSON.parse(localStorage.getItem("token"));
-  const isAdmin = useSelector((state) => state.userReducer);
+  const user = useSelector((state) => state.userReducer);
 
   const [categories, setCategories] = useState([]); //Za sve kategorije to uzimamo dmah na pocetku
 
-  const [likedHomes, setLikedHomes] = useState([]);
+  const likedHomes = useSelector(
+    (state) => state.apartmentsReducer
+  ).likedApartments;
 
   const [filterHomes, setFilterHomes] = useState([]); //Ove za sve
 
@@ -40,7 +44,6 @@ const Homepage = (props) => {
   useEffect(() => {
     dispatch(getApartments(filter, sort, order, search, page))
       .then((response) => {
-        console.log(response.data.data);
         setFilterHomes(response.data.data);
         setPageCount(response.data["last_page"]);
       })
@@ -51,9 +54,6 @@ const Homepage = (props) => {
     // });
   }, [sort, order, filter, search, page]);
 
-  function addHome() {
-    props.history.push("/form-home/");
-  }
   let items = [];
 
   for (let i = 1; i < pageCount + 1; i++) {
@@ -75,24 +75,29 @@ const Homepage = (props) => {
     setOrder(order);
   }
   function removeAllLikedHomes() {
-    setLikedHomes([]);
+    //nothing for now
   }
   function removeLikedHome(id) {
-    setLikedHomes(likedHomes.filter((home) => home.id !== id));
+    //nothing for now
   }
   function removeHome(id) {
     setFilterHomes(filterHomes.filter((home) => home.id !== id));
   }
   const addLikedHome = (id) => {
-    if (likedHomes.filter((home) => home.id === id).length > 0) {
+    if (
+      likedHomes !== null &&
+      likedHomes.filter((home) => home.id === id).length > 0
+    ) {
       return;
     }
-    const likedhome = [
-      ...likedHomes,
-      filterHomes.filter((home) => home.id === id)[0],
-    ];
-    setLikedHomes(likedhome);
-    console.log(likedHomes);
+    apartmentServices
+      .storeLikedApartments(id, user.user.id)
+      .then(() => {
+        console.log("Liked home is stored");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   function categoryFilter(category) {
@@ -122,15 +127,31 @@ const Homepage = (props) => {
     <div className="homepage">
       <header className="head">
         <div className="title">
-          <h2>Find Home</h2>
-          <div className="underline"></div>
+          <h2>
+            {" "}
+            Find your<br></br>Perfect home
+          </h2>
+          {/* <div className="underline"></div> */}
+        </div>
+        <div className="filter-container">
+          <div className="aa"></div>
+
+          <div className="category">
+            <Categories
+              categories={categories}
+              categoryFilter={categoryFilter}
+            />
+          </div>
         </div>
         <div className="search">
           <SearchBar input={search} onChange={updateInput}></SearchBar>
         </div>
       </header>
+      <div className="slider">
+        <p> slider </p>
+      </div>
 
-      <div className="filter-container">
+      {/* <div className="filter-container">
         <div className="aa"></div>
 
         <div className="category">
@@ -154,19 +175,25 @@ const Homepage = (props) => {
             <option value="price_desc">Price - Highest to Lowest</option>
           </select>
         </div>
+      </div> */}
+      <div className="sort">
+        <select
+          defaultValue=""
+          className="sort-select"
+          onChange={(e) => {
+            sortByInput(e);
+          }}
+        >
+          <option value="" disabled>
+            -Sort By-
+          </option>
+          <option value="name_asc">Name - A - Z</option>
+          <option value="name_desc">Name - Z - A</option>
+          <option value="price_asc">Price - Lowest to Highest</option>
+          <option value="price_desc">Price - Highest to Lowest</option>
+        </select>
       </div>
 
-      <div className="btn-add-home">
-        {isAdmin.isAdmin && (
-          <button
-            type="button"
-            className=" btn btn-danger"
-            onClick={() => addHome()}
-          >
-            Add Home
-          </button>
-        )}
-      </div>
       <div className="box">
         <main>
           <section className="menu section">
@@ -201,13 +228,11 @@ const Homepage = (props) => {
               <Pagination.Last onClick={() => setPage(pageCount)} />
             </Pagination>
           </section>
-         
-         
         </main>
        
       </div>
-      <div>
-            {!isAdmin.isAdmin && (
+          <div>
+            {!user.isAdmin && (
               <LikedHomes
                 token={token}
                 removeAllLikedHomes={removeAllLikedHomes}

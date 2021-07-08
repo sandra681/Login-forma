@@ -1,6 +1,10 @@
-import { GET_APARTMENT_SUCCESS, GET_APARTMENT_FAIL } from "./types";
+import {
+  GET_APARTMENT_SUCCESS,
+  GET_APARTMENT_FAIL,
+  ADD_LIKED_APARTMENT,
+} from "../actions/types";
 
-const initialState = { apartments: null };
+const initialState = { apartments: null, likedApartments: null };
 
 export default function apartmentsReducer(state = initialState, action) {
   const { type, payload } = action;
@@ -12,6 +16,11 @@ export default function apartmentsReducer(state = initialState, action) {
       };
     case GET_APARTMENT_FAIL:
       return { ...state, apartments: null };
+    case ADD_LIKED_APARTMENT:
+      return {
+        ...state,
+        likedApartments: payload.likedApartments,
+      };
     default:
       return state;
   }

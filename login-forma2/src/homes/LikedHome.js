@@ -25,10 +25,13 @@ const LikedHomes = (props) => {
   }, []);
   if (token !== "") {
     return (
+
       <section   className="interested">
         <div  style={{overflow:"auto" , height:"130px"}}>
-        <h3>{likedHomes.length} liked apartments</h3>
-        {likedHomes.map((home) => {
+        <h3>
+            {likedHomes !== null ? likedHomes.length : 0} liked apartments
+          </h3>
+        {likedHomes !== null && likedHomes.map((home) => {
           return (
             
             <article key={home.id} className="in_apart">
