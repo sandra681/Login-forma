@@ -3,6 +3,7 @@ import {
   GET_APARTMENT_FAIL,
   SET_MESSAGE,
   ADD_LIKED_APARTMENT,
+  DELETE_LIKED_APARTMENT
 } from "./types";
 import apartmentService from "../services/apartment.services";
 
@@ -81,3 +82,38 @@ export const getAllLikedApartmentsOfUser = (userId) => (dispatch) => {
     }
   );
 };
+
+export const deleteLikedApartment = (user_id, home_id) => (dispatch) => {
+  return apartmentService.deleteLikedApartment(user_id, home_id).then(
+    (response) => {
+      dispatch({
+        type: DELETE_LIKED_APARTMENT,
+        payload: { apartments: response.data.data },
+      });
+
+      dispatch({
+        type: SET_MESSAGE,
+        payload: response.data.message,
+      });
+
+      return response;
+    },
+    (error) => {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+     
+      dispatch({
+        type: SET_MESSAGE,
+        payload: message,
+      });
+
+      return Promise.reject();
+    }
+  );
+};
+

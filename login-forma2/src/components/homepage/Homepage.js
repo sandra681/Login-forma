@@ -78,7 +78,13 @@ const Homepage = (props) => {
     //nothing for now
   }
   function removeLikedHome(id) {
-    //nothing for now
+    dispatch(apartmentServices.deleteLikedApartment(user.user.id, id)).then(()=>
+      {
+        console.log("Obrisano")
+      }
+    ).catch((error) => {
+      console.log(error);
+    })
   }
   function removeHome(id) {
     setFilterHomes(filterHomes.filter((home) => home.id !== id));
@@ -91,7 +97,7 @@ const Homepage = (props) => {
       return;
     }
     apartmentServices
-      .storeLikedApartments(id, user.user.id)
+      .storeLikedApartments( user.user.id, id)
       .then(() => {
         // dispatch(getAllLikedApartmentsOfUser(user.user.id)).then(()=>console.log("ubacen")).catch((error)=>console.log(error));
         console.log("Liked home is stored");

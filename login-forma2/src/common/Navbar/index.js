@@ -66,6 +66,7 @@ const Navbar = (props) => {
               <Badge
                 badgeContent={
                   likedApartments === null ? 0 : likedApartments.lenght
+                  
                 }
                 color="primary"
                 style={{ marginTop: "2rem" }}
