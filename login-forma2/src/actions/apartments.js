@@ -46,12 +46,13 @@ export const getApartments =
         }
       );
   };
-export const getAllLikedApartmentsOfUser = (userId) => (dispatch) => {
-  return apartmentService.getAllLikedApartmentsOfUser(userId).then(
+export const getAllLikedApartmentsOfUser = (user_id) => (dispatch) => {
+  return apartmentService.getAllLikedApartmentsOfUser(user_id).then(
     (response) => {
+      console.log(response.data);
       dispatch({
         type: ADD_LIKED_APARTMENT,
-        payload: { apartments: response.data.data },
+        payload: { likedApartments: response.data },
       });
 
       dispatch({
@@ -59,7 +60,7 @@ export const getAllLikedApartmentsOfUser = (userId) => (dispatch) => {
         payload: response.data.message,
       });
 
-      return response;
+      return Promise.resolve();
     },
     (error) => {
       const message =

@@ -13,7 +13,6 @@ const Home = (props) => {
     removeHome,
     addLikedHome,
     deleteHome,
-    history,
   } = props;
   const [readMore, setReadMore] = useState(false);
   const backendUrl = "http://127.0.0.1:8000/images/";
@@ -36,7 +35,11 @@ const Home = (props) => {
   }
   return (
     <article className="single-apartment">
+<<<<<<< HEAD
       <img src={backendUrl+ imageName} alt={name}></img>
+=======
+      <img src={backendUrl + imageName} alt={name}></img>
+>>>>>>> designAH
       <footer>
         <div className="apartment-info">
           <h4>{name}</h4>

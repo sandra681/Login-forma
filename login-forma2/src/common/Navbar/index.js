@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Nav,
   NavbarContainer,
@@ -20,7 +20,7 @@ const Navbar = (props) => {
   const user = useSelector((state) => state.userReducer);
   const likedApartments = useSelector(
     (state) => state.apartmentsReducer
-  ).likedApartments;
+  ).apartments;
   console.log(likedApartments);
   function addHome() {
     props.history.push("/form-home/");
@@ -29,7 +29,7 @@ const Navbar = (props) => {
     <>
       <Nav>
         <NavbarContainer>
-          <NavbarLogo to="/">dollar</NavbarLogo>
+          <NavbarLogo to="/">rent</NavbarLogo>
           <MobileIcon>
             <FaBars />
           </MobileIcon>

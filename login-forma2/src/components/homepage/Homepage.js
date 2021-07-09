@@ -8,7 +8,14 @@ import SearchBar from "../SearchBar";
 import "./Homepage.css";
 import { useDispatch, useSelector } from "react-redux";
 import { Pagination } from "react-bootstrap";
+<<<<<<< HEAD
 import { getAllLikedApartmentsOfUser, getApartments } from "../../actions/apartments";
+=======
+import {
+  getAllLikedApartmentsOfUser,
+  getApartments,
+} from "../../actions/apartments";
+>>>>>>> designAH
 import { ADD_LIKED_APARTMENT } from "../../actions/types";
 import apartmentServices from "../../services/apartment.services";
 
@@ -97,10 +104,15 @@ const Homepage = (props) => {
       return;
     }
     apartmentServices
+<<<<<<< HEAD
       .storeLikedApartments( user.user.id, id)
+=======
+      .storeLikedApartments(user.user.id, id)
+>>>>>>> designAH
       .then(() => {
         // dispatch(getAllLikedApartmentsOfUser(user.user.id)).then(()=>console.log("ubacen")).catch((error)=>console.log(error));
         console.log("Liked home is stored");
+
       })
       .catch((error) => {
         console.log(error);
@@ -204,7 +216,6 @@ const Homepage = (props) => {
           <option value="price_desc">Price - Highest to Lowest</option>
         </select>
       </div>
-
       <div className="box">
         <main>
           <section className="menu section">
@@ -240,18 +251,17 @@ const Homepage = (props) => {
             </Pagination>
           </section>
         </main>
-       
       </div>
-          <div>
-            {!user.isAdmin && (
-              <LikedHomes
-                token={token}
-                removeAllLikedHomes={removeAllLikedHomes}
-                likedHomes={likedHomes}
-                removeLikedHome={removeLikedHome}
-              />
-            )}
-          </div>
+      <div>
+        {!user.isAdmin && (
+          <LikedHomes
+            token={token}
+            removeAllLikedHomes={removeAllLikedHomes}
+            likedHomes={likedHomes}
+            removeLikedHome={removeLikedHome}
+          />
+        )}
+      </div>
     </div>
   );
 };

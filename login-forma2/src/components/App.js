@@ -14,15 +14,25 @@ import { clearMessage } from "../actions/message";
 import { logout } from "../actions/auth";
 import { getLoggedUser } from "../actions/user";
 import Navbar from "../common/Navbar";
+import { getAllLikedApartmentsOfUser } from "../actions/apartments";
 
 function App() {
   const dispatch = useDispatch();
   const isLoggedIn = useSelector((state) => state.authReducer);
+  const user = useSelector((state) => state.userReducer);
+  console.log(user);
   useEffect(() => {
     if (isLoggedIn.isLoggedIn) {
       dispatch(getLoggedUser());
     }
   }, []);
+  useEffect(() => {
+    if (user.user) {
+      dispatch(getAllLikedApartmentsOfUser(user.user.id))
+        .then(() => console.log("Prikazano"))
+        .catch((error) => console.log(error));
+    }
+  }, [user]);
   useEffect(() => {
     history.listen((location) => {
       dispatch(clearMessage()); // clear message when changing location
