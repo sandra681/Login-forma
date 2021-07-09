@@ -35,11 +35,7 @@ const Home = (props) => {
   }
   return (
     <article className="single-apartment">
-<<<<<<< HEAD
       <img src={backendUrl+ imageName} alt={name}></img>
-=======
-      <img src={backendUrl + imageName} alt={name}></img>
->>>>>>> designAH
       <footer>
         <div className="apartment-info">
           <h4>{name}</h4>

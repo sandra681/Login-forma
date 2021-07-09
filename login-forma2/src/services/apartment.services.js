@@ -38,15 +38,7 @@ const storeLikedApartments = (user_id, home_id) => {
   );
 };
 const getAllLikedApartmentsOfUser = (user_id) => {
-<<<<<<< HEAD
-  return axios.get(
-    process.env.REACT_APP_BASE_URL_AUTH + "likedHome",
-    { user_id },
-    {
-      headers: authHeader(),
-    }
-  );
-=======
+
   return axios
     .post(
       process.env.REACT_APP_BASE_URL_AUTH + "likedHome",
@@ -58,7 +50,7 @@ const getAllLikedApartmentsOfUser = (user_id) => {
       return response;
     })
     .catch((error) => console.log(error));
->>>>>>> designAH
+
 };
 const deleteLikedApartment=(user_id, home_id)=>{
   return axios.delete(
