@@ -51,9 +51,9 @@ const Homepage = (props) => {
     // });
   }, [sort, order, filter, search, page]);
 
-  function addHome() {
-    props.history.push("/form-home/");
-  }
+  // function addHome() {
+  //   props.history.push("/form-home/");
+  // }
   let items = [];
 
   for (let i = 1; i < pageCount + 1; i++) {
@@ -143,7 +143,7 @@ const Homepage = (props) => {
         </div>
       </header>
       <div className="slider">
-        <h2> SLider</h2>
+        <p> Slider</p>
       </div>
 
       {/* <div className="filter-container">
@@ -188,7 +188,7 @@ const Homepage = (props) => {
           <option value="price_desc">Price - Highest to Lowest</option>
         </select>
       </div>
-
+      {/* 
       <div className="btn-add-home">
         {isAdmin.isAdmin && (
           <button
@@ -199,7 +199,7 @@ const Homepage = (props) => {
             Add Home
           </button>
         )}
-      </div>
+      </div> */}
       <div className="box">
         <main>
           <section className="menu section">

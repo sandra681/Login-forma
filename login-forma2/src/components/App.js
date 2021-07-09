@@ -37,7 +37,7 @@ function App() {
 
   return (
     <Router history={history}>
-      <Header logout={logOutD} />
+      <Header logout={logOutD} history={history} />
       <Switch>
         <PrivateRoute
           exact
