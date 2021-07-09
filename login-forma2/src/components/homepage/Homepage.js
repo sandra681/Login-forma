@@ -8,7 +8,10 @@ import SearchBar from "../SearchBar";
 import "./Homepage.css";
 import { useDispatch, useSelector } from "react-redux";
 import { Pagination } from "react-bootstrap";
-import { getApartments } from "../../actions/apartments";
+import {
+  getAllLikedApartmentsOfUser,
+  getApartments,
+} from "../../actions/apartments";
 import { ADD_LIKED_APARTMENT } from "../../actions/types";
 import apartmentServices from "../../services/apartment.services";
 
@@ -91,9 +94,10 @@ const Homepage = (props) => {
       return;
     }
     apartmentServices
-      .storeLikedApartments(id, user.user.id)
+      .storeLikedApartments(user.user.id, id)
       .then(() => {
         console.log("Liked home is stored");
+
       })
       .catch((error) => {
         console.log(error);
@@ -228,18 +232,17 @@ const Homepage = (props) => {
             </Pagination>
           </section>
         </main>
-       
       </div>
-          <div>
-            {!user.isAdmin && (
-              <LikedHomes
-                token={token}
-                removeAllLikedHomes={removeAllLikedHomes}
-                likedHomes={likedHomes}
-                removeLikedHome={removeLikedHome}
-              />
-            )}
-          </div>
+      <div>
+        {!user.isAdmin && (
+          <LikedHomes
+            token={token}
+            removeAllLikedHomes={removeAllLikedHomes}
+            likedHomes={likedHomes}
+            removeLikedHome={removeLikedHome}
+          />
+        )}
+      </div>
     </div>
   );
 };

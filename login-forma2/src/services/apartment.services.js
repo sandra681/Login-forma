@@ -37,14 +37,18 @@ const storeLikedApartments = (user_id, home_id) => {
     { headers: authHeader() }
   );
 };
-const getAllLikedApartmentsOfUser = (userId) => {
-  return axios.get(
-    process.env.REACT_APP_BASE_URL_AUTH + "likedHome",
-    { userId },
-    {
-      headers: authHeader(),
-    }
-  );
+const getAllLikedApartmentsOfUser = (user_id) => {
+  return axios
+    .post(
+      process.env.REACT_APP_BASE_URL_AUTH + "likedHome",
+      { user_id },
+      { headers: authHeader() }
+    )
+    .then((response) => {
+      console.log(response);
+      return response;
+    })
+    .catch((error) => console.log(error));
 };
 export default {
   getApartments,

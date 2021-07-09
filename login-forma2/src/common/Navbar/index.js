@@ -20,14 +20,14 @@ const Navbar = (props) => {
   const user = useSelector((state) => state.userReducer);
   const likedApartments = useSelector(
     (state) => state.apartmentsReducer
-  ).likedApartments;
+  ).apartments;
   console.log(likedApartments);
   function addHome() {
     props.history.push("/form-home/");
   }
   return (
     <>
-      <Nav scrolled={y}>
+      <Nav>
         <NavbarContainer>
           <NavbarLogo to="/">rent</NavbarLogo>
           <MobileIcon>
