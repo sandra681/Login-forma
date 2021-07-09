@@ -4,7 +4,6 @@ import { Switch, Route, Router } from "react-router-dom";
 import Login from "./Login";
 import ForgotPassword from "./ForgotPassword";
 import Homepage from "./homepage/Homepage";
-import Header from "../common/Header";
 import FormHome from "./FormHome";
 import PrivateRoute from "./PrivateRoute";
 
@@ -14,6 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { clearMessage } from "../actions/message";
 import { logout } from "../actions/auth";
 import { getLoggedUser } from "../actions/user";
+import Navbar from "../common/Navbar";
 
 function App() {
   const dispatch = useDispatch();
@@ -37,7 +37,7 @@ function App() {
 
   return (
     <Router history={history}>
-      <Header logout={logOutD} />
+      <Navbar logout={logOutD} history={history} />
       <Switch>
         <PrivateRoute
           exact
