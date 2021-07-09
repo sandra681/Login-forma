@@ -11,22 +11,20 @@ import {
   NavBtnLink,
   NavBtnBtn,
 } from "./NavbarElements";
-import { FaBars } from "react-icons/fa";
+import { FaBars, FaRegHeart } from "react-icons/fa";
+import Badge from "@material-ui/core/Badge";
 import { useSelector } from "react-redux";
+
 const Navbar = (props) => {
   const { isLoggedIn } = useSelector((state) => state.authReducer);
-  const isAdmin = useSelector((state) => state.userReducer);
-  const [y, setY] = useState(window.scrollY);
-  async function toggleLogoutMenu() {
-    props.logout();
-  }
+  const user = useSelector((state) => state.userReducer);
+  const likedApartments = useSelector(
+    (state) => state.apartmentsReducer
+  ).likedApartments;
+  console.log(likedApartments);
   function addHome() {
     props.history.push("/form-home/");
   }
-  useEffect(() => {
-    console.log(window.scrollY);
-    setY(window.scrollY);
-  }, [window.scrollY]);
   return (
     <>
       <Nav scrolled={y}>
@@ -42,10 +40,15 @@ const Navbar = (props) => {
             <NavItem>
               <NavLinks to="/">Home</NavLinks>
             </NavItem>
-            {isAdmin.isAdmin && (
-              <NavBtn>
-                <NavBtnBtn onClick={() => addHome()}>Add Home</NavBtnBtn>
-              </NavBtn>
+            {user.isAdmin && (
+              <NavItem>
+                <NavBtnBtn
+                  onClick={() => addHome()}
+                  style={{ background: "red", marginTop: "1rem" }}
+                >
+                  Add Home
+                </NavBtnBtn>
+              </NavItem>
             )}
             {!isLoggedIn && (
               <NavItem>
@@ -53,13 +56,27 @@ const Navbar = (props) => {
               </NavItem>
             )}
           </NavMenu>
-          <NavBtn>
-            {!isLoggedIn ? (
+
+          {!isLoggedIn ? (
+            <NavBtn>
               <NavBtnLink to="/login">Login</NavBtnLink>
-            ) : (
-              <NavBtnBtn onClick={() => toggleLogoutMenu()}>Logout</NavBtnBtn>
-            )}
-          </NavBtn>
+            </NavBtn>
+          ) : (
+            <>
+              <Badge
+                badgeContent={
+                  likedApartments === null ? 0 : likedApartments.lenght
+                }
+                color="primary"
+                style={{ marginTop: "2rem" }}
+              >
+                <FaRegHeart />
+              </Badge>
+              <NavBtn>
+                <NavBtnBtn onClick={() => props.logout()}>Logout</NavBtnBtn>
+              </NavBtn>
+            </>
+          )}
         </NavbarContainer>
       </Nav>
     </>

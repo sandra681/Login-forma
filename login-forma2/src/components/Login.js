@@ -54,7 +54,7 @@ function Login(props) {
               <Form.Control
                 type="password"
                 ref={passwordRef}
-                value="123456789"
+                value="123456"
                 required
               />
             </Form.Group>

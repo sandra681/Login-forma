@@ -265,6 +265,7 @@ main {
     left: 1rem;
     right: 1rem;
     bottom: 2rem;
+    position: relative;
   }
 }
 .in_apart {
@@ -382,8 +383,9 @@ main {
   }
 }
 .sort {
-  margin-top: 0px;
-  margin-bottom: 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .category {
   width: 100%;
