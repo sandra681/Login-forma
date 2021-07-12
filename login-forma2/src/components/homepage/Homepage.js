@@ -9,12 +9,10 @@ import "./Homepage.css";
 import { useDispatch, useSelector } from "react-redux";
 import { Pagination } from "react-bootstrap";
 import {
-  getAllLikedApartmentsOfUser,
+  deleteLikedApartment,
   getApartments,
   storeLikedApartments,
 } from "../../actions/apartments";
-import { ADD_LIKED_APARTMENT } from "../../actions/types";
-import apartmentServices from "../../services/apartment.services";
 
 const Homepage = (props) => {
   const token = JSON.parse(localStorage.getItem("token"));
@@ -82,7 +80,13 @@ const Homepage = (props) => {
     //nothing for now
   }
   function removeLikedHome(id) {
-    //nothing for now
+    dispatch(deleteLikedApartment(user.user.id, id))
+      .then(() => {
+        console.log("Obrisano");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
   function removeHome(id) {
     setFilterHomes(filterHomes.filter((home) => home.id !== id));
@@ -96,6 +100,7 @@ const Homepage = (props) => {
     }
     dispatch(storeLikedApartments(user.user.id, id))
       .then(() => {
+        // dispatch(getAllLikedApartmentsOfUser(user.user.id)).then(()=>console.log("ubacen")).catch((error)=>console.log(error));
         console.log("Liked home is stored");
       })
       .catch((error) => {
@@ -155,6 +160,7 @@ const Homepage = (props) => {
       </div>
 
       {/* <div className="filter-container">
+>>>>>>> 8de4233d2178abf254091bb4a56fa9745c7b0202
         <div className="aa"></div>
 
         <div className="category">
