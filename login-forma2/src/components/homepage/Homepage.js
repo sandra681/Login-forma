@@ -8,7 +8,7 @@ import SearchBar from "../SearchBar";
 import "./Homepage.css";
 import { useDispatch, useSelector } from "react-redux";
 import { Pagination } from "react-bootstrap";
-import { getAllLikedApartmentsOfUser, getApartments } from "../../actions/apartments";
+import { deleteLikedApartment, getAllLikedApartmentsOfUser, getApartments } from "../../actions/apartments";
 import { ADD_LIKED_APARTMENT } from "../../actions/types";
 import apartmentServices from "../../services/apartment.services";
 
@@ -78,7 +78,7 @@ const Homepage = (props) => {
     //nothing for now
   }
   function removeLikedHome(id) {
-    dispatch(apartmentServices.deleteLikedApartment(user.user.id, id)).then(()=>
+    dispatch(deleteLikedApartment(user.user.id, id)).then(()=>
       {
         console.log("Obrisano")
       }
