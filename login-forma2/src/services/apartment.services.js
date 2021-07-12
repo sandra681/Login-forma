@@ -40,7 +40,7 @@ const storeLikedApartments = (user_id, home_id) => {
 const getAllLikedApartmentsOfUser = (user_id) => {
   return axios
     .post(
-      process.env.REACT_APP_BASE_URL_AUTH + "likedHome",
+      process.env.REACT_APP_BASE_URL_AUTH + "likedHomes",
       { user_id },
       { headers: authHeader() }
     )

@@ -14,7 +14,8 @@ import { clearMessage } from "../actions/message";
 import { logout } from "../actions/auth";
 import { getLoggedUser } from "../actions/user";
 import Navbar from "../common/Navbar";
-import { getAllLikedApartmentsOfUser } from "../actions/apartments";
+import { ADD_TO_ALL } from "../actions/types";
+import apartmentService from "../services/apartment.services";
 
 function App() {
   const dispatch = useDispatch();
@@ -28,8 +29,14 @@ function App() {
   }, []);
   useEffect(() => {
     if (user.user) {
-      dispatch(getAllLikedApartmentsOfUser(user.user.id))
-        .then(() => console.log("Prikazano"))
+      apartmentService
+        .getAllLikedApartmentsOfUser(user.user.id)
+        .then((response) =>
+          dispatch({
+            type: ADD_TO_ALL,
+            payload: { likedApartments: response.data },
+          })
+        )
         .catch((error) => console.log(error));
     }
   }, [user]);

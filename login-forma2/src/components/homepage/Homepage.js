@@ -11,6 +11,7 @@ import { Pagination } from "react-bootstrap";
 import {
   getAllLikedApartmentsOfUser,
   getApartments,
+  storeLikedApartments,
 } from "../../actions/apartments";
 import { ADD_LIKED_APARTMENT } from "../../actions/types";
 import apartmentServices from "../../services/apartment.services";
@@ -93,11 +94,9 @@ const Homepage = (props) => {
     ) {
       return;
     }
-    apartmentServices
-      .storeLikedApartments(user.user.id, id)
+    dispatch(storeLikedApartments(user.user.id, id))
       .then(() => {
         console.log("Liked home is stored");
-
       })
       .catch((error) => {
         console.log(error);
