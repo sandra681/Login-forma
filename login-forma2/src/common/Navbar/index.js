@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import "./Navbar.css";
 import {
   Nav,
   NavbarContainer,
@@ -21,18 +22,37 @@ const Navbar = (props) => {
   const likedHomes = useSelector(
     (state) => state.apartmentsReducer
   ).likedApartments;
+  const [scrollPosition, setScrollPosition] = useState(0);
+  const handleScroll = () => {
+    const position = window.pageYOffset;
+    setScrollPosition(position);
+  };
+
+  const [click, setClick] = useState(false);
+  const handleClick = () => setClick(!click);
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
   function addHome() {
     props.history.push("/form-home/");
   }
   return (
     <>
-      <Nav>
+      <Nav scrolled={scrollPosition}>
         <NavbarContainer>
           <NavbarLogo to="/">rent</NavbarLogo>
-          <MobileIcon>
-            <FaBars />
+          <MobileIcon /* className="menu-icon" */ onClick={handleClick}>
+            <FaBars /* className={click ? "fas fa-times" : "fas fa-bars"}  */ />
           </MobileIcon>
-          <NavMenu>
+          <NavMenu
+             
+            className={click ? "nav-menu active" : "nav-menu"}
+          >
             <NavItem>
               <NavLinks to="about">About</NavLinks>
             </NavItem>

@@ -60,10 +60,16 @@ const getOneApartment = (home_id) => {
   return axios
     .get(process.env.REACT_APP_BASE_URL + "home/" + home_id)
     .then((response) => {
-      console.log(response.data);
+      console.log(response);
       return response.data;
     })
     .catch((error) => console.log(error));
+};
+
+const deleteHome = (home_id) => {
+  return axios.delete(process.env.REACT_APP_BASE_URL_AUTH + "home/" + home_id, {
+    headers: authHeader(),
+  });
 };
 export default {
   getApartments,
@@ -72,4 +78,5 @@ export default {
   deleteLikedApartment,
   deleteAllLikedApartment,
   getOneApartment,
+  deleteHome,
 };

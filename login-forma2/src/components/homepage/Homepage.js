@@ -10,10 +10,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { Pagination } from "react-bootstrap";
 import {
   deleteAllLikedApartment,
+  deleteApartment,
   deleteLikedApartment,
   getApartments,
   storeLikedApartments,
 } from "../../actions/apartments";
+import apartmentServices from "../../services/apartment.services";
 
 const Homepage = (props) => {
   const token = JSON.parse(localStorage.getItem("token"));
@@ -26,7 +28,6 @@ const Homepage = (props) => {
   ).likedApartments;
 
   const [filterHomes, setFilterHomes] = useState([]); //Ove za sve
-
   const [page, setPage] = useState(1); //koja je strana u pitanju
   const [pageCount, setPageCount] = useState(1);
 
@@ -61,7 +62,12 @@ const Homepage = (props) => {
 
   for (let i = 1; i < pageCount + 1; i++) {
     items.push(
-      <Pagination.Item key={i} active={page === i} onClick={() => setPage(i)}>
+      <Pagination.Item
+        key={i}
+        active={page === i}
+        onClick={() => setPage(i)}
+        activeLabel={false}
+      >
         {i}
       </Pagination.Item>
     );
@@ -127,22 +133,13 @@ const Homepage = (props) => {
     setPage(1);
     setFilter(category);
   }
-  //Ovo ne radi
-  function handleDeleteHome(id) {
-    deleteHome(id).then((response) => {
-      if (response.status === 204) {
-        setPage(10);
-        setTimeout(() => {}, 2000);
-        return;
-      } else {
-        setPage(10);
-        console.log("Failed to delete");
-        return;
-      }
-    });
-  }
-  function editHome(id) {
-    props.history.push("/form-home/" + id);
+  function deleteHome(id) {
+    dispatch(deleteApartment(id))
+      .then(() => {
+        window.location.reload();
+        console.log("Uspesno izbrisan");
+      })
+      .catch((error) => console.log(error));
   }
 
   return (
@@ -169,9 +166,9 @@ const Homepage = (props) => {
           <SearchBar input={search} onChange={updateInput}></SearchBar>
         </div>
       </header>
-      <div className="slider">
+      {/* <div className="slider">
         <p> slider </p>
-      </div>
+      </div> */}
 
       {/* <div className="filter-container">
 >>>>>>> 8de4233d2178abf254091bb4a56fa9745c7b0202
@@ -233,7 +230,7 @@ const Homepage = (props) => {
                     key={index}
                     removeHome={removeHome}
                     addLikedHome={addLikedHome}
-                    deleteHome={handleDeleteHome}
+                    deleteHome={deleteHome}
                     home1={home1}
                     history={props.history}
                     liked={liked}

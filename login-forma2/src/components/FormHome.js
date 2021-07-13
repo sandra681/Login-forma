@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Card, Form, Button, FormGroup, Row, Col } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./FormHome.css";
@@ -18,7 +18,7 @@ function FormHome({ history, match }) {
   const { id } = match.params;
   const isAddMode = !id;
 
-  const [apartment, setApartments] = useState([]);
+  // const [apartment, setApartments] = useState([]);
   const token = JSON.parse(localStorage.getItem("token"));
   const user = useSelector((state) => state.userReducer);
   const nameRef = useRef();
@@ -39,16 +39,25 @@ function FormHome({ history, match }) {
   const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
   let path;
-
   if (!isAddMode) {
     apartmentServices
-      .getOneApartment()
-      .then((response) => setApartments(response.data))
+      .getOneApartment(id)
+      .then((response) => {
+        console.log(response);
+        // setApartments(response[0]);
+        nameRef.current.value = response[0].name;
+        streetRef.current.value = response[0].street;
+        cityRef.current.value = response[0].city;
+        priceRef.current.value = response[0].price;
+        infoRef.current.value = response[0].info;
+        categoryRef.current.value = response[0].category;
+        squareFootageRef.current.value = response[0].square_footage;
+        roomsRef.current.value = response[0].rooms_number;
+        parkingRef.current.value = response[0].parking_spaces;
+      })
       .catch((error) => console.log(error));
   }
-  if (apartment !== null) {
-    nameRef.current.value(apartment.name);
-  }
+
   function fileSelectedHandler(e) {
     let files = e.target.files[0];
     let reader = new FileReader();
@@ -124,7 +133,41 @@ function FormHome({ history, match }) {
       });
   }
 
-  async function updateApartment(e) {}
+  async function updateApartment(e) {
+    setOpen(true);
+    await axios
+
+      .put(
+        "http://127.0.0.1:8000/api/auth/home/" + id,
+        {
+          name: nameRef.current.value,
+          street: streetRef.current.value,
+          price: priceRef.current.value,
+          info: infoRef.current.value,
+          category: categoryRef.current.value,
+          city: cityRef.current.value,
+          square_footage: squareFootageRef.current.value,
+          rooms_number: roomsRef.current.value,
+          parking_spaces: parkingRef.current.value,
+        },
+        {
+          headers: { Authorization: `Bearer ${token.access_token}` },
+        }
+      )
+      .then((response) => {
+        setLoading(false);
+        if (response.data.status === 200) {
+          console.log("OK");
+        }
+        if (response.data.status === "failed") {
+          setTimeout(() => {}, 2000);
+        }
+      })
+      .catch((error) => {
+        console.log("GRESKA");
+        console.log(error.message);
+      });
+  }
 
   const handleAgree = () => {
     setOpen(false);
@@ -282,21 +325,27 @@ function FormHome({ history, match }) {
                   aria-labelledby="responsive-dialog-title"
                 >
                   <DialogTitle id="responsive-dialog-title">
-                    {"Dodavanje novog apartmana"}
+                    {isAddMode
+                      ? "Dodavanje novog apartmana"
+                      : "Izmena apartmana"}
                   </DialogTitle>
                   <DialogContent>
                     <DialogContentText>
-                      Apartman je uspesno sacuvan! Da li zelite da dodate jos
-                      jedan?
+                      {isAddMode
+                        ? `Apartman je uspesno sacuvan! Da li zelite da dodate jos
+                      jedan?`
+                        : `Apartman je uspesno izmenjen`}
                     </DialogContentText>
                   </DialogContent>
                   <DialogActions>
                     <Button autoFocus onClick={handleDisagree} color="primary">
-                      Ne
+                      {isAddMode ? `Ne` : `Povratak na pocetnu stranu`}
                     </Button>
-                    <Button onClick={handleAgree} color="primary" autoFocus>
-                      Da
-                    </Button>
+                    {isAddMode && (
+                      <Button onClick={handleAgree} color="primary" autoFocus>
+                        Da
+                      </Button>
+                    )}
                   </DialogActions>
                 </Dialog>
               </div>

@@ -2,14 +2,37 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import authHeader from "../services/auth-header";
+
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
+import { useTheme } from "@material-ui/core/styles";
+import { Button } from "@material-ui/core";
+
 const Home = (props) => {
   const { id, image, info, price, name, street, filename } = props.home1;
   const { removeHome, addLikedHome, deleteHome, liked } = props;
   const [readMore, setReadMore] = useState(false);
   const backendUrl = "http://127.0.0.1:8000/images/";
   const admin = useSelector((state) => state.userReducer).isAdmin;
+
+  const [successMode, setSuccessMode] = useState(false);
+  const [open, setOpen] = React.useState(false);
+  const theme = useTheme();
+  const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
+
   function editHome(id) {
     props.history.push("/form-home/" + id);
+  }
+  function handleClose() {
+    setOpen(false);
+  }
+  function handleAgree() {
+    setSuccessMode(true);
+    deleteHome(id);
   }
   return (
     <article className="single-apartment">
@@ -36,7 +59,7 @@ const Home = (props) => {
           </button>
         )}
         {admin && (
-          <button className="delete-btn" onClick={() => deleteHome(id)}>
+          <button className="delete-btn" onClick={() => setOpen(true)}>
             {" "}
             DELETE
           </button>
@@ -52,6 +75,35 @@ const Home = (props) => {
             interested
           </button>
         )}
+        <div>
+          <Dialog
+            fullScreen={fullScreen}
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="responsive-dialog-title"
+          >
+            <DialogTitle id="responsive-dialog-title">
+              Brisanje apartmana
+            </DialogTitle>
+            <DialogContent>
+              <DialogContentText>
+                {successMode
+                  ? "Uspesno ste izbrisali apartman!"
+                  : "Da li zaista zelite za izbriste apartman?"}
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button autoFocus onClick={handleClose} color="primary">
+                {successMode ? "Povratak na pocetnu stranu" : "Ne"}
+              </Button>
+              {!successMode && (
+                <Button onClick={handleAgree} color="primary" autoFocus>
+                  Da
+                </Button>
+              )}
+            </DialogActions>
+          </Dialog>
+        </div>
       </footer>
     </article>
   );
