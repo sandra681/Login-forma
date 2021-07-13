@@ -83,24 +83,7 @@ const Homepage = (props) => {
     setSort(value);
     setOrder(order);
   }
-  function removeAllLikedHomes() {
-    dispatch(deleteAllLikedApartment(user.user.id))
-      .then(() => {
-        console.log("Obrisano");
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }
-  function removeLikedHome(id) {
-    dispatch(deleteLikedApartment(user.user.id, id))
-      .then(() => {
-        console.log("Obrisano");
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }
+
   function removeHome(id) {
     setFilterHomes(filterHomes.filter((home) => home.id !== id));
   }
@@ -257,13 +240,13 @@ const Homepage = (props) => {
         </main>
       </div>
       <div>
-        {!user.isAdmin && (
+        {/* {!user.isAdmin && (
           <LikedHomes
             removeAllLikedHomes={removeAllLikedHomes}
             likedHomes={likedHomes}
             removeLikedHome={removeLikedHome}
           />
-        )}
+        )} */}
       </div>
     </div>
   );

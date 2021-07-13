@@ -2,7 +2,6 @@ import styled from "styled-components";
 import { Link as LinkR } from "react-router-dom";
 import { Link as LinkS } from "react-scroll";
 
-
 export const Nav = styled.nav`
   background: ${({ scrolled }) =>
     scrolled > 0 ? "rgba(173, 157, 157, 90%)" : "transparent"};
@@ -10,7 +9,7 @@ export const Nav = styled.nav`
   margin-top: -80px;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: bottom;
   font-size: 1rem;
   position: sticky;
   top: 0;
@@ -18,8 +17,8 @@ export const Nav = styled.nav`
 
   @media screen and (max-width: 738px) {
     transition: 0.8s all ease;
+    align-items: flex-end;
   }
-  
 `;
 
 export const NavbarContainer = styled.div`
@@ -29,7 +28,8 @@ export const NavbarContainer = styled.div`
   z-index: 1;
   width: 100%;
   padding: 0 24px;
-  max-width: 1100px;
+  max-width: 100%;
+  align-items: baseline;
 `;
 export const NavbarLogo = styled(LinkR)`
   color: brown;
@@ -41,6 +41,9 @@ export const NavbarLogo = styled(LinkR)`
   margin-left: 24px;
   font-weight: bold;
   text-decoration: none;
+  @media screen and (max-width: 738px) {
+    margin-bottom: 0px;
+  }
 `;
 
 export const MobileIcon = styled.div`
@@ -60,13 +63,28 @@ export const NavMenu = styled.ul`
   align-items: center;
   list-style: none;
   text-align: center;
-  margin-right: -22px;
+  padding-left: 5rem;
+
   @media screen and (max-width: 768px) {
-    display: none;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100vh;
+    position: absolute;
+    top: 80px;
+    left: ${({ click }) => (click ? "0" : "-100%")};
+    background-color: rgba(0, 0, 0, 0.9);
+    transition: all 0.5s ease;
   }
 `;
 export const NavItem = styled.li`
   height: 80px;
+  @media only screen and (max-width: 1000px) {
+    width: 100%;
+    &:hover {
+      border: none;
+    }
+  }
 `;
 export const NavLinks = styled(LinkR)`
   color: brown;
@@ -80,12 +98,27 @@ export const NavLinks = styled(LinkR)`
   &.active {
     border-bottom: 3px solid #01bf71;
   }
+  &:hover {
+    color: #e38b06;
+    transform: traslateY(-3rem);
+  }
+  @media only screen and (max-width: 1000px) {
+    display: block;
+    padding: 3rem;
+    text-align: center;
+    transition: all 0.2s ease;
+  }
 `;
 export const NavBtn = styled.nav`
   display: flex;
   align-items: center;
+  margin-bottom: 0px;
   @media screen and (max-width: 768px) {
-    display: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+    height: 120px;
   }
 `;
 export const NavBtnLink = styled(LinkR)`
@@ -100,6 +133,7 @@ export const NavBtnLink = styled(LinkR)`
   cusrsor: pointer;
   transition: all 0.2s ease-in-out;
   text-decoration: none;
+  margin-bottom: 0px;
   &:hover {
     transition: all 0.2s ease-in-out;
     background: #fff;

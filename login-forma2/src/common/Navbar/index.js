@@ -12,9 +12,15 @@ import {
   NavBtnLink,
   NavBtnBtn,
 } from "./NavbarElements";
+import { AiOutlineClose } from "react-icons/ai";
 import { FaBars, FaRegHeart } from "react-icons/fa";
 import Badge from "@material-ui/core/Badge";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { Button, Modal } from "react-bootstrap";
+import {
+  deleteAllLikedApartment,
+  deleteLikedApartment,
+} from "../../actions/apartments";
 
 const Navbar = (props) => {
   const { isLoggedIn } = useSelector((state) => state.authReducer);
@@ -27,8 +33,9 @@ const Navbar = (props) => {
     const position = window.pageYOffset;
     setScrollPosition(position);
   };
-
+  const dispatch = useDispatch();
   const [click, setClick] = useState(false);
+  const [open, setOpen] = useState(false);
   const handleClick = () => setClick(!click);
 
   useEffect(() => {
@@ -38,32 +45,72 @@ const Navbar = (props) => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
   function addHome() {
     props.history.push("/form-home/");
+  }
+  function closeMenu() {
+    setClick(false);
+  }
+  function handleClose() {
+    setOpen(false);
+  }
+  function handleLikeClick() {
+    setOpen(!open);
+  }
+  function removeAllLikedHomes() {
+    if (user.user === null) return;
+    dispatch(deleteAllLikedApartment(user.user.id))
+      .then(() => {
+        console.log("Obrisano");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+  function removeLikedHome(id) {
+    if (user.user === null) return;
+    dispatch(deleteLikedApartment(user.user.id, id))
+      .then(() => {
+        console.log("Obrisano");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
   return (
     <>
       <Nav scrolled={scrollPosition}>
         <NavbarContainer>
           <NavbarLogo to="/">rent</NavbarLogo>
-          <MobileIcon /* className="menu-icon" */ onClick={handleClick}>
-            <FaBars /* className={click ? "fas fa-times" : "fas fa-bars"}  */ />
+          <MobileIcon onClick={handleClick}>
+            {click ? <AiOutlineClose /> : <FaBars />}
           </MobileIcon>
-          <NavMenu
-             
-            className={click ? "nav-menu active" : "nav-menu"}
-          >
+          <NavMenu onClick={handleClick} click={click}>
             <NavItem>
-              <NavLinks to="about">About</NavLinks>
+              <NavLinks onClick={closeMenu} to="about">
+                About
+              </NavLinks>
             </NavItem>
             <NavItem>
-              <NavLinks to="/">Home</NavLinks>
+              <NavLinks onClick={closeMenu} to="/">
+                Home
+              </NavLinks>
             </NavItem>
+            <NavItem>
+              <NavLinks onClick={closeMenu} to="/profile">
+                Profile
+              </NavLinks>
+            </NavItem>
+
             {user.isAdmin && (
               <NavItem>
                 <NavBtnBtn
                   onClick={() => addHome()}
-                  style={{ background: "red", marginTop: "1rem" }}
+                  style={{
+                    background: "red",
+                    marginTop: "1rem",
+                  }}
                 >
                   Add Home
                 </NavBtnBtn>
@@ -81,21 +128,71 @@ const Navbar = (props) => {
               <NavBtnLink to="/login">Login</NavBtnLink>
             </NavBtn>
           ) : (
-            <>
+            <NavBtn>
               <Badge
                 badgeContent={likedHomes !== null ? likedHomes.length : 0}
+                onClick={handleLikeClick}
                 color="primary"
-                style={{ marginTop: "2rem" }}
+                style={{
+                  marginRight: "2vw",
+                  marginTop: "1vh",
+                  cursor: "pointer",
+                }}
               >
                 <FaRegHeart />
               </Badge>
               <NavBtn>
                 <NavBtnBtn onClick={() => props.logout()}>Logout</NavBtnBtn>
               </NavBtn>
-            </>
+            </NavBtn>
           )}
         </NavbarContainer>
       </Nav>
+      <Modal show={open} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>
+            {" "}
+            {likedHomes !== null ? likedHomes.length : 0} liked apartments
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {likedHomes !== null &&
+            likedHomes.map((home, index) => {
+              return (
+                <article key={index} className="in_apart">
+                  <img
+                    src={process.env.REACT_APP_BASE_URL_IMAGE + home.filename}
+                    alt={home.name}
+                  />
+                  <div>
+                    <h4>{home.name}</h4>
+                    <div style={{ display: "contents" }}>
+                      <p>${home.price}</p>
+                      <img
+                        src="http://localhost:3000/images/close.png"
+                        alt="close"
+                        onClick={() => removeLikedHome(home.id)}
+                        style={{
+                          float: "right",
+                          width: "15px",
+                          height: "15px",
+                        }}
+                      ></img>
+                    </div>
+                  </div>
+                </article>
+              );
+            })}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => removeAllLikedHomes()}>
+            Clear All
+          </Button>
+          <Button variant="primary" onClick={handleClose}>
+            Open in full screen
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </>
   );
 };
