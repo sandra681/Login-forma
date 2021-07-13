@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import "./Navbar.css";
 import {
   Nav,
   NavbarContainer,
@@ -178,6 +177,7 @@ const Navbar = (props) => {
                           height: "15px",
                         }}
                       ></img>
+                      <NavLinks to="/apartment/${home.id}">view more</NavLinks>
                     </div>
                   </div>
                 </article>
