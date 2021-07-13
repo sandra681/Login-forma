@@ -6,10 +6,9 @@ import {
   ADD_LIKED_APARTMENT,
   ADD_TO_ALL,
   DELETE_LIKED_APARTMENT,
-  DELETE_ALL_LIKED_APARTMENT
+  DELETE_ALL_LIKED_APARTMENT,
 } from "../actions/types";
 import authHeader from "../services/auth-header";
-
 
 const initialState = { apartments: null, likedApartments: null };
 
@@ -30,16 +29,16 @@ export default function apartmentsReducer(state = initialState, action) {
       };
     case ADD_TO_ALL:
       return { ...state, likedApartments: payload.likedApartments };
-      case DELETE_LIKED_APARTMENT:
-        return{
-          ...state,
-          likedApartments:payload.likedApartments
-        }
-        case DELETE_ALL_LIKED_APARTMENT:
-          return{
-            ...state,
-            likedApartments:null
-          }
+    case DELETE_LIKED_APARTMENT:
+      return {
+        ...state,
+        likedApartments: payload.likedApartments,
+      };
+    case DELETE_ALL_LIKED_APARTMENT:
+      return {
+        ...state,
+        likedApartments: null,
+      };
     default:
       return state;
   }

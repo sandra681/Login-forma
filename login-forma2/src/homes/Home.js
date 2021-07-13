@@ -3,39 +3,17 @@ import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import authHeader from "../services/auth-header";
 const Home = (props) => {
-  const {
-    id,
-    image,
-    info,
-    price,
-    name,
-    street,
-    removeHome,
-    addLikedHome,
-    deleteHome,
-  } = props;
+  const { id, image, info, price, name, street, filename } = props.home1;
+  const { removeHome, addLikedHome, deleteHome, liked } = props;
   const [readMore, setReadMore] = useState(false);
   const backendUrl = "http://127.0.0.1:8000/images/";
-  const [imageName, setImageName] = useState("");
   const admin = useSelector((state) => state.userReducer).isAdmin;
-  useEffect(() => {
-    axios
-      .get("http://127.0.0.1:8000/api/fileupload/" + image, {
-        headers: authHeader(),
-      })
-      .then((response) => {
-        setImageName(response.data[0].filename);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
   function editHome(id) {
     props.history.push("/form-home/" + id);
   }
   return (
     <article className="single-apartment">
-      <img src={backendUrl+ imageName} alt={name}></img>
+      <img src={backendUrl + filename} alt={name}></img>
       <footer>
         <div className="apartment-info">
           <h4>{name}</h4>
@@ -63,14 +41,13 @@ const Home = (props) => {
             DELETE
           </button>
         )}
+
         {!admin && (
-          <button className="delete-btn" onClick={() => removeHome(id)}>
-            {" "}
-            not interested
-          </button>
-        )}
-        {!admin && (
-          <button className="delete-btn" onClick={() => addLikedHome(id)}>
+          <button
+            className="delete-btn"
+            onClick={() => addLikedHome(id)}
+            disabled={liked}
+          >
             {" "}
             interested
           </button>

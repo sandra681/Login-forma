@@ -457,3 +457,10 @@ option:hover {
   align-items: center;
   justify-content: center;
 }
+.delete-btn:disabled,
+button[disabled] {
+  cursor: auto;
+  border: 1px solid #999999;
+  background-color: #cccccc;
+  color: #666666;
+}

@@ -5,10 +5,20 @@ import "./FormHome.css";
 import axios from "axios";
 import { useSelector } from "react-redux";
 
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
+import { useTheme } from "@material-ui/core/styles";
+import apartmentServices from "../services/apartment.services";
+
 function FormHome({ history, match }) {
   const { id } = match.params;
   const isAddMode = !id;
 
+  const [apartment, setApartments] = useState([]);
   const token = JSON.parse(localStorage.getItem("token"));
   const user = useSelector((state) => state.userReducer);
   const nameRef = useRef();
@@ -23,9 +33,22 @@ function FormHome({ history, match }) {
 
   const [loading, setLoading] = useState(false);
   const [file, setFile] = useState(null);
+  //PROVERITI STA JE UPITANJU
+  const [open, setOpen] = React.useState(false);
+  const theme = useTheme();
+  const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
   let path;
 
+  if (!isAddMode) {
+    apartmentServices
+      .getOneApartment()
+      .then((response) => setApartments(response.data))
+      .catch((error) => console.log(error));
+  }
+  if (apartment !== null) {
+    nameRef.current.value(apartment.name);
+  }
   function fileSelectedHandler(e) {
     let files = e.target.files[0];
     let reader = new FileReader();
@@ -57,6 +80,8 @@ function FormHome({ history, match }) {
       )
       .then((response) => {
         path = response.data.img.id;
+        setOpen(true);
+        e.target.reset();
       })
       .catch((error) => {
         console.log(error);
@@ -100,6 +125,19 @@ function FormHome({ history, match }) {
   }
 
   async function updateApartment(e) {}
+
+  const handleAgree = () => {
+    setOpen(false);
+    history.push("/form-home");
+  };
+  const handleDisagree = () => {
+    setOpen(false);
+    history.push("/");
+  };
+  const handleClose = () => {
+    setOpen(false);
+    history.push("/");
+  };
 
   return (
     <>
@@ -237,6 +275,30 @@ function FormHome({ history, match }) {
                 <Button disabled={loading} type="submit">
                   {isAddMode ? "Add" : "Edit"}
                 </Button>
+                <Dialog
+                  fullScreen={fullScreen}
+                  open={open}
+                  onClose={handleClose}
+                  aria-labelledby="responsive-dialog-title"
+                >
+                  <DialogTitle id="responsive-dialog-title">
+                    {"Dodavanje novog apartmana"}
+                  </DialogTitle>
+                  <DialogContent>
+                    <DialogContentText>
+                      Apartman je uspesno sacuvan! Da li zelite da dodate jos
+                      jedan?
+                    </DialogContentText>
+                  </DialogContent>
+                  <DialogActions>
+                    <Button autoFocus onClick={handleDisagree} color="primary">
+                      Ne
+                    </Button>
+                    <Button onClick={handleAgree} color="primary" autoFocus>
+                      Da
+                    </Button>
+                  </DialogActions>
+                </Dialog>
               </div>
             </Form>
           </Card.Body>

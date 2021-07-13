@@ -21,7 +21,6 @@ function App() {
   const dispatch = useDispatch();
   const isLoggedIn = useSelector((state) => state.authReducer);
   const user = useSelector((state) => state.userReducer);
-  console.log(user);
   useEffect(() => {
     if (isLoggedIn.isLoggedIn) {
       dispatch(getLoggedUser());
@@ -31,12 +30,12 @@ function App() {
     if (user.user) {
       apartmentService
         .getAllLikedApartmentsOfUser(user.user.id)
-        .then((response) =>
+        .then((response) => {
           dispatch({
             type: ADD_TO_ALL,
             payload: { likedApartments: response.data },
-          })
-        )
+          });
+        })
         .catch((error) => console.log(error));
     }
   }, [user]);
@@ -61,7 +60,11 @@ function App() {
           path="/form-home"
           component={FormHome}
         ></PrivateRoute>
-        <PrivateRoute path="/form-home/:id" component={FormHome}></PrivateRoute>
+        <PrivateRoute
+          path="/form-home/:id"
+          history={history}
+          component={FormHome}
+        ></PrivateRoute>
         <Route exact path="/" component={Homepage}></Route>
         <Route path="/signup" component={Signup}></Route>
         <Route path="/login" component={Login}></Route>

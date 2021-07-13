@@ -9,6 +9,7 @@ import "./Homepage.css";
 import { useDispatch, useSelector } from "react-redux";
 import { Pagination } from "react-bootstrap";
 import {
+  deleteAllLikedApartment,
   deleteLikedApartment,
   getApartments,
   storeLikedApartments,
@@ -77,7 +78,13 @@ const Homepage = (props) => {
     setOrder(order);
   }
   function removeAllLikedHomes() {
-    //nothing for now
+    dispatch(deleteAllLikedApartment(user.user.id))
+      .then(() => {
+        console.log("Obrisano");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
   function removeLikedHome(id) {
     dispatch(deleteLikedApartment(user.user.id, id))
@@ -92,20 +99,24 @@ const Homepage = (props) => {
     setFilterHomes(filterHomes.filter((home) => home.id !== id));
   }
   const addLikedHome = (id) => {
-    if (
-      likedHomes !== null &&
-      likedHomes.filter((home) => home.id === id).length > 0
-    ) {
-      return;
+    if (token === null) {
+      props.history.push("/login");
+    } else {
+      if (
+        likedHomes !== null &&
+        likedHomes.filter((home) => home.id === id).length > 0
+      ) {
+        return;
+      }
+      dispatch(storeLikedApartments(user.user.id, id))
+        .then(() => {
+          // dispatch(getAllLikedApartmentsOfUser(user.user.id)).then(()=>console.log("ubacen")).catch((error)=>console.log(error));
+          console.log("Liked home is stored");
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     }
-    dispatch(storeLikedApartments(user.user.id, id))
-      .then(() => {
-        // dispatch(getAllLikedApartmentsOfUser(user.user.id)).then(()=>console.log("ubacen")).catch((error)=>console.log(error));
-        console.log("Liked home is stored");
-      })
-      .catch((error) => {
-        console.log(error);
-      });
   };
 
   function categoryFilter(category) {
@@ -129,6 +140,9 @@ const Homepage = (props) => {
         return;
       }
     });
+  }
+  function editHome(id) {
+    props.history.push("/form-home/" + id);
   }
 
   return (
@@ -206,16 +220,23 @@ const Homepage = (props) => {
         <main>
           <section className="menu section">
             <div>
-              {filterHomes.map((home1) => {
+              {filterHomes.map((home1, index) => {
+                let liked = false;
+                if (
+                  likedHomes !== null &&
+                  likedHomes.filter((one) => one.id === home1.id).length !== 0
+                ) {
+                  liked = true;
+                }
                 return (
                   <Home
-                    key={home1.id}
+                    key={index}
                     removeHome={removeHome}
                     addLikedHome={addLikedHome}
                     deleteHome={handleDeleteHome}
                     home1={home1}
                     history={props.history}
-                    {...home1}
+                    liked={liked}
                   />
                 );
               })}
@@ -241,7 +262,6 @@ const Homepage = (props) => {
       <div>
         {!user.isAdmin && (
           <LikedHomes
-            token={token}
             removeAllLikedHomes={removeAllLikedHomes}
             likedHomes={likedHomes}
             removeLikedHome={removeLikedHome}

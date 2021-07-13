@@ -3,7 +3,8 @@ import {
   GET_APARTMENT_FAIL,
   SET_MESSAGE,
   ADD_LIKED_APARTMENT,
-  DELETE_LIKED_APARTMENT
+  DELETE_LIKED_APARTMENT,
+  DELETE_ALL_LIKED_APARTMENT,
 } from "./types";
 import apartmentService from "../services/apartment.services";
 
@@ -49,7 +50,6 @@ export const getApartments =
 export const storeLikedApartments = (user_id, home_id) => (dispatch) => {
   return apartmentService.storeLikedApartments(user_id, home_id).then(
     (response) => {
-      console.log(response.data);
       dispatch({
         type: ADD_LIKED_APARTMENT,
         payload: { likedApartments: response.data[0] },
@@ -126,7 +126,7 @@ export const deleteLikedApartment = (user_id, home_id) => (dispatch) => {
     (response) => {
       dispatch({
         type: DELETE_LIKED_APARTMENT,
-        payload: { apartments: response.data.data },
+        payload: { likedApartments: response.data },
       });
 
       dispatch({
@@ -134,7 +134,7 @@ export const deleteLikedApartment = (user_id, home_id) => (dispatch) => {
         payload: response.data.message,
       });
 
-      return response;
+      return Promise.resolve();
     },
     (error) => {
       const message =
@@ -144,7 +144,6 @@ export const deleteLikedApartment = (user_id, home_id) => (dispatch) => {
         error.message ||
         error.toString();
 
-     
       dispatch({
         type: SET_MESSAGE,
         payload: message,
@@ -154,4 +153,34 @@ export const deleteLikedApartment = (user_id, home_id) => (dispatch) => {
     }
   );
 };
+export const deleteAllLikedApartment = (user_id) => (dispatch) => {
+  return apartmentService.deleteLikedApartment(user_id).then(
+    (response) => {
+      dispatch({
+        type: DELETE_ALL_LIKED_APARTMENT,
+      });
 
+      dispatch({
+        type: SET_MESSAGE,
+        payload: response.data.message,
+      });
+
+      return Promise.resolve();
+    },
+    (error) => {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      dispatch({
+        type: SET_MESSAGE,
+        payload: message,
+      });
+
+      return Promise.reject();
+    }
+  );
+};

@@ -38,32 +38,38 @@ const storeLikedApartments = (user_id, home_id) => {
   );
 };
 const getAllLikedApartmentsOfUser = (user_id) => {
-
+  return axios.post(
+    process.env.REACT_APP_BASE_URL_AUTH + "likedHomes",
+    { user_id },
+    { headers: authHeader() }
+  );
+};
+const deleteLikedApartment = (user_id, home_id) => {
+  return axios.delete(process.env.REACT_APP_BASE_URL_AUTH + "likedHome", {
+    headers: authHeader(),
+    data: { user_id, home_id },
+  });
+};
+const deleteAllLikedApartment = (user_id) => {
+  return axios.delete(process.env.REACT_APP_BASE_URL_AUTH + "likedHome", {
+    headers: authHeader(),
+    data: { user_id, home_id: "" },
+  });
+};
+const getOneApartment = (home_id) => {
   return axios
-    .post(
-      process.env.REACT_APP_BASE_URL_AUTH + "likedHomes",
-      { user_id },
-      { headers: authHeader() }
-    )
+    .get(process.env.REACT_APP_BASE_URL + "home/" + home_id)
     .then((response) => {
-      console.log(response);
-      return response;
+      console.log(response.data);
+      return response.data;
     })
     .catch((error) => console.log(error));
-
 };
-const deleteLikedApartment=(user_id, home_id)=>{
-  return axios.delete(
-    process.env.REACT_APP_BASE_URL_AUTH + "likedHome",
-    {user_id, home_id},
-    {
-      headers:authHeader()
-    }
-  )
-}
 export default {
   getApartments,
   getAllLikedApartmentsOfUser,
   storeLikedApartments,
   deleteLikedApartment,
+  deleteAllLikedApartment,
+  getOneApartment,
 };

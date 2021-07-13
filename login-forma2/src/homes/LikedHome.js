@@ -4,27 +4,13 @@ import { useSelector } from "react-redux";
 import authHeader from "../services/auth-header";
 
 const LikedHomes = (props) => {
-  const { token, removeAllLikedHomes, removeLikedHome } = props;
+  const token = localStorage.getItem("token");
+  const { removeAllLikedHomes, removeLikedHome } = props;
   const backendUrl = "http://127.0.0.1:8000/images/";
   const [imageName, setImageName] = useState("");
   const likedHomes = useSelector(
     (state) => state.apartmentsReducer
   ).likedApartments;
-  console.log(likedHomes);
-  const { image } = props;
-
-  useEffect(() => {
-    axios
-      .get("http://127.0.0.1:8000/api/fileupload/" + image, {
-        headers: authHeader(),
-      })
-      .then((response) => {
-        setImageName(response.data[0].filename);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
   if (token !== "") {
     return (
       <section className="interested">
@@ -36,7 +22,7 @@ const LikedHomes = (props) => {
             likedHomes.map((home, index) => {
               return (
                 <article key={index} className="in_apart">
-                  <img src={backendUrl + imageName} alt={home.name} />
+                  <img src={backendUrl + home.filename} alt={home.name} />
                   <div>
                     <h4>{home.name}</h4>
                     <div style={{ display: "contents" }}>

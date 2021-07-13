@@ -18,10 +18,9 @@ import { useSelector } from "react-redux";
 const Navbar = (props) => {
   const { isLoggedIn } = useSelector((state) => state.authReducer);
   const user = useSelector((state) => state.userReducer);
-  const likedApartments = useSelector(
+  const likedHomes = useSelector(
     (state) => state.apartmentsReducer
-  ).apartments;
-  console.log(likedApartments);
+  ).likedApartments;
   function addHome() {
     props.history.push("/form-home/");
   }
@@ -64,10 +63,7 @@ const Navbar = (props) => {
           ) : (
             <>
               <Badge
-                badgeContent={
-                  likedApartments === null ? 0 : likedApartments.lenght
-                  
-                }
+                badgeContent={likedHomes !== null ? likedHomes.length : 0}
                 color="primary"
                 style={{ marginTop: "2rem" }}
               >
