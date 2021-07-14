@@ -5,7 +5,11 @@ import { getCategories } from "../../api/residentialBuildingsApi";
 import SearchBar from "../SearchBar";
 import "./Homepage.css";
 import { useDispatch, useSelector } from "react-redux";
+<<<<<<< HEAD
 import {  Pagination } from "react-bootstrap";
+=======
+import { Pagination } from "react-bootstrap";
+>>>>>>> origin/designAH
 import {
   deleteApartment,
   getApartments,
@@ -61,14 +65,25 @@ const Homepage = (props) => {
     //   setFilterHomes(result.data.data);
     //   setPageCount(result.data["last_page"]);
     // });
-  }, [sort, order, filter, search, page, user, dispatch]);
-
+  }, [sort, order, filter, search, page, user]);
   let items = [];
 
   for (let i = 1; i < pageCount + 1; i++) {
-    if(i===4) {
-      items.push(<Pagination.Ellipsis  />)
-      
+
+    if (i === page + 4) {
+      items.push(<Pagination.Ellipsis />);
+      items.push(
+        <Pagination.Item
+          key={pageCount}
+          active={page === pageCount}
+          onClick={() => setPage(pageCount)}
+          activeLabel={false}
+        >
+          {pageCount}
+        </Pagination.Item>
+      );
+      break;
+
     }
     items.push(
       <Pagination.Item
@@ -79,7 +94,6 @@ const Homepage = (props) => {
       >
         {i}
       </Pagination.Item>
-
     );
   }
 

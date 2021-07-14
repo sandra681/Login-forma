@@ -9,9 +9,9 @@ const getApartments = (filter, sort, order, search, page) => {
         "Content-Type": "application/json",
       },
       params: {
-        search,
         sort,
         order,
+        search,
         page,
       },
     });
@@ -22,10 +22,10 @@ const getApartments = (filter, sort, order, search, page) => {
       "Content-Type": "application/json",
     },
     params: {
-      search,
       filter,
       sort,
       order,
+      search,
       page,
     },
   });

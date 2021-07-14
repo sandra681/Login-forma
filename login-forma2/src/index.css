@@ -489,3 +489,8 @@ button[disabled] {
   background-color: #cccccc;
   color: #666666;
 }
+.close {
+  background: transparent;
+  border: none;
+  font-size: 2rem;
+}

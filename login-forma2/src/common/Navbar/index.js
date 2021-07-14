@@ -15,7 +15,7 @@ import { AiOutlineClose } from "react-icons/ai";
 import { FaBars, FaRegHeart } from "react-icons/fa";
 import Badge from "@material-ui/core/Badge";
 import { useDispatch, useSelector } from "react-redux";
-import { Button, Modal } from "react-bootstrap";
+import { Button, Modal} from "react-bootstrap";
 import {
   deleteAllLikedApartment,
   deleteLikedApartment,
@@ -151,7 +151,7 @@ const Navbar = (props) => {
         </NavbarContainer>
       </Nav>
       <Modal show={open} onHide={handleClose}>
-        <Modal.Header closeButton>
+        <Modal.Header closeButton closeLabel={""}>
           <Modal.Title>
             {" "}
             {likedHomes !== null ? likedHomes.length : 0} liked apartments
@@ -180,6 +180,7 @@ const Navbar = (props) => {
                           height: "15px",
                         }}
                       ></img>
+                      <p>{home.street}</p>
                       <a href={"/apartment/" + home.id}>view more</a>
                     </div>
                   </div>

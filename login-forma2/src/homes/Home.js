@@ -34,7 +34,6 @@ const Home = (props) => {
   }
   return (
     <article className="single-apartment">
-      
       <img src={backendUrl + filename} alt={name}></img>
       <footer>
         <div className="apartment-info">
@@ -105,7 +104,6 @@ const Home = (props) => {
           </Dialog>
         </div>
       </footer>
-      
     </article>
   );
 };
