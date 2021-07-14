@@ -7,7 +7,7 @@ import LikedHomes from "../../homes/LikedHome";
 import SearchBar from "../SearchBar";
 import "./Homepage.css";
 import { useDispatch, useSelector } from "react-redux";
-import { Pagination } from "react-bootstrap";
+import { Col, Pagination, Row } from "react-bootstrap";
 import {
   deleteAllLikedApartment,
   deleteApartment,
@@ -16,6 +16,7 @@ import {
   storeLikedApartments,
 } from "../../actions/apartments";
 import apartmentServices from "../../services/apartment.services";
+import { Grid } from "@material-ui/core";
 
 const Homepage = (props) => {
   const token = JSON.parse(localStorage.getItem("token"));
@@ -214,10 +215,12 @@ const Homepage = (props) => {
         </select>
       </div>
       <div className="box">
-        <main>
+        {/* <main>
           <section className="menu section">
-            <div>
+            <div className="apartmants">
               {filterHomes.map((home1, index) => {
+               
+               //liked
                 let liked = false;
                 if (
                   likedHomes !== null &&
@@ -225,8 +228,10 @@ const Homepage = (props) => {
                 ) {
                   liked = true;
                 }
+               
                 return (
-                  <Home
+                  
+                  <Home 
                     key={index}
                     removeHome={removeHome}
                     addLikedHome={addLikedHome}
@@ -235,6 +240,8 @@ const Homepage = (props) => {
                     history={props.history}
                     liked={liked}
                   />
+                
+               
                 );
               })}
             </div>
@@ -254,8 +261,62 @@ const Homepage = (props) => {
               <Pagination.Last onClick={() => setPage(pageCount)} />
             </Pagination>
           </section>
-        </main>
+          
+        </main> */}
+
+
+
+
+                {filterHomes.map((home1, index) => {
+               
+               //liked
+                let liked = false;
+                if (
+                  likedHomes !== null &&
+                  likedHomes.filter((one) => one.id === home1.id).length !== 0
+                ) {
+                  liked = true;
+                }
+               
+                return (
+                  <div className="apartman">
+                  <Home 
+                    key={index}
+                    removeHome={removeHome}
+                    addLikedHome={addLikedHome}
+                    deleteHome={deleteHome}
+                    home1={home1}
+                    history={props.history}
+                    liked={liked}
+                  />
+                
+               </div>
+                );
+              })}
+
+
+              
       </div>
+
+<div className="pagination">
+      <Pagination>
+              <Pagination.First onClick={() => setPage(1)} />
+              <Pagination.Prev
+                onClick={() => {
+                  page === 1 ? setPage(1) : setPage(page - 1);
+                }}
+              />
+              {items}
+              <Pagination.Next
+                onClick={() =>
+                  page === pageCount ? setPage(page) : setPage(page + 1)
+                }
+              />
+              <Pagination.Last onClick={() => setPage(pageCount)} />
+            </Pagination>
+
+            </div>
+
       <div>
         {!user.isAdmin && (
           <LikedHomes

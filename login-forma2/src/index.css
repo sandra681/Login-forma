@@ -159,7 +159,7 @@ Tours
 */
 main {
   width: 90vw;
-  max-width: var(--fixed-width);
+  max-width: 1200px;
   margin: 2rem auto;
   display: flex;
   flex-direction: row;
@@ -359,7 +359,22 @@ main {
 }
 .box {
   display: flex;
-  justify-content: center;
+  margin-left: 5%;
+  margin-right: 5%;
+  flex-wrap: wrap;
+}
+
+.box .apartman {
+  width: 50%;
+}
+.apartman {
+  padding: 3%;
+  padding-bottom: 0px;
+}
+.pagination {
+  margin: 2rem auto;
+  display: flex;
+  flex-direction: row;
 }
 .search {
   display: flex;
