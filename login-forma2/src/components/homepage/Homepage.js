@@ -7,7 +7,7 @@ import LikedHomes from "../../homes/LikedHome";
 import SearchBar from "../SearchBar";
 import "./Homepage.css";
 import { useDispatch, useSelector } from "react-redux";
-import { Col, Pagination, Row } from "react-bootstrap";
+import {  Pagination } from "react-bootstrap";
 import {
   deleteAllLikedApartment,
   deleteApartment,
@@ -64,6 +64,10 @@ const Homepage = (props) => {
   let items = [];
 
   for (let i = 1; i < pageCount + 1; i++) {
+    if(i===4) {
+      items.push(<Pagination.Ellipsis  />)
+      break;
+    }
     items.push(
       <Pagination.Item
         key={i}
@@ -73,6 +77,7 @@ const Homepage = (props) => {
       >
         {i}
       </Pagination.Item>
+
     );
   }
 
@@ -325,7 +330,7 @@ const Homepage = (props) => {
 <div className="pagination">
       <Pagination>
               <Pagination.First onClick={() => setPage(1)} 
-               hidden={checkPagePrev(page)}/>
+               disabled={checkPagePrev(page)}/>
           
               <Pagination.Prev
                 onClick={() => {
@@ -345,7 +350,7 @@ const Homepage = (props) => {
                 hidden={checkPageNext(page)}
               />
               <Pagination.Last onClick={() => setPage(pageCount)}
-               hidden={checkPageNext(page)} />
+               disabled={checkPageNext(page)} />
             </Pagination>
 
             </div>
