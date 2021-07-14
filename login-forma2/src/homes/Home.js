@@ -17,7 +17,7 @@ const Home = (props) => {
   const { removeHome, addLikedHome, deleteHome, liked } = props;
   const [readMore, setReadMore] = useState(false);
   const backendUrl = "http://127.0.0.1:8000/images/";
-  const admin = useSelector((state) => state.userReducer).isAdmin;
+  const user = useSelector((state) => state.userReducer);
 
   const [successMode, setSuccessMode] = useState(false);
   const [open, setOpen] = React.useState(false);
@@ -52,20 +52,20 @@ const Home = (props) => {
             {readMore ? "show less" : "read more"}
           </button>
         </p>
-        {admin && (
+        {user.isAdmin && (
           <button className="delete-btn" onClick={() => editHome(id)}>
             {" "}
             EDIT
           </button>
         )}
-        {admin && (
+        {user.isAdmin && (
           <button className="delete-btn" onClick={() => setOpen(true)}>
             {" "}
             DELETE
           </button>
         )}
 
-        {!admin && (
+        {!user.isAdmin && (
           <button
             className="delete-btn"
             onClick={() => addLikedHome(id)}

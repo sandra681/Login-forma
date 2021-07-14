@@ -87,13 +87,13 @@ const Navbar = (props) => {
           </MobileIcon>
           <NavMenu onClick={handleClick} click={click}>
             <NavItem>
-              <NavLinks onClick={closeMenu} to="about">
-                About
+              <NavLinks onClick={closeMenu} to="/">
+                Home
               </NavLinks>
             </NavItem>
             <NavItem>
-              <NavLinks onClick={closeMenu} to="/">
-                Home
+              <NavLinks onClick={closeMenu} to="about">
+                About
               </NavLinks>
             </NavItem>
             <NavItem>
@@ -107,8 +107,9 @@ const Navbar = (props) => {
                 <NavBtnBtn
                   onClick={() => addHome()}
                   style={{
-                    background: "red",
+                    background: "brown",
                     marginTop: "1rem",
+                    color: "white",
                   }}
                 >
                   Add Home
@@ -128,18 +129,20 @@ const Navbar = (props) => {
             </NavBtn>
           ) : (
             <NavBtn>
-              <Badge
-                badgeContent={likedHomes !== null ? likedHomes.length : 0}
-                onClick={handleLikeClick}
-                color="primary"
-                style={{
-                  marginRight: "2vw",
-                  marginTop: "1vh",
-                  cursor: "pointer",
-                }}
-              >
-                <FaRegHeart />
-              </Badge>
+              {!user.isAdmin && (
+                <Badge
+                  badgeContent={likedHomes !== null ? likedHomes.length : 0}
+                  onClick={handleLikeClick}
+                  color="primary"
+                  style={{
+                    marginRight: "2vw",
+                    marginTop: "1vh",
+                    cursor: "pointer",
+                  }}
+                >
+                  <FaRegHeart />
+                </Badge>
+              )}
               <NavBtn>
                 <NavBtnBtn onClick={() => props.logout()}>Logout</NavBtnBtn>
               </NavBtn>
@@ -177,7 +180,7 @@ const Navbar = (props) => {
                           height: "15px",
                         }}
                       ></img>
-                      <NavLinks to="/apartment/${home.id}">view more</NavLinks>
+                      <a href={"/apartment/" + home.id}>view more</a>
                     </div>
                   </div>
                 </article>
@@ -185,7 +188,11 @@ const Navbar = (props) => {
             })}
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => removeAllLikedHomes()}>
+          <Button
+            variant="secondary"
+            onClick={() => removeAllLikedHomes()}
+            style={{ background: "brown" }}
+          >
             Clear All
           </Button>
           <Button variant="primary" onClick={handleClose}>

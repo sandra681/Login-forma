@@ -48,6 +48,14 @@ const Homepage = (props) => {
   useEffect(() => {
     dispatch(getApartments(filter, sort, order, search, page))
       .then((response) => {
+        if (user.isAdmin) {
+          let adminApartments = response.data.data.filter(
+            (one) => (one.user_id = user.user.id)
+          );
+          setFilterHomes(adminApartments);
+          setPageCount(response.data["last_page"]);
+          return;
+        }
         setFilterHomes(response.data.data);
         setPageCount(response.data["last_page"]);
       })
@@ -56,7 +64,7 @@ const Homepage = (props) => {
     //   setFilterHomes(result.data.data);
     //   setPageCount(result.data["last_page"]);
     // });
-  }, [sort, order, filter, search, page]);
+  }, [sort, order, filter, search, page, user]);
 
   let items = [];
 
