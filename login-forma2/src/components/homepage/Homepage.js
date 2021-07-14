@@ -1,22 +1,16 @@
 import React, { useState, useEffect } from "react";
 import Categories from "../../common/Categories";
 import Home from "../../homes/Home";
-import { deleteHome, getCategories } from "../../api/residentialBuildingsApi";
-import LikedHomes from "../../homes/LikedHome";
-// import SearchBox from "../common/SearchBox";
+import { getCategories } from "../../api/residentialBuildingsApi";
 import SearchBar from "../SearchBar";
 import "./Homepage.css";
 import { useDispatch, useSelector } from "react-redux";
 import {  Pagination } from "react-bootstrap";
 import {
-  deleteAllLikedApartment,
   deleteApartment,
-  deleteLikedApartment,
   getApartments,
   storeLikedApartments,
 } from "../../actions/apartments";
-import apartmentServices from "../../services/apartment.services";
-import { Grid } from "@material-ui/core";
 
 const Homepage = (props) => {
   const token = JSON.parse(localStorage.getItem("token"));
@@ -37,8 +31,8 @@ const Homepage = (props) => {
   const [order, setOrder] = useState("asc");
   // const [input, setInput] = useState("");
   const [search, setSearch] = useState("");
-  let activePrev=false
-  let activeNext=false
+  let activePrev = false;
+  let activeNext = false;
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -51,6 +45,14 @@ const Homepage = (props) => {
   useEffect(() => {
     dispatch(getApartments(filter, sort, order, search, page))
       .then((response) => {
+        if (user.isAdmin) {
+          let adminApartments = response.data.data.filter(
+            (one) => (one.user_id = user.user.id)
+          );
+          setFilterHomes(adminApartments);
+          setPageCount(response.data["last_page"]);
+          return;
+        }
         setFilterHomes(response.data.data);
         setPageCount(response.data["last_page"]);
       })
@@ -59,7 +61,7 @@ const Homepage = (props) => {
     //   setFilterHomes(result.data.data);
     //   setPageCount(result.data["last_page"]);
     // });
-  }, [sort, order, filter, search, page]);
+  }, [sort, order, filter, search, page, user, dispatch]);
 
   let items = [];
 
@@ -81,28 +83,23 @@ const Homepage = (props) => {
     );
   }
 
-  function checkPagePrev(page){
-    if(page===1){
-      activePrev=true
-      
-    }else{
-      activePrev=false
-
+  function checkPagePrev(page) {
+    if (page === 1) {
+      activePrev = true;
+    } else {
+      activePrev = false;
     }
-    return activePrev
+    return activePrev;
   }
-  function checkPageNext(page){
-    if(page===pageCount){
-      activeNext=true
-      
-    }else{
-      activeNext=false
-
+  function checkPageNext(page) {
+    if (page === pageCount) {
+      activeNext = true;
+    } else {
+      activeNext = false;
     }
-    return activeNext
+    return activeNext;
   }
 
-  
   async function updateInput(input) {
     setSearch(input);
   }
@@ -113,24 +110,7 @@ const Homepage = (props) => {
     setSort(value);
     setOrder(order);
   }
-  function removeAllLikedHomes() {
-    dispatch(deleteAllLikedApartment(user.user.id))
-      .then(() => {
-        console.log("Obrisano");
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }
-  function removeLikedHome(id) {
-    dispatch(deleteLikedApartment(user.user.id, id))
-      .then(() => {
-        console.log("Obrisano");
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }
+
   function removeHome(id) {
     setFilterHomes(filterHomes.filter((home) => home.id !== id));
   }
@@ -201,7 +181,7 @@ const Homepage = (props) => {
       </div> */}
 
       {/* <div className="filter-container">
->>>>>>> 8de4233d2178abf254091bb4a56fa9745c7b0202
+        >>>>>>> 8de4233d2178abf254091bb4a56fa9745c7b0202
         <div className="aa"></div>
 
         <div className="category">
@@ -293,41 +273,34 @@ const Homepage = (props) => {
           
         </main> */}
 
+        {filterHomes.map((home1, index) => {
+          //liked
+          let liked = false;
+          if (
+            likedHomes !== null &&
+            likedHomes.filter((one) => one.id === home1.id).length !== 0
+          ) {
+            liked = true;
+          }
 
-
-
-                {filterHomes.map((home1, index) => {
-               
-               //liked
-                let liked = false;
-                if (
-                  likedHomes !== null &&
-                  likedHomes.filter((one) => one.id === home1.id).length !== 0
-                ) {
-                  liked = true;
-                }
-               
-                return (
-                  <div className="apartman">
-                  <Home 
-                    key={index}
-                    removeHome={removeHome}
-                    addLikedHome={addLikedHome}
-                    deleteHome={deleteHome}
-                    home1={home1}
-                    history={props.history}
-                    liked={liked}
-                  />
-                
-               </div>
-                );
-              })}
-
-
-              
+          return (
+            <div className="apartman">
+              <Home
+                key={index}
+                removeHome={removeHome}
+                addLikedHome={addLikedHome}
+                deleteHome={deleteHome}
+                home1={home1}
+                history={props.history}
+                liked={liked}
+              />
+            </div>
+          );
+        })}
       </div>
 
-<div className="pagination">
+
+      <div className="pagination">
       <Pagination>
               <Pagination.First onClick={() => setPage(1)} 
                disabled={checkPagePrev(page)}/>
@@ -353,18 +326,20 @@ const Homepage = (props) => {
                disabled={checkPageNext(page)} />
             </Pagination>
 
-            </div>
+      
 
       <div>
-        {!user.isAdmin && (
+        {/* {!user.isAdmin && (
           <LikedHomes
             removeAllLikedHomes={removeAllLikedHomes}
             likedHomes={likedHomes}
             removeLikedHome={removeLikedHome}
           />
-        )}
+        )} */}
       </div>
+    </div>
     </div>
   );
 };
+
 export default Homepage;

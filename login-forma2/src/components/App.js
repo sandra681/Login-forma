@@ -6,7 +6,7 @@ import ForgotPassword from "./ForgotPassword";
 import Homepage from "./homepage/Homepage";
 import FormHome from "./FormHome";
 import PrivateRoute from "./PrivateRoute";
-
+import HomeDetail from "../homes/HomeDetail";
 //history
 import history from "../helpers/history";
 import { useDispatch, useSelector } from "react-redux";
@@ -69,6 +69,7 @@ function App() {
         <Route path="/signup" component={Signup}></Route>
         <Route path="/login" component={Login}></Route>
         <Route path="/forgot-password" component={ForgotPassword}></Route>
+        <Route path="/apartment/:id" component={HomeDetail}></Route>
         {/* <Route path="/form-home" component={FormHome}></Route> */}
       </Switch>
     </Router>
