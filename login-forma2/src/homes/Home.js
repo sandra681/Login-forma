@@ -34,6 +34,7 @@ const Home = (props) => {
   }
   return (
     <article className="single-apartment">
+      
       <img src={backendUrl + filename} alt={name}></img>
       <footer>
         <div className="apartment-info">
@@ -45,7 +46,7 @@ const Home = (props) => {
           <p>{street}</p>
         </div>
         <p>
-          {readMore ? info : `${info.substring(0, 200)}...`}
+          {readMore ? info : `${info.substring(0, 40)}...`}
           <button onClick={() => setReadMore(!readMore)}>
             {readMore ? "show less" : "read more"}
           </button>
@@ -104,6 +105,7 @@ const Home = (props) => {
           </Dialog>
         </div>
       </footer>
+      
     </article>
   );
 };
