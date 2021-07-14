@@ -68,7 +68,7 @@ const Homepage = (props) => {
   for (let i = 1; i < pageCount + 1; i++) {
     if(i===4) {
       items.push(<Pagination.Ellipsis  />)
-      break;
+      
     }
     items.push(
       <Pagination.Item
