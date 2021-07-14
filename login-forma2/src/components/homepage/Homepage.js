@@ -5,11 +5,7 @@ import { getCategories } from "../../api/residentialBuildingsApi";
 import SearchBar from "../SearchBar";
 import "./Homepage.css";
 import { useDispatch, useSelector } from "react-redux";
-<<<<<<< HEAD
 import {  Pagination } from "react-bootstrap";
-=======
-import { Pagination } from "react-bootstrap";
->>>>>>> origin/designAH
 import {
   deleteApartment,
   getApartments,
@@ -70,7 +66,7 @@ const Homepage = (props) => {
 
   for (let i = 1; i < pageCount + 1; i++) {
 
-    if (i === page + 4) {
+    if (i === page + 3) {
       items.push(<Pagination.Ellipsis />);
       items.push(
         <Pagination.Item
