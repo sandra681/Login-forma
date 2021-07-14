@@ -51,6 +51,7 @@ const Home = (props) => {
           <button onClick={() => setReadMore(!readMore)}>
             {readMore ? "show less" : "read more"}
           </button>
+          <a href={"/apartment/" + id}> | Full view</a>
         </p>
         {user.isAdmin && (
           <button className="delete-btn" onClick={() => editHome(id)}>

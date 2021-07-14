@@ -30,7 +30,6 @@ function HomeDetail({ match }) {
   }, []);
   useEffect(() => {
     if (likedApartments !== null) {
-      debugger;
       let isItLiked = likedApartments.filter((one) => one.id == id);
       if (isItLiked.length > 0) {
         setLiked(true);
