@@ -37,6 +37,8 @@ const Homepage = (props) => {
   const [order, setOrder] = useState("asc");
   // const [input, setInput] = useState("");
   const [search, setSearch] = useState("");
+  let activePrev=false
+  let activeNext=false
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -74,6 +76,28 @@ const Homepage = (props) => {
     );
   }
 
+  function checkPagePrev(page){
+    if(page===1){
+      activePrev=true
+      
+    }else{
+      activePrev=false
+
+    }
+    return activePrev
+  }
+  function checkPageNext(page){
+    if(page===pageCount){
+      activeNext=true
+      
+    }else{
+      activeNext=false
+
+    }
+    return activeNext
+  }
+
+  
   async function updateInput(input) {
     setSearch(input);
   }
@@ -300,19 +324,28 @@ const Homepage = (props) => {
 
 <div className="pagination">
       <Pagination>
-              <Pagination.First onClick={() => setPage(1)} />
+              <Pagination.First onClick={() => setPage(1)} 
+               hidden={checkPagePrev(page)}/>
+          
               <Pagination.Prev
                 onClick={() => {
                   page === 1 ? setPage(1) : setPage(page - 1);
+                  
+
                 }}
+                
+                hidden={checkPagePrev(page)}
               />
               {items}
+
               <Pagination.Next
                 onClick={() =>
                   page === pageCount ? setPage(page) : setPage(page + 1)
                 }
+                hidden={checkPageNext(page)}
               />
-              <Pagination.Last onClick={() => setPage(pageCount)} />
+              <Pagination.Last onClick={() => setPage(pageCount)}
+               hidden={checkPageNext(page)} />
             </Pagination>
 
             </div>

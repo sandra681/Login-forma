@@ -376,6 +376,15 @@ main {
   display: flex;
   flex-direction: row;
 }
+@media screen and (max-width: 992px) {
+  .box {
+    display: flex;
+    flex-direction: row;
+  }
+  .box .apartman {
+    width: 100%;
+  }
+}
 .search {
   display: flex;
   justify-content: center;
