@@ -61,7 +61,7 @@ const Homepage = (props) => {
     //   setFilterHomes(result.data.data);
     //   setPageCount(result.data["last_page"]);
     // });
-  }, [sort, order, filter, search, page, user, dispatch]);
+  }, [sort, order, filter, search, page, user]);
 
   let items = [];
 
