@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Slider from "../common/Slider";
 import "./index.css";
-import { BiBed } from "react-icons/bi";
+import { BiBed, BiRuler } from "react-icons/bi";
 import { BsCalendar } from "react-icons/bs";
 import {
   AiFillCar,
@@ -27,10 +27,12 @@ function HomeDetail({ match }) {
         setApartment(response[0]);
       })
       .catch((error) => console.log(error));
-  }, []);
+  }, [id]);
   useEffect(() => {
     if (likedApartments !== null) {
-      let isItLiked = likedApartments.filter((one) => one.id == id);
+      let isItLiked = likedApartments.filter(
+        (one) => one.id === Number.parseInt(id)
+      );
       if (isItLiked.length > 0) {
         setLiked(true);
       } else {
@@ -45,7 +47,7 @@ function HomeDetail({ match }) {
       <div className="quickInfo">
         <div className="quickInfoSection">
           <div className="quickInfoNav">
-            <a href="#" style={{ color: "white" }}>
+            <a href="/" style={{ color: "white" }}>
               Price Listing
             </a>
           </div>
@@ -54,7 +56,6 @@ function HomeDetail({ match }) {
               <span> For {apartment.category} </span>
               <h3>${apartment.price}</h3>
               <span>{apartment.street} </span>
-              <p>{apartment.square_footage}</p>
             </div>
           </div>
         </div>
@@ -74,6 +75,13 @@ function HomeDetail({ match }) {
                 <span>Parking</span>
                 <span className="quickInfoBodyValue">
                   {apartment.parking_spaces}
+                </span>
+              </div>
+              <div className="quickInfoIcon">
+                <BiRuler style={{ fontSize: "30px", marginRight: "15px" }} />
+                <span>Square Fottage</span>
+                <span className="quickInfoBodyValue">
+                  {apartment.square_footage}
                 </span>
               </div>
             </div>
