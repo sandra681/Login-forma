@@ -15,11 +15,12 @@ import { AiOutlineClose } from "react-icons/ai";
 import { FaBars, FaRegHeart } from "react-icons/fa";
 import Badge from "@material-ui/core/Badge";
 import { useDispatch, useSelector } from "react-redux";
-import { Button, Modal} from "react-bootstrap";
+import { Button, Modal } from "react-bootstrap";
 import {
   deleteAllLikedApartment,
   deleteLikedApartment,
 } from "../../actions/apartments";
+import apartmentServices from "../../services/apartment.services";
 
 const Navbar = (props) => {
   const { isLoggedIn } = useSelector((state) => state.authReducer);
@@ -36,6 +37,7 @@ const Navbar = (props) => {
   const [click, setClick] = useState(false);
   const [open, setOpen] = useState(false);
   const handleClick = () => setClick(!click);
+  const [images, setImages] = useState({});
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll, { passive: true });
@@ -44,7 +46,17 @@ const Navbar = (props) => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
-
+  useEffect(() => {
+    if (likedHomes !== null) {
+      likedHomes.map((one) => {
+        apartmentServices
+          .getHomeImages(one.id)
+          .then((response) => setImages({ ...images, [one.id]: response.data }))
+          .catch((error) => console.log(error));
+      });
+    }
+    console.log(images);
+  }, [likedHomes]);
   function addHome() {
     props.history.push("/form-home/");
   }
@@ -162,10 +174,15 @@ const Navbar = (props) => {
             likedHomes.map((home, index) => {
               return (
                 <article key={index} className="in_apart">
-                  <img
-                    src={process.env.REACT_APP_BASE_URL_IMAGE + home.filename}
-                    alt={home.name}
-                  />
+                  {images[home.id] && images[home.id].length > 0 && (
+                    <img
+                      src={
+                        process.env.REACT_APP_BASE_URL_IMAGE +
+                        images[home.id][0].filename
+                      }
+                      alt={home.name}
+                    />
+                  )}
                   <div>
                     <h4>{home.name}</h4>
                     <div style={{ display: "contents" }}>

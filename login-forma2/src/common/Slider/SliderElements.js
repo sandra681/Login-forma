@@ -19,5 +19,5 @@ export const SlideContent = styled.div`
   justify-content: center;
   align-items: center;
   height: 100%;
-  width: 100vw;
+  width: 100%;
 `;

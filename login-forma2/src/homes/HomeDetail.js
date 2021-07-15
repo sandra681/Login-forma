@@ -43,7 +43,7 @@ function HomeDetail({ match }) {
 
   return (
     <div style={{ marginTop: "10vh" }}>
-      <Slider />
+      <Slider home_id={id} />
       <div className="quickInfo">
         <div className="quickInfoSection">
           <div className="quickInfoNav">

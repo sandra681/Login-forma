@@ -9,6 +9,7 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useTheme } from "@material-ui/core/styles";
 import { Button } from "@material-ui/core";
+import Slider from "../common/Slider";
 
 const Home = (props) => {
   const { id, info, price, name, street, filename } = props.home1;
@@ -34,7 +35,8 @@ const Home = (props) => {
   }
   return (
     <article className="single-apartment">
-      <img src={backendUrl + filename} alt={name}></img>
+      <Slider home_id={id} style={{ maxWidth: "100%" }} />
+      {/* <img src={backendUrl + filename} alt={name}></img> */}
       <footer>
         <div className="apartment-info">
           <h4>{name}</h4>
