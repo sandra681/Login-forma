@@ -6,6 +6,10 @@ export const Wrapper = styled.div`
   width: 100%;
   height: 500px;
   background: white;
+  @media screen and (max-width: 768px) {
+    height: 100vh;
+    width: 100vw;
+  }
 `;
 export const Image = styled.img`
   width: 100vw;

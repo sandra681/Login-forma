@@ -37,8 +37,6 @@ const Navbar = (props) => {
   const [click, setClick] = useState(false);
   const [open, setOpen] = useState(false);
   const handleClick = () => setClick(!click);
-  const [images, setImages] = useState({});
-
   useEffect(() => {
     window.addEventListener("scroll", handleScroll, { passive: true });
 
@@ -46,17 +44,6 @@ const Navbar = (props) => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
-  useEffect(() => {
-    if (likedHomes !== null) {
-      likedHomes.map((one) => {
-        apartmentServices
-          .getHomeImages(one.id)
-          .then((response) => setImages({ ...images, [one.id]: response.data }))
-          .catch((error) => console.log(error));
-      });
-    }
-    console.log(images);
-  }, [likedHomes]);
   function addHome() {
     props.history.push("/form-home/");
   }
@@ -174,11 +161,11 @@ const Navbar = (props) => {
             likedHomes.map((home, index) => {
               return (
                 <article key={index} className="in_apart">
-                  {images[home.id] && images[home.id].length > 0 && (
+                  {home && home.images && (
                     <img
                       src={
                         process.env.REACT_APP_BASE_URL_IMAGE +
-                        images[home.id][0].filename
+                        home.images[0].filename
                       }
                       alt={home.name}
                     />
