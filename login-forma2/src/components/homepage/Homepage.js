@@ -62,27 +62,54 @@ const Homepage = (props) => {
     //   setPageCount(result.data["last_page"]);
     // });
   }, [sort, order, filter, search, page, user]);
-  let items = [];
+  let itemsNumbers = [];
+  let space=2;
+  let left=page-space;
+  let right=page+space+1
+  let itemsDots=[]
+  let l;
 
   for (let i = 1; i < pageCount + 1; i++) {
+   
+    if(i===1 || i===pageCount || i>=left && i<right){
+    itemsNumbers.push(
+      i
+    );
+    }
 
-    if (i === page + 3) {
-      items.push(<Pagination.Ellipsis />);
-      items.push(
+  }
+
+for(let i of itemsNumbers){
+  
+  if(l){
+    if(i-l===2){
+      itemsDots.push(
         <Pagination.Item
-          key={pageCount}
-          active={page === pageCount}
-          onClick={() => setPage(pageCount)}
-          activeLabel={false}
-        >
-          {pageCount}
-        </Pagination.Item>
-      );
-      break;
+        key={l+1}
+        active={page === l+1}
+        onClick={() => setPage(l+1)}
+        activeLabel={false}
+      >
+        {l+1}
+      </Pagination.Item>
+        
+      )
+    }else if(i-l!==1){
+      itemsDots.push(
+        <Pagination.Item
+      
+        activeLabel={false}
+      >
+        {'...'}
+      </Pagination.Item>
+      
+     
+        )
 
     }
-    items.push(
-      <Pagination.Item
+  }
+  itemsDots.push(
+    <Pagination.Item
         key={i}
         active={page === i}
         onClick={() => setPage(i)}
@@ -90,8 +117,10 @@ const Homepage = (props) => {
       >
         {i}
       </Pagination.Item>
-    );
-  }
+   
+  );
+  l=i;
+}
 
   function checkPagePrev(page) {
     if (page === 1) {
@@ -311,6 +340,7 @@ const Homepage = (props) => {
 
 
       <div className="pagination">
+        
       <Pagination>
               <Pagination.First onClick={() => setPage(1)} 
                disabled={checkPagePrev(page)}/>
@@ -324,8 +354,9 @@ const Homepage = (props) => {
                 
                 hidden={checkPagePrev(page)}
               />
-              {items}
-
+              {itemsDots}
+             
+            {console.log(itemsDots)}
               <Pagination.Next
                 onClick={() =>
                   page === pageCount ? setPage(page) : setPage(page + 1)
