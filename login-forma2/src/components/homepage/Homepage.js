@@ -65,7 +65,7 @@ const Homepage = (props) => {
   let itemsNumbers = [];
   let space=2;
   let left=page-space;
-  let right=page+space+1
+  let right=page+space+1;
   let itemsDots=[]
   let l;
 
@@ -355,8 +355,7 @@ for(let i of itemsNumbers){
                 hidden={checkPagePrev(page)}
               />
               {itemsDots}
-             
-            {console.log(itemsDots)}
+
               <Pagination.Next
                 onClick={() =>
                   page === pageCount ? setPage(page) : setPage(page + 1)
