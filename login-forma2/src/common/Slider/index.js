@@ -1,21 +1,28 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { Image, Slide, SlideContent, Wrapper } from "./SliderElements";
 import "./index.css";
-const slider = [
-  "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80",
-  "https://images.unsplash.com/photo-1600585152220-90363fe7e115?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80",
-  "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80",
-];
-const Slider = () => {
+import apartmentServices from "../../services/apartment.services";
+import { useSelector } from "react-redux";
+
+const Slider = (props) => {
   const [current, setCurrent] = useState(0);
-  const length = slider.length;
+  const homes = useSelector((state) => state.apartmentsReducer).apartments;
+
+  let likedHome;
+  if (homes) {
+    likedHome = homes.filter((one) => one.id === props.home_id)[0];
+  }
 
   const nextSlide = () => {
-    setCurrent(current === length - 1 ? 0 : current + 1);
+    if (likedHome) {
+      setCurrent(current === likedHome.images.length - 1 ? 0 : current + 1);
+    }
   };
   const prevSlide = () => {
-    setCurrent(current === 0 ? length - 1 : current - 1);
+    if (likedHome) {
+      setCurrent(current === 0 ? likedHome.images.length - 1 : current - 1);
+    }
   };
 
   return (
@@ -23,13 +30,20 @@ const Slider = () => {
       <SlideContent>
         <FaChevronLeft className="leftArrow" onClick={prevSlide} />
         <FaChevronRight className="rightArrow" onClick={nextSlide} />
-        {slider.map((slide, index) => {
-          return (
-            <Slide index={index}>
-              {index === current && <Image src={slide} alt="" />}
-            </Slide>
-          );
-        })}
+        {likedHome &&
+          likedHome.images.length > 0 &&
+          likedHome.images.map((slide, index) => {
+            return (
+              <Slide index={index} key={index}>
+                {index === current && (
+                  <Image
+                    src={process.env.REACT_APP_BASE_URL_IMAGE + slide.filename}
+                    alt=""
+                  />
+                )}
+              </Slide>
+            );
+          })}
       </SlideContent>
     </Wrapper>
   );
