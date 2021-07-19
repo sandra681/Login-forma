@@ -42,8 +42,9 @@ function HomeDetail({ match }) {
   }, [likedApartments, id]);
 
   return (
+    
     <div style={{ marginTop: "10vh" }}>
-      <Slider home_id={id} />
+       <Slider home_id={id} />
       <div className="quickInfo">
         <div className="quickInfoSection">
           <div className="quickInfoNav">
@@ -136,8 +137,9 @@ function HomeDetail({ match }) {
             <div className="col-lg-4"></div>
           </div>
         </div>
-      </div>
+      </div> 
     </div>
+    
   );
 }
 

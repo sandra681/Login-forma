@@ -13,7 +13,7 @@ import Slider from "../common/Slider";
 
 const Home = (props) => {
   const { id, info, price, name, street, filename } = props.home1;
-  const { addLikedHome, deleteHome, liked } = props;
+  const { addLikedHome, deleteHome, liked, removeLikedHome } = props;
   const [readMore, setReadMore] = useState(false);
   const backendUrl = "http://127.0.0.1:8000/images/";
   const user = useSelector((state) => state.userReducer);
@@ -66,14 +66,24 @@ const Home = (props) => {
           </button>
         )}
 
-        {!user.isAdmin && (
+        {!user.isAdmin && liked===false &&(
           <button
             className="delete-btn"
             onClick={() => addLikedHome(id)}
-            disabled={liked}
+            
           >
             {" "}
             interested
+          </button>
+        )}
+        {!user.isAdmin && liked===true &&(
+          <button
+            className="delete-btn"
+            onClick={() => removeLikedHome(id)}
+           
+          >
+            {" "}
+            not interested
           </button>
         )}
         <div>

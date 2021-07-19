@@ -76,6 +76,9 @@ const Navbar = (props) => {
         console.log(error);
       });
   }
+  function likedListHomes(id){
+    props.history.push("/liked-homes/"+id)
+  }
   return (
     <>
       <Nav scrolled={scrollPosition}>
@@ -157,11 +160,11 @@ const Navbar = (props) => {
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {likedHomes !== null &&
+          { likedHomes !== null &&
             likedHomes.map((home, index) => {
               return (
                 <article key={index} className="in_apart">
-                  {home && home.images && (
+                  {home && home.images && home.images.length>0 &&(
                     <img
                       src={
                         process.env.REACT_APP_BASE_URL_IMAGE +
@@ -200,9 +203,11 @@ const Navbar = (props) => {
           >
             Clear All
           </Button>
-          <Button variant="primary" onClick={handleClose}>
+         
+          <Button variant="primary" onClick={()=>likedListHomes(user.user.id)}>
             Open in full screen
           </Button>
+          
         </Modal.Footer>
       </Modal>
     </>

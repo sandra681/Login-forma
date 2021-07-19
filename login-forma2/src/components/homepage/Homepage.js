@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {  Pagination } from "react-bootstrap";
 import {
   deleteApartment,
+  deleteLikedApartment,
   getApartments,
   storeLikedApartments,
 } from "../../actions/apartments";
@@ -172,7 +173,16 @@ for(let i of itemsNumbers){
         });
     }
   };
-
+  function removeLikedHome(id) {
+    if (user.user === null) return;
+    dispatch(deleteLikedApartment(user.user.id, id))
+      .then(() => {
+        console.log("Obrisano");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
   function categoryFilter(category) {
     if (category === "All") {
       setFilter("");
@@ -252,6 +262,7 @@ for(let i of itemsNumbers){
                 home1={home1}
                 history={props.history}
                 liked={liked}
+                removeLikedHome={removeLikedHome}
               />
             </div>
           );

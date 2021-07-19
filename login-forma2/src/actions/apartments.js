@@ -6,6 +6,7 @@ import {
   DELETE_LIKED_APARTMENT,
   DELETE_ALL_LIKED_APARTMENT,
   DELETE_APARTMENT,
+  GET_LIKED_APARTMENT,
 } from "./types";
 import apartmentService from "../services/apartment.services";
 
@@ -51,7 +52,7 @@ export const getApartments =
 export const storeLikedApartments = (user_id, home_id) => (dispatch) => {
   return apartmentService.storeLikedApartments(user_id, home_id).then(
     (response) => {
-      console.log("Store" + response.data);
+    
       dispatch({
         type: ADD_LIKED_APARTMENT,
         payload: { likedApartments: response.data[0] },
@@ -85,43 +86,44 @@ export const storeLikedApartments = (user_id, home_id) => (dispatch) => {
     }
   );
 };
-// export const getAllLikedApartmentsOfUser = (user_id) => (dispatch) => {
-//   return apartmentService.getAllLikedApartmentsOfUser(user_id).then(
-//     (response) => {
-//       console.log(response.data);
-//       dispatch({
-//         type: ADD_LIKED_APARTMENT,
-//         payload: { likedApartments: response.data },
-//       });
+ export const getAllLikedApartmentsOfUser = (user_id) => (dispatch) => {
+   
+   return apartmentService.getAllLikedApartmentsOfUser(user_id).then(
+     (response) => {
+       console.log(response.data);
+       dispatch({
+         type: GET_LIKED_APARTMENT,
+         payload: { likedApartments: response.data },
+       });
 
-//       dispatch({
-//         type: SET_MESSAGE,
-//         payload: response.data.message,
-//       });
+       dispatch({
+         type: SET_MESSAGE,
+         payload: response.data.message,
+       });
 
-//       return Promise.resolve();
-//     },
-//     (error) => {
-//       const message =
-//         (error.response &&
-//           error.response.data &&
-//           error.response.data.message) ||
-//         error.message ||
-//         error.toString();
+       return Promise.resolve();
+     },
+     (error) => {
+       const message =
+         (error.response &&
+           error.response.data &&
+           error.response.data.message) ||
+         error.message ||
+         error.toString();
 
-//       dispatch({
-//         type: GET_APARTMENT_FAIL,
-//       });
+      dispatch({
+         type: GET_APARTMENT_FAIL,
+       });
 
-//       dispatch({
-//         type: SET_MESSAGE,
-//         payload: message,
-//       });
+       dispatch({
+         type: SET_MESSAGE,
+        payload: message,
+       });
 
-//       return Promise.reject();
-//     }
-//   );
-// };
+      return Promise.reject();
+    }
+  );
+ };
 
 export const deleteLikedApartment = (user_id, home_id) => (dispatch) => {
   return apartmentService.deleteLikedApartment(user_id, home_id).then(

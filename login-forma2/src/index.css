@@ -371,11 +371,6 @@ main {
   padding: 3%;
   padding-bottom: 0px;
 }
-.pagination {
-  margin: 2rem auto;
-  display: flex;
-  flex-direction: row;
-}
 @media screen and (max-width: 992px) {
   .box {
     display: flex;
@@ -385,6 +380,35 @@ main {
     width: 100%;
   }
 }
+.boxLista {
+  display: flex;
+  margin-left: 5%;
+  margin-right: 5%;
+  flex-wrap: wrap;
+}
+
+.boxLista .apartmanLista {
+  width: 33%;
+}
+.apartmanLista {
+  padding: 3%;
+  padding-bottom: 0px;
+}
+@media screen and (max-width: 992px) {
+  .boxLista {
+    display: flex;
+    flex-direction: row;
+  }
+  .boxLista .apartmanLista {
+    width: 100%;
+  }
+}
+.pagination {
+  margin: 2rem auto;
+  display: flex;
+  flex-direction: row;
+}
+
 .search {
   display: flex;
   justify-content: center;

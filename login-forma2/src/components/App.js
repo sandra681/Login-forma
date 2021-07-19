@@ -16,6 +16,7 @@ import { getLoggedUser } from "../actions/user";
 import Navbar from "../common/Navbar";
 import { ADD_TO_ALL } from "../actions/types";
 import apartmentService from "../services/apartment.services";
+import LikedHomesList from "../homes/LikedHomesList"
 
 function App() {
   const dispatch = useDispatch();
@@ -31,7 +32,7 @@ function App() {
       apartmentService
         .getAllLikedApartmentsOfUser(user.user.id)
         .then((response) => {
-          console.log("App.js" + response.data);
+         
           dispatch({
             type: ADD_TO_ALL,
             payload: { likedApartments: response.data },
@@ -71,6 +72,7 @@ function App() {
         <Route path="/login" component={Login}></Route>
         <Route path="/forgot-password" component={ForgotPassword}></Route>
         <Route path="/apartment/:id" component={HomeDetail}></Route>
+        <Route path="/liked-homes/:id" component={LikedHomesList}></Route>
         {/* <Route path="/form-home" component={FormHome}></Route> */}
       </Switch>
     </Router>
