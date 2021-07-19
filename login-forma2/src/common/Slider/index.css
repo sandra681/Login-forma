@@ -9,8 +9,9 @@
 .rightArrow {
   position: absolute;
   top: 50%;
-  right: 20px;
+  right: 2vw;
   font-size: 3rem;
   color: rgba(255, 255, 255, 80%);
   cursor: pointer;
 }
+

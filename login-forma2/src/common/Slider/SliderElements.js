@@ -6,6 +6,10 @@ export const Wrapper = styled.div`
   width: 100%;
   height: 500px;
   background: white;
+  @media screen and (max-width: 768px) {
+    height: 100vh;
+    width: 100vw;
+  }
 `;
 export const Image = styled.img`
   width: 100vw;
@@ -19,5 +23,5 @@ export const SlideContent = styled.div`
   justify-content: center;
   align-items: center;
   height: 100%;
-  width: 100vw;
+  width: 100%;
 `;

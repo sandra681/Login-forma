@@ -32,13 +32,13 @@ function FormHome({ history, match }) {
   const parkingRef = useRef();
 
   const [loading, setLoading] = useState(false);
-  const [file, setFile] = useState(null);
+  const [files, setFiles] = useState([]);
+  const [showFiles, setShowFiles] = useState([]);
   //PROVERITI STA JE UPITANJU
   const [open, setOpen] = React.useState(false);
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
-
-  let path;
+  let home_id;
   if (!isAddMode) {
     apartmentServices
       .getOneApartment(id)
@@ -59,12 +59,13 @@ function FormHome({ history, match }) {
   }
 
   function fileSelectedHandler(e) {
-    let files = e.target.files[0];
+    let file = e.target.files[0]; //ako bi ovde ostalo files
+    setShowFiles([...showFiles, e.target.files[0].name]);
     let reader = new FileReader();
     reader.onload = (event) => {
-      setFile(event.target.result);
+      setFiles([...files, event.target.result]); //ovde nece biti 1 file nego niz
     };
-    reader.readAsDataURL(files);
+    reader.readAsDataURL(file);
   }
 
   async function handleSubmit(e) {
@@ -72,30 +73,7 @@ function FormHome({ history, match }) {
     return isAddMode ? createApartment(e) : updateApartment(e);
   }
   async function createApartment(e) {
-    const formData = { file };
-    await axios
-      .post(
-        "http://127.0.0.1:8000/api/auth/fileupload",
-        {
-          formData,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token.access_token}`,
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-        }
-      )
-      .then((response) => {
-        path = response.data.img.id;
-        setOpen(true);
-        e.target.reset();
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-
+    const formData = { files }; //moze da ostane file ali on ce bit niz
     await axios
 
       .post(
@@ -110,7 +88,6 @@ function FormHome({ history, match }) {
           square_footage: squareFootageRef.current.value,
           rooms_number: roomsRef.current.value,
           parking_spaces: parkingRef.current.value,
-          image: path,
           user_id: user.user.id,
         },
         {
@@ -118,18 +95,42 @@ function FormHome({ history, match }) {
         }
       )
       .then((response) => {
+        //resonse bi trebao da vraca id koji bi se setovao
+        home_id = response.data.id;
         setLoading(false);
-        setFile({ file: "" });
-        if (response.data.status === 200) {
+        setFiles({ files: [] });
+        if (response.status === 200) {
           console.log("OK");
         }
-        if (response.data.status === "failed") {
+        if (response.status === "failed") {
           setTimeout(() => {}, 2000);
         }
       })
       .catch((error) => {
         console.log("GRESKA");
         console.log(error.message);
+      });
+    await axios
+      .post(
+        "http://127.0.0.1:8000/api/auth/fileupload",
+        {
+          formData,
+          home_id,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token.access_token}`,
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then((response) => {
+        setOpen(true);
+        e.target.reset();
+      })
+      .catch((error) => {
+        console.log(error);
       });
   }
 
@@ -202,6 +203,7 @@ function FormHome({ history, match }) {
                 <Form.Control
                   ref={nameRef}
                   type="textarea"
+                  value="Homeeeer"
                   required
                   placeholder="Home's Name"
                 ></Form.Control>
@@ -213,6 +215,7 @@ function FormHome({ history, match }) {
                   <Form.Control
                     ref={streetRef}
                     type="textarea"
+                    value="Margeee"
                     required
                     placeholder="Street"
                   ></Form.Control>
@@ -223,6 +226,7 @@ function FormHome({ history, match }) {
                   <Form.Control
                     ref={cityRef}
                     type="textarea"
+                    value="Lisaaa"
                     required
                     placeholder="City"
                   ></Form.Control>
@@ -238,6 +242,7 @@ function FormHome({ history, match }) {
                     className="price-number"
                     type="number"
                     min="0"
+                    value="23"
                     required
                     placeholder="Price"
                   ></Form.Control>
@@ -265,6 +270,7 @@ function FormHome({ history, match }) {
                     type="number"
                     min="0"
                     step="0.01"
+                    value="100"
                     required
                     placeholder="Square Footage"
                   ></Form.Control>
@@ -276,6 +282,7 @@ function FormHome({ history, match }) {
                     className="price-number"
                     type="number"
                     min="0"
+                    value="100"
                     required
                     placeholder="Number of Rooms"
                   ></Form.Control>
@@ -287,6 +294,7 @@ function FormHome({ history, match }) {
                     className="price-number"
                     type="number"
                     min="0"
+                    value="100"
                     required
                     placeholder="Parking Spaces"
                   ></Form.Control>
@@ -299,6 +307,7 @@ function FormHome({ history, match }) {
                   ref={infoRef}
                   as="textarea"
                   rows={4}
+                  value="Baaart"
                   required
                   placeholder="About home"
                 ></Form.Control>
@@ -312,6 +321,31 @@ function FormHome({ history, match }) {
                   onChange={fileSelectedHandler}
                 ></Form.Control>
               </FormGroup>
+              <br />
+              <div className="card" style={{ margin: 0 }}>
+                <div className="card-header">List of Images</div>
+                <ul className="list-group list-group-flush">
+                  {showFiles.length > 0 &&
+                    showFiles.map((file, index) => (
+                      <li
+                        className="list-group-item"
+                        key={index}
+                        style={{ display: "flex" }}
+                      >
+                        <p
+                          style={{ marginRight: "10px", cursor: "pointer" }}
+                          onClick={() => {
+                            setShowFiles(showFiles.splice(index, 1));
+                            setFiles(files.splice(index, 1));
+                          }}
+                        >
+                          x
+                        </p>
+                        <a href={file.url}>{file}</a>
+                      </li>
+                    ))}
+                </ul>
+              </div>
               <br />
 
               <div className="dugme">

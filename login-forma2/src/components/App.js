@@ -31,6 +31,7 @@ function App() {
       apartmentService
         .getAllLikedApartmentsOfUser(user.user.id)
         .then((response) => {
+          console.log("App.js" + response.data);
           dispatch({
             type: ADD_TO_ALL,
             payload: { likedApartments: response.data },

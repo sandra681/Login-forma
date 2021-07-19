@@ -70,7 +70,6 @@ const Homepage = (props) => {
   let l;
 
   for (let i = 1; i < pageCount + 1; i++) {
-   
     if(i===1 || i===pageCount || i>=left && i<right){
     itemsNumbers.push(
       i
@@ -215,36 +214,6 @@ for(let i of itemsNumbers){
           <SearchBar input={search} onChange={updateInput}></SearchBar>
         </div>
       </header>
-      {/* <div className="slider">
-        <p> slider </p>
-      </div> */}
-
-      {/* <div className="filter-container">
-        >>>>>>> 8de4233d2178abf254091bb4a56fa9745c7b0202
-        <div className="aa"></div>
-
-        <div className="category">
-          <Categories categories={categories} categoryFilter={categoryFilter} />
-        </div>
-
-        <div className="sort">
-          <select
-            defaultValue=""
-            className="sort-select"
-            onChange={(e) => {
-              sortByInput(e);
-            }}
-          >
-            <option value="" disabled>
-              -Sort By-
-            </option>
-            <option value="name_asc">Name - A - Z</option>
-            <option value="name_desc">Name - Z - A</option>
-            <option value="price_asc">Price - Lowest to Highest</option>
-            <option value="price_desc">Price - Highest to Lowest</option>
-          </select>
-        </div>
-      </div> */}
       <div className="sort">
         <select
           defaultValue=""
@@ -263,60 +232,11 @@ for(let i of itemsNumbers){
         </select>
       </div>
       <div className="box">
-        {/* <main>
-          <section className="menu section">
-            <div className="apartmants">
-              {filterHomes.map((home1, index) => {
-               
-               //liked
-                let liked = false;
-                if (
-                  likedHomes !== null &&
-                  likedHomes.filter((one) => one.id === home1.id).length !== 0
-                ) {
-                  liked = true;
-                }
-               
-                return (
-                  
-                  <Home 
-                    key={index}
-                    removeHome={removeHome}
-                    addLikedHome={addLikedHome}
-                    deleteHome={deleteHome}
-                    home1={home1}
-                    history={props.history}
-                    liked={liked}
-                  />
-                
-               
-                );
-              })}
-            </div>
-            <Pagination>
-              <Pagination.First onClick={() => setPage(1)} />
-              <Pagination.Prev
-                onClick={() => {
-                  page === 1 ? setPage(1) : setPage(page - 1);
-                }}
-              />
-              {items}
-              <Pagination.Next
-                onClick={() =>
-                  page === pageCount ? setPage(page) : setPage(page + 1)
-                }
-              />
-              <Pagination.Last onClick={() => setPage(pageCount)} />
-            </Pagination>
-          </section>
-          
-        </main> */}
-
         {filterHomes.map((home1, index) => {
           //liked
           let liked = false;
           if (
-            likedHomes !== null &&
+            likedHomes !== null && 
             likedHomes.filter((one) => one.id === home1.id).length !== 0
           ) {
             liked = true;

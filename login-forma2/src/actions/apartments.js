@@ -51,6 +51,7 @@ export const getApartments =
 export const storeLikedApartments = (user_id, home_id) => (dispatch) => {
   return apartmentService.storeLikedApartments(user_id, home_id).then(
     (response) => {
+      console.log("Store" + response.data);
       dispatch({
         type: ADD_LIKED_APARTMENT,
         payload: { likedApartments: response.data[0] },

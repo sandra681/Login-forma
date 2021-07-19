@@ -71,6 +71,15 @@ const deleteHome = (home_id) => {
     headers: authHeader(),
   });
 };
+
+const getHomeImages = (home_id) => {
+  return axios.get(
+    process.env.REACT_APP_BASE_URL_AUTH + "fileuploads/" + home_id,
+    {
+      headers: authHeader(),
+    }
+  );
+};
 export default {
   getApartments,
   getAllLikedApartmentsOfUser,
@@ -79,4 +88,5 @@ export default {
   deleteAllLikedApartment,
   getOneApartment,
   deleteHome,
+  getHomeImages,
 };
