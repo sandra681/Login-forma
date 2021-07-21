@@ -16,32 +16,31 @@ import {
 const Homepage = (props) => {
   const token = JSON.parse(localStorage.getItem("token"));
   const user = useSelector((state) => state.userReducer);
-
-  const [categories, setCategories] = useState([]); //Za sve kategorije to uzimamo dmah na pocetku
-
-  const likedHomes = useSelector(
-    (state) => state.apartmentsReducer
-  ).likedApartments;
-
-  const [filterHomes, setFilterHomes] = useState([]); //Ove za sve
-  const [page, setPage] = useState(1); //koja je strana u pitanju
-  const [pageCount, setPageCount] = useState(1);
-
-  const [filter, setFilter] = useState("");
-  const [sort, setSort] = useState("name");
-  const [order, setOrder] = useState("asc");
-  // const [input, setInput] = useState("");
-  const [search, setSearch] = useState("");
+  const dispatch = useDispatch();
+  const [categories, setCategories] = useState([]);
+  const apartments = useSelector((state) => state.apartmentsReducer);
+  const likedHomes = [...apartments.likedApartments];
+  const filterHomes = [...apartments.apartments];
+  const {
+    page,
+    setPage,
+    pageCount,
+    setFilter,
+    setSort,
+    setOrder,
+    search,
+    setSearch,
+  } = props;
   let activePrev = false;
   let activeNext = false;
-
-  const dispatch = useDispatch();
+  let items = [];
   useEffect(() => {
     getCategories().then((result) => {
       const niz = result.data.map((one) => one.category);
       setCategories(["All", ...niz]);
     });
   }, []);
+
 
   useEffect(() => {
     dispatch(getApartments(filter, sort, order, search, page))
@@ -71,6 +70,7 @@ const Homepage = (props) => {
   let right=page+space+1;
   let itemsDots=[]
   let l;
+
 
   for (let i = 1; i < pageCount + 1; i++) {
     if(i===1 || i===pageCount || i>=left && i<right){
@@ -151,10 +151,6 @@ for(let i of itemsNumbers){
     setSort(value);
     setOrder(order);
   }
-
-  function removeHome(id) {
-    setFilterHomes(filterHomes.filter((home) => home.id !== id));
-  }
   const addLikedHome = (id) => {
     if (token === null) {
       props.history.push("/login");
@@ -167,7 +163,6 @@ for(let i of itemsNumbers){
       }
       dispatch(storeLikedApartments(user.user.id, id))
         .then(() => {
-          // dispatch(getAllLikedApartmentsOfUser(user.user.id)).then(()=>console.log("ubacen")).catch((error)=>console.log(error));
           console.log("Liked home is stored");
         })
         .catch((error) => {
@@ -244,18 +239,21 @@ for(let i of itemsNumbers){
         </select>
       </div>
       <div className="box">
-        {filterHomes.map((home1, index) => {
-          //liked
-          let liked = false;
-          if (
-            likedHomes !== null && 
-            likedHomes.filter((one) => one.id === home1.id).length !== 0
-          ) {
-            liked = true;
-          }
+        {filterHomes &&
+          filterHomes.length > 0 &&
+          filterHomes.map((home1, index) => {
+            //liked
+            let liked = false;
+            if (
+              likedHomes !== null &&
+              likedHomes.filter((one) => one.id === home1.id).length !== 0
+            ) {
+              liked = true;
+            }
+
 
           return (
-            <div className="apartman">
+            <div className="apartman"  key={index}>
               <Home
                 key={index}
                 removeHome={removeHome}
@@ -269,6 +267,7 @@ for(let i of itemsNumbers){
             </div>
           );
         })}
+
       </div>
 
 

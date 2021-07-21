@@ -9,10 +9,12 @@ import {
   DELETE_ALL_LIKED_APARTMENT,
   DELETE_APARTMENT,
   GET_LIKED_APARTMENT,
+  DELETE_APARTMENT_IMAGE,
+
 } from "../actions/types";
 import authHeader from "../services/auth-header";
 
-const initialState = { apartments: null, likedApartments: null };
+const initialState = { apartments: [], likedApartments: [] };
 
 export default function apartmentsReducer(state = initialState, action) {
   const { type, payload } = action;
@@ -27,7 +29,7 @@ export default function apartmentsReducer(state = initialState, action) {
     case ADD_LIKED_APARTMENT:
       return {
         ...state,
-        likedApartments: [...state.likedApartments, payload.likedApartments],
+        likedApartments: [...state.likedApartments, ...payload.likedApartments],
       };
       case GET_LIKED_APARTMENT:
         return {
@@ -35,7 +37,10 @@ export default function apartmentsReducer(state = initialState, action) {
           likedApartments:payload.likedApartments
         };
     case ADD_TO_ALL:
-      return { ...state, likedApartments: payload.likedApartments };
+      return {
+        ...state,
+        likedApartments: payload.likedApartments,
+      };
     case DELETE_LIKED_APARTMENT:
       return {
         ...state,
@@ -48,8 +53,21 @@ export default function apartmentsReducer(state = initialState, action) {
       };
     case DELETE_APARTMENT:
       return {
-        ...state
+        ...state,
       };
+    case DELETE_APARTMENT_IMAGE:
+      // return state.apartments.map((apartment, index) => {
+      //   if (apartment.id === payload.id) {
+      //     let imgs = apartment.images.filter(
+      //       (one) => one.id === payload.indexImage
+      //     );
+      //     return {
+      //       ...state,
+      //       apartemnts: [...state.apartments],
+      //     };
+      //   }
+      // return { ...state, apartemnts: [...state.apartments,apartments[0]:{}] };
+    // }); //Ovo treba proveriti na sta sam tacn
     default:
       return state;
   }

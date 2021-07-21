@@ -1,27 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { Image, Slide, SlideContent, Wrapper } from "./SliderElements";
 import "./index.css";
-import apartmentServices from "../../services/apartment.services";
-import { useSelector } from "react-redux";
 
 const Slider = (props) => {
   const [current, setCurrent] = useState(0);
-  const homes = useSelector((state) => state.apartmentsReducer).apartments;
-
-  let likedHome;
-  if (homes) {
-    likedHome = homes.filter((one) => one.id === props.home_id)[0];
-  }
+  const apartment = props.apartment;
 
   const nextSlide = () => {
-    if (likedHome) {
-      setCurrent(current === likedHome.images.length - 1 ? 0 : current + 1);
+    if (apartment) {
+      setCurrent(current === apartment.images.length - 1 ? 0 : current + 1);
     }
   };
   const prevSlide = () => {
-    if (likedHome) {
-      setCurrent(current === 0 ? likedHome.images.length - 1 : current - 1);
+    if (apartment) {
+      setCurrent(current === 0 ? apartment.images.length - 1 : current - 1);
     }
   };
 
@@ -30,9 +23,10 @@ const Slider = (props) => {
       <SlideContent>
         <FaChevronLeft className="leftArrow" onClick={prevSlide} />
         <FaChevronRight className="rightArrow" onClick={nextSlide} />
-        {likedHome &&
-          likedHome.images.length > 0 &&
-          likedHome.images.map((slide, index) => {
+
+        {apartment &&
+          apartment.images.length > 0 &&
+          apartment.images.map((slide, index) => {
             return (
               <Slide index={index} key={index}>
                 {index === current && (

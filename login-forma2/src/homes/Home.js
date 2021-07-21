@@ -13,12 +13,14 @@ import Slider from "../common/Slider";
 import "../../src/index.css"
 
 const Home = (props) => {
+
   const { id, info, price, name, street, filename } = props.home1;
   const { addLikedHome, deleteHome, liked, removeLikedHome } = props;
-  const [readMore, setReadMore] = useState(false);
-  const backendUrl = "http://127.0.0.1:8000/images/";
-  const user = useSelector((state) => state.userReducer);
 
+
+
+  const [readMore, setReadMore] = useState(false);
+  const user = useSelector((state) => state.userReducer);
   const [successMode, setSuccessMode] = useState(false);
   const [open, setOpen] = React.useState(false);
   const theme = useTheme();
@@ -36,8 +38,7 @@ const Home = (props) => {
   }
   return (
     <article className="single-apartment">
-      <Slider home_id={id} style={{ maxWidth: "100%" }} />
-      {/* <img src={backendUrl + filename} alt={name}></img> */}
+      <Slider apartment={props.home1} style={{ maxWidth: "100%" }} />
       <footer>
         <div className="apartment-info">
           <h4>{name}</h4>
@@ -48,7 +49,7 @@ const Home = (props) => {
           <p>{street}</p>
         </div>
         <p>
-          {readMore ? info : `${info.substring(0, 40)}...`}
+          {readMore ? info : `${props.home1.info.substring(0, 40)}...`}
           <button onClick={() => setReadMore(!readMore)}>
             {readMore ? "show less" : "read more"}
           </button>

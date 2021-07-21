@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Signup from "./Signup";
 import { Switch, Route, Router } from "react-router-dom";
 import Login from "./Login";
@@ -16,12 +16,37 @@ import { getLoggedUser } from "../actions/user";
 import Navbar from "../common/Navbar";
 import { ADD_TO_ALL } from "../actions/types";
 import apartmentService from "../services/apartment.services";
-import LikedHomesList from "../homes/LikedHomesList"
+import { getApartments } from "../actions/apartments";
 
 function App() {
   const dispatch = useDispatch();
   const isLoggedIn = useSelector((state) => state.authReducer);
   const user = useSelector((state) => state.userReducer);
+
+  const [page, setPage] = useState(1); //koja je strana u pitanju
+  const [pageCount, setPageCount] = useState(1);
+
+  const [filter, setFilter] = useState("");
+  const [sort, setSort] = useState("name");
+  const [order, setOrder] = useState("asc");
+  // const [input, setInput] = useState("");
+  const [search, setSearch] = useState("");
+  useEffect(() => {
+    dispatch(getApartments(filter, sort, order, search, page))
+      .then((response) => {
+        if (user.isAdmin) {
+          let adminApartments = response.data.data.filter(
+            (one) => (one.user_id = user.user.id)
+          );
+          // setFilterHomes(adminApartments);
+          setPageCount(response.data["last_page"]);
+          return;
+        }
+        // setFilterHomes(response.data.data);
+        setPageCount(response.data["last_page"]);
+      })
+      .catch((error) => console.log(error));
+  }, [sort, order, filter, search, page, user]);
   useEffect(() => {
     if (isLoggedIn.isLoggedIn) {
       dispatch(getLoggedUser());
@@ -67,7 +92,19 @@ function App() {
           history={history}
           component={FormHome}
         ></PrivateRoute>
-        <Route exact path="/" component={Homepage}></Route>
+        <Route exact path="/">
+          <Homepage
+            history={history}
+            pageCount={pageCount}
+            setFilter={setFilter}
+            setSort={setSort}
+            setOrder={setOrder}
+            search={search}
+            setSearch={setSearch}
+            page={page}
+            setPage={setPage}
+          />
+        </Route>
         <Route path="/signup" component={Signup}></Route>
         <Route path="/login" component={Login}></Route>
         <Route path="/forgot-password" component={ForgotPassword}></Route>
