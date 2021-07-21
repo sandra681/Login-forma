@@ -77,6 +77,7 @@ const Navbar = (props) => {
       });
   }
   function likedListHomes(id){
+    setOpen(false)
     props.history.push("/liked-homes/"+id)
   }
   return (
@@ -159,7 +160,7 @@ const Navbar = (props) => {
             {likedHomes !== null ? likedHomes.length : 0} liked apartments
           </Modal.Title>
         </Modal.Header>
-        <Modal.Body>
+        <Modal.Body style={{ overflow: "auto", height: "500px" }}>
           { likedHomes !== null &&
             likedHomes.map((home, index) => {
               return (

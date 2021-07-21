@@ -3,15 +3,14 @@ import Home from "./Home";
 import "../components/homepage/Homepage.css"
 import { useDispatch, useSelector } from "react-redux";
 import {  Pagination } from "react-bootstrap";
-import { deleteLikedApartment, getAllLikedApartmentsOfUser } from "../actions/apartments";
+import { deleteLikedApartment } from "../actions/apartments";
 
 
 
 function LikedHomesList() {
 
-    const token = JSON.parse(localStorage.getItem("token"));
+    
     const user = useSelector((state) => state.userReducer);
-    const [sLikedApartment, setSLikedApartment]=useState([])
     const [page, setPage] = useState(1);
      const [pageCount, setPageCount] = useState(1);
      let activePrev = false;
@@ -22,23 +21,29 @@ function LikedHomesList() {
     let right=page+space+1;
     let itemsDots=[]
     let l;
-
+    const dispatch=useDispatch()
     const likedHomes = useSelector(
         (state) => state.apartmentsReducer
       ).likedApartments;
 
-      const dispatch=useDispatch()
+      useEffect(()=>{
+        if(likedHomes){
+          let pages=1
+        for(let i=1;i<=likedHomes.length;i++){
+          if(i===pageCount+9){
+            setPageCount(pages+1)
+          }
+        }
+      }
+      },[likedHomes])
+      
   for (let i = 1; i < pageCount + 1; i++) {
     if(i===1 || i===pageCount || i>=left && i<right){
     itemsNumbers.push(
       i
     );
-    }
-
-  }
-
-for(let i of itemsNumbers){
-  
+    }  }
+for(let i of itemsNumbers){  
   if(l){
     if(i-l===2){
       itemsDots.push(
@@ -49,21 +54,16 @@ for(let i of itemsNumbers){
         activeLabel={false}
       >
         {l+1}
-      </Pagination.Item>
-        
+      </Pagination.Item>        
       )
     }else if(i-l!==1){
       itemsDots.push(
-        <Pagination.Item
-      
+        <Pagination.Item     
         activeLabel={false}
       >
         {'...'}
-      </Pagination.Item>
-      
-     
+      </Pagination.Item>   
         )
-
     }
   }
   itemsDots.push(
@@ -74,8 +74,7 @@ for(let i of itemsNumbers){
         activeLabel={false}
       >
         {i}
-      </Pagination.Item>
-   
+      </Pagination.Item>  
   );
   l=i;
 }
@@ -107,30 +106,53 @@ for(let i of itemsNumbers){
         console.log(error);
       });
   }
+
+  function getPaginatedData(){
+    const startIndex=page*12-12;
+    const endIndex=startIndex+12;
+    if(likedHomes){
+      return likedHomes.slice(startIndex, endIndex)
+    }
+    return
+  }
+  
     return (
         
      <div style={{ marginTop: "10vh" }}>
 
+      <header className="head2">
+        <div className="title">
+          <h2>
+            {" "}
+            Your favorite<br></br>homes
+          </h2>
+          {/* <div className="underline"></div> */}
+        </div>
+        
+      </header>
         <div className="boxLista">
-                {likedHomes && likedHomes.map((home1, index) => {
-              let liked = false;
-             if (
-             likedHomes !== null && 
-             likedHomes.filter((one) => one.id === home1.id).length !== 0
-           ) {
-             liked = true;
-           }
-           
-          return (
-            <div className="apartmanLista">
-              <Home
-                key={index}
-                home1={home1}
-                liked={liked}
-                removeLikedHome={removeLikedHome}
-              />
-            </div>
-          );
+         
+            {likedHomes && getPaginatedData().map((home1, index) => {
+               
+                 let liked = false;
+                  if (
+                     likedHomes !== null && 
+                     likedHomes.filter((one) => one.id === home1.id).length !== 0
+                     ) {
+                  liked = true;
+                 }
+                
+                  return (
+                      <div className="apartmanLista">
+                       <Home
+                        key={index}
+                        home1={home1}
+                        liked={liked}
+                        removeLikedHome={removeLikedHome}
+                       />
+                       </div>
+                     );
+                  
         })}
       </div>
       <div className="pagination">     
@@ -144,6 +166,7 @@ for(let i of itemsNumbers){
                 hidden={checkPagePrev(page)}
               />
               {itemsDots}
+              
               <Pagination.Next
                 onClick={() =>
                   page === pageCount ? setPage(page) : setPage(page + 1)

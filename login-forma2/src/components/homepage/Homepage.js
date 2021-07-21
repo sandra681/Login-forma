@@ -52,10 +52,12 @@ const Homepage = (props) => {
           );
           setFilterHomes(adminApartments);
           setPageCount(response.data["last_page"]);
+         
           return;
         }
         setFilterHomes(response.data.data);
         setPageCount(response.data["last_page"]);
+        console.log(response.data["last_page"])
       })
       .catch((error) => console.log(error));
     // getFilteredHomes(filter, sort, order, search, page).then((result) => {
@@ -274,8 +276,11 @@ for(let i of itemsNumbers){
         
       <Pagination>
               <Pagination.First onClick={() => setPage(1)} 
-               disabled={checkPagePrev(page)}/>
-          
+               disabled={checkPagePrev(page)} >
+                
+               </Pagination.First>
+                
+              
               <Pagination.Prev
                 onClick={() => {
                   page === 1 ? setPage(1) : setPage(page - 1);
@@ -286,7 +291,7 @@ for(let i of itemsNumbers){
                 hidden={checkPagePrev(page)}
               />
               {itemsDots}
-
+              
               <Pagination.Next
                 onClick={() =>
                   page === pageCount ? setPage(page) : setPage(page + 1)

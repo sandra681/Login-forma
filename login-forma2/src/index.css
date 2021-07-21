@@ -403,6 +403,15 @@ main {
     width: 100%;
   }
 }
+@media screen and (max-width: 1392px) and (min-width: 992px) {
+  .boxLista {
+    display: flex;
+    flex-direction: row;
+  }
+  .boxLista .apartmanLista {
+    width: 50%;
+  }
+}
 .pagination {
   margin: 2rem auto;
   display: flex;
@@ -481,6 +490,18 @@ option:hover {
   background-position: center;
   background-attachment: fixed;
 }
+.head2 {
+  /* background-image: url("https://i.pinimg.com/originals/88/08/59/880859c96b1c82b281dd6173f9a2e901.jpg"); */
+  /* background-image: url("https://images.unsplash.com/photo-1493606371202-6275828f90f3?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1951&q=80"); */
+  background-image: url("https://images.unsplash.com/photo-1533090161767-e6ffed986c88?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80");
+  height: 60vh;
+
+  max-width: 100%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
 
 .card {
   margin: 5% 30% 0 30%;
@@ -513,6 +534,7 @@ button[disabled] {
   background-color: #cccccc;
   color: #666666;
 }
+
 .close {
   background: transparent;
   border: none;

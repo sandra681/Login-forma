@@ -10,6 +10,7 @@ import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useTheme } from "@material-ui/core/styles";
 import { Button } from "@material-ui/core";
 import Slider from "../common/Slider";
+import "../../src/index.css"
 
 const Home = (props) => {
   const { id, info, price, name, street, filename } = props.home1;
@@ -78,9 +79,8 @@ const Home = (props) => {
         )}
         {!user.isAdmin && liked===true &&(
           <button
-            className="delete-btn"
-            onClick={() => removeLikedHome(id)}
-           
+            className="delete-btn not-interested" style={{background:"#bb2525" , color:"white"}}
+            onClick={() => removeLikedHome(id)}           
           >
             {" "}
             not interested
