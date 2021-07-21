@@ -44,6 +44,7 @@ function FormHome({ history, match }) {
   const apartments = useSelector((state) => state.apartmentsReducer).apartments;
   const [files, setFiles] = useState([]);
   const [showFiles, setShowFiles] = useState([]);
+  const [newFiles, setNewFiles] = useState([]);
   let deletedFiles = [];
 
   useEffect(() => {
@@ -62,18 +63,14 @@ function FormHome({ history, match }) {
       squareFootageRef.current.value = apartment.square_footage;
       roomsRef.current.value = apartment.rooms_number;
       parkingRef.current.value = apartment.parking_spaces;
-      console.log(showFiles.filename);
     }
   }, [apartment, apartments]);
-  console.log(showFiles);
-  console.log(files);
   function fileSelectedHandler(e) {
-    debugger;
     let file = e.target.files[0]; //ako bi ovde ostalo files
     setShowFiles([...showFiles, { filename: e.target.files[0].name }]);
     let reader = new FileReader();
     reader.onload = (event) => {
-      setFiles([...files, event.target.result]); //ovde nece biti 1 file nego niz
+      setNewFiles([...newFiles, event.target.result]); //ovde nece biti 1 file nego niz
     };
     reader.readAsDataURL(file);
   }
@@ -181,7 +178,7 @@ function FormHome({ history, match }) {
     axios
       .put(
         process.env.REACT_APP_BASE_URL_AUTH + "fileupload",
-        { home_id: id, old_files: apartment.images, new_files: files },
+        { home_id: id, old_files: files, new_files: newFiles },
         {
           headers: authHeader(),
         }
@@ -213,11 +210,12 @@ function FormHome({ history, match }) {
     setOpen(false);
     history.push("/");
   };
-  const handleRemoveFile = (file, index) => {
+  const handleRemoveFile = (indexImage) => {
     debugger;
-    dispatch({ type: DELETE_APARTMENT_IMAGE, payload: index }).then(() =>
-      console.log("Izbrisano").catch((error) => console.log(error))
-    );
+    dispatch({
+      type: DELETE_APARTMENT_IMAGE,
+      payload: { indexImage, id },
+    });
   };
 
   return (

@@ -15,63 +15,30 @@ import {
 const Homepage = (props) => {
   const token = JSON.parse(localStorage.getItem("token"));
   const user = useSelector((state) => state.userReducer);
-
-  const [categories, setCategories] = useState([]); //Za sve kategorije to uzimamo dmah na pocetku
-
-  const likedHomes = useSelector(
-    (state) => state.apartmentsReducer
-  ).likedApartments;
-
-  const filterHomes = useSelector(
-    (state) => state.apartmentsReducer
-  ).apartments;
-  // const [page, setPage] = useState(1); //koja je strana u pitanju
-  const page = props.page;
-  const setPage = props.setPage;
-  const pageCount = props.pageCount;
-  const setFilter = props.setFilter;
-  const setSort = props.setSort;
-  const setOrder = props.setOrder;
-  const search = props.search;
-  const setSearch = props.setSearch;
-
-  // const [filter, setFilter] = useState("");
-  // const [sort, setSort] = useState("name");
-  // const [order, setOrder] = useState("asc");
-  // // const [input, setInput] = useState("");
-  // const [search, setSearch] = useState("");
+  const dispatch = useDispatch();
+  const [categories, setCategories] = useState([]);
+  const apartments = useSelector((state) => state.apartmentsReducer);
+  const likedHomes = [...apartments.likedApartments];
+  const filterHomes = [...apartments.apartments];
+  const {
+    page,
+    setPage,
+    pageCount,
+    setFilter,
+    setSort,
+    setOrder,
+    search,
+    setSearch,
+  } = props;
   let activePrev = false;
   let activeNext = false;
-
-  const dispatch = useDispatch();
+  let items = [];
   useEffect(() => {
     getCategories().then((result) => {
       const niz = result.data.map((one) => one.category);
       setCategories(["All", ...niz]);
     });
   }, []);
-
-  // useEffect(() => {
-  //   dispatch(getApartments(filter, sort, order, search, page))
-  //     .then((response) => {
-  //       if (user.isAdmin) {
-  //         let adminApartments = response.data.data.filter(
-  //           (one) => (one.user_id = user.user.id)
-  //         );
-  //         setFilterHomes(adminApartments);
-  //         setPageCount(response.data["last_page"]);
-  //         return;
-  //       }
-  //       setFilterHomes(response.data.data);
-  //       setPageCount(response.data["last_page"]);
-  //     })
-  //     .catch((error) => console.log(error));
-  //   // getFilteredHomes(filter, sort, order, search, page).then((result) => {
-  //   //   setFilterHomes(result.data.data);
-  //   //   setPageCount(result.data["last_page"]);
-  //   // });
-  // }, [sort, order, filter, search, page, user]);
-  let items = [];
 
   for (let i = 1; i < pageCount + 1; i++) {
     if (i === page + 4) {
@@ -127,10 +94,6 @@ const Homepage = (props) => {
     setSort(value);
     setOrder(order);
   }
-
-  function removeHome(id) {
-    // setFilterHomes(filterHomes.filter((home) => home.id !== id));
-  }
   const addLikedHome = (id) => {
     if (token === null) {
       props.history.push("/login");
@@ -143,7 +106,6 @@ const Homepage = (props) => {
       }
       dispatch(storeLikedApartments(user.user.id, id))
         .then(() => {
-          // dispatch(getAllLikedApartmentsOfUser(user.user.id)).then(()=>console.log("ubacen")).catch((error)=>console.log(error));
           console.log("Liked home is stored");
         })
         .catch((error) => {
@@ -224,10 +186,9 @@ const Homepage = (props) => {
             }
 
             return (
-              <div className="apartman">
+              <div className="apartman" key={index}>
                 <Home
                   key={index}
-                  removeHome={removeHome}
                   addLikedHome={addLikedHome}
                   deleteHome={deleteHome}
                   home1={home1}

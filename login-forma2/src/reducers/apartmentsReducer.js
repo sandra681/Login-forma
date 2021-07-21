@@ -49,15 +49,18 @@ export default function apartmentsReducer(state = initialState, action) {
         ...state,
       };
     case DELETE_APARTMENT_IMAGE:
-      return {
-        ...state,
-        apartemnts: {
-          ...state.apartments,
-          images: state.apartments.images.filter(
-            (one) => one.id !== payload.index
-          ),
-        }, //Ovo treba proveriti na sta sam tacn
-      };
+      // return state.apartments.map((apartment, index) => {
+      //   if (apartment.id === payload.id) {
+      //     let imgs = apartment.images.filter(
+      //       (one) => one.id === payload.indexImage
+      //     );
+      //     return {
+      //       ...state,
+      //       apartemnts: [...state.apartments],
+      //     };
+      //   }
+      // return { ...state, apartemnts: [...state.apartments,apartments[0]:{}] };
+    // }); //Ovo treba proveriti na sta sam tacn
     default:
       return state;
   }
