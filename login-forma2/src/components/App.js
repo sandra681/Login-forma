@@ -17,6 +17,7 @@ import Navbar from "../common/Navbar";
 import { ADD_TO_ALL } from "../actions/types";
 import apartmentService from "../services/apartment.services";
 import { getApartments } from "../actions/apartments";
+import LikedHomesList from "../homes/LikedHomesList";
 
 function App() {
   const dispatch = useDispatch();

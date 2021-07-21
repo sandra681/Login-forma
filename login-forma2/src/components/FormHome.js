@@ -1,4 +1,4 @@
-import React, {  useRef, useState } from "react";
+import React, {  useRef, useState, useEffect } from "react";
 import { Card, Form, Button, FormGroup, Row, Col } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./FormHome.css";
@@ -70,7 +70,7 @@ function FormHome({ history, match }) {
     setShowFiles([...showFiles, { filename: e.target.files[0].name }]);
     let reader = new FileReader();
     reader.onload = (event) => {
-      setNewFiles([...newFiles, event.target.result]); //ovde nece biti 1 file nego niz
+      setFiles([...files, event.target.result]); //ovde nece biti 1 file nego niz
     };
     reader.readAsDataURL(file);
   }

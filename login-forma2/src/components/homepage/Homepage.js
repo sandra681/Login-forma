@@ -33,7 +33,7 @@ const Homepage = (props) => {
   } = props;
   let activePrev = false;
   let activeNext = false;
-  let items = [];
+ 
   useEffect(() => {
     getCategories().then((result) => {
       const niz = result.data.map((one) => one.category);
@@ -42,7 +42,7 @@ const Homepage = (props) => {
   }, []);
 
 
-  useEffect(() => {
+  /* useEffect(() => {
     dispatch(getApartments(filter, sort, order, search, page))
       .then((response) => {
         if (user.isAdmin) {
@@ -63,7 +63,7 @@ const Homepage = (props) => {
     //   setFilterHomes(result.data.data);
     //   setPageCount(result.data["last_page"]);
     // });
-  }, [sort, order, filter, search, page, user]);
+  }, [sort, order, filter, search, page, user]); */
   let itemsNumbers = [];
   let space=2;
   let left=page-space;
@@ -256,7 +256,7 @@ for(let i of itemsNumbers){
             <div className="apartman"  key={index}>
               <Home
                 key={index}
-                removeHome={removeHome}
+               // removeHome={removeHome}
                 addLikedHome={addLikedHome}
                 deleteHome={deleteHome}
                 home1={home1}

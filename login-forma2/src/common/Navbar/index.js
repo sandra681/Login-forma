@@ -162,7 +162,7 @@ const Navbar = (props) => {
         <Modal.Body style={{ overflow: "auto", height: "500px" }}>
           { likedHomes !== null &&
             likedHomes.map((home, index) => {
-              console.log(home);
+              
               return (
                 <article key={index} className="in_apart">
                   {home.images && home.images.length > 0 && (
