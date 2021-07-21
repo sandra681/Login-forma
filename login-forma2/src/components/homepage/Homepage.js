@@ -276,7 +276,7 @@ for(let i of itemsNumbers){
         
       <Pagination>
               <Pagination.First onClick={() => setPage(1)} 
-               disabled={checkPagePrev(page)} >
+               disabled={checkPagePrev(page)}  >
                 
                </Pagination.First>
                 
