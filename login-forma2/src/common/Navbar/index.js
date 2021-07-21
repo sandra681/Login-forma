@@ -20,7 +20,6 @@ import {
   deleteAllLikedApartment,
   deleteLikedApartment,
 } from "../../actions/apartments";
-import apartmentServices from "../../services/apartment.services";
 
 const Navbar = (props) => {
   const { isLoggedIn } = useSelector((state) => state.authReducer);
@@ -159,9 +158,10 @@ const Navbar = (props) => {
         <Modal.Body>
           {likedHomes !== null &&
             likedHomes.map((home, index) => {
+              console.log(home);
               return (
                 <article key={index} className="in_apart">
-                  {home && home.images && (
+                  {home.images && home.images.length > 0 && (
                     <img
                       src={
                         process.env.REACT_APP_BASE_URL_IMAGE +

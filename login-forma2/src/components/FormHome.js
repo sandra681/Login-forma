@@ -3,7 +3,7 @@ import { Card, Form, Button, FormGroup, Row, Col } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./FormHome.css";
 import axios from "axios";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -13,6 +13,8 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useTheme } from "@material-ui/core/styles";
 import apartmentServices from "../services/apartment.services";
+import authHeader from "../services/auth-header";
+import { DELETE_APARTMENT_IMAGE } from "../actions/types";
 
 function FormHome({ history, match }) {
   const { id } = match.params;
@@ -30,37 +32,45 @@ function FormHome({ history, match }) {
   const squareFootageRef = useRef();
   const roomsRef = useRef();
   const parkingRef = useRef();
-
+  const dispatch = useDispatch();
+  let home_id;
+  let apartment;
   const [loading, setLoading] = useState(false);
-  const [files, setFiles] = useState([]);
-  const [showFiles, setShowFiles] = useState([]);
+
   //PROVERITI STA JE UPITANJU
   const [open, setOpen] = React.useState(false);
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
-  let home_id;
-  if (!isAddMode) {
-    apartmentServices
-      .getOneApartment(id)
-      .then((response) => {
-        console.log(response);
-        // setApartments(response[0]);
-        nameRef.current.value = response[0].name;
-        streetRef.current.value = response[0].street;
-        cityRef.current.value = response[0].city;
-        priceRef.current.value = response[0].price;
-        infoRef.current.value = response[0].info;
-        categoryRef.current.value = response[0].category;
-        squareFootageRef.current.value = response[0].square_footage;
-        roomsRef.current.value = response[0].rooms_number;
-        parkingRef.current.value = response[0].parking_spaces;
-      })
-      .catch((error) => console.log(error));
-  }
+  const apartments = useSelector((state) => state.apartmentsReducer).apartments;
+  const [files, setFiles] = useState([]);
+  const [showFiles, setShowFiles] = useState([]);
+  let deletedFiles = [];
 
+  useEffect(() => {
+    if (!isAddMode && apartments) {
+      apartment = apartments.filter((one) => one.id === parseInt(id))[0];
+      setShowFiles(apartment.images);
+      setFiles(apartment.images);
+    }
+    if (!isAddMode && apartment) {
+      nameRef.current.value = apartment.name;
+      streetRef.current.value = apartment.street;
+      cityRef.current.value = apartment.city;
+      priceRef.current.value = apartment.price;
+      infoRef.current.value = apartment.info;
+      categoryRef.current.value = apartment.category;
+      squareFootageRef.current.value = apartment.square_footage;
+      roomsRef.current.value = apartment.rooms_number;
+      parkingRef.current.value = apartment.parking_spaces;
+      console.log(showFiles.filename);
+    }
+  }, [apartment, apartments]);
+  console.log(showFiles);
+  console.log(files);
   function fileSelectedHandler(e) {
+    debugger;
     let file = e.target.files[0]; //ako bi ovde ostalo files
-    setShowFiles([...showFiles, e.target.files[0].name]);
+    setShowFiles([...showFiles, { filename: e.target.files[0].name }]);
     let reader = new FileReader();
     reader.onload = (event) => {
       setFiles([...files, event.target.result]); //ovde nece biti 1 file nego niz
@@ -98,7 +108,7 @@ function FormHome({ history, match }) {
         //resonse bi trebao da vraca id koji bi se setovao
         home_id = response.data.id;
         setLoading(false);
-        setFiles({ files: [] });
+        // setFiles({ files: [] });
         if (response.status === 200) {
           console.log("OK");
         }
@@ -139,7 +149,7 @@ function FormHome({ history, match }) {
     await axios
 
       .put(
-        "http://127.0.0.1:8000/api/auth/home/" + id,
+        process.env.REACT_APP_BASE_URL_AUTH + "home/" + id,
         {
           name: nameRef.current.value,
           street: streetRef.current.value,
@@ -152,7 +162,28 @@ function FormHome({ history, match }) {
           parking_spaces: parkingRef.current.value,
         },
         {
-          headers: { Authorization: `Bearer ${token.access_token}` },
+          headers: authHeader(),
+        }
+      )
+      .then((response) => {
+        setLoading(false);
+        if (response.data.status === 200) {
+          console.log("OK");
+        }
+        if (response.data.status === "failed") {
+          setTimeout(() => {}, 2000);
+        }
+      })
+      .catch((error) => {
+        console.log("GRESKA");
+        console.log(error.message);
+      });
+    axios
+      .put(
+        process.env.REACT_APP_BASE_URL_AUTH + "fileupload",
+        { home_id: id, old_files: apartment.images, new_files: files },
+        {
+          headers: authHeader(),
         }
       )
       .then((response) => {
@@ -182,6 +213,12 @@ function FormHome({ history, match }) {
     setOpen(false);
     history.push("/");
   };
+  const handleRemoveFile = (file, index) => {
+    debugger;
+    dispatch({ type: DELETE_APARTMENT_IMAGE, payload: index }).then(() =>
+      console.log("Izbrisano").catch((error) => console.log(error))
+    );
+  };
 
   return (
     <>
@@ -203,7 +240,6 @@ function FormHome({ history, match }) {
                 <Form.Control
                   ref={nameRef}
                   type="textarea"
-                  value="Homeeeer"
                   required
                   placeholder="Home's Name"
                 ></Form.Control>
@@ -215,7 +251,6 @@ function FormHome({ history, match }) {
                   <Form.Control
                     ref={streetRef}
                     type="textarea"
-                    value="Margeee"
                     required
                     placeholder="Street"
                   ></Form.Control>
@@ -226,7 +261,6 @@ function FormHome({ history, match }) {
                   <Form.Control
                     ref={cityRef}
                     type="textarea"
-                    value="Lisaaa"
                     required
                     placeholder="City"
                   ></Form.Control>
@@ -242,7 +276,6 @@ function FormHome({ history, match }) {
                     className="price-number"
                     type="number"
                     min="0"
-                    value="23"
                     required
                     placeholder="Price"
                   ></Form.Control>
@@ -270,7 +303,6 @@ function FormHome({ history, match }) {
                     type="number"
                     min="0"
                     step="0.01"
-                    value="100"
                     required
                     placeholder="Square Footage"
                   ></Form.Control>
@@ -282,7 +314,6 @@ function FormHome({ history, match }) {
                     className="price-number"
                     type="number"
                     min="0"
-                    value="100"
                     required
                     placeholder="Number of Rooms"
                   ></Form.Control>
@@ -294,7 +325,6 @@ function FormHome({ history, match }) {
                     className="price-number"
                     type="number"
                     min="0"
-                    value="100"
                     required
                     placeholder="Parking Spaces"
                   ></Form.Control>
@@ -307,7 +337,6 @@ function FormHome({ history, match }) {
                   ref={infoRef}
                   as="textarea"
                   rows={4}
-                  value="Baaart"
                   required
                   placeholder="About home"
                 ></Form.Control>
@@ -325,7 +354,8 @@ function FormHome({ history, match }) {
               <div className="card" style={{ margin: 0 }}>
                 <div className="card-header">List of Images</div>
                 <ul className="list-group list-group-flush">
-                  {showFiles.length > 0 &&
+                  {showFiles &&
+                    showFiles.length > 0 &&
                     showFiles.map((file, index) => (
                       <li
                         className="list-group-item"
@@ -334,14 +364,11 @@ function FormHome({ history, match }) {
                       >
                         <p
                           style={{ marginRight: "10px", cursor: "pointer" }}
-                          onClick={() => {
-                            setShowFiles(showFiles.splice(index, 1));
-                            setFiles(files.splice(index, 1));
-                          }}
+                          onClick={() => handleRemoveFile(index)}
                         >
                           x
                         </p>
-                        <a href={file.url}>{file}</a>
+                        <a href={file.filename}>{file.filename}</a>
                       </li>
                     ))}
                 </ul>

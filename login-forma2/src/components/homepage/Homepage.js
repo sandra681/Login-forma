@@ -22,15 +22,24 @@ const Homepage = (props) => {
     (state) => state.apartmentsReducer
   ).likedApartments;
 
-  const [filterHomes, setFilterHomes] = useState([]); //Ove za sve
-  const [page, setPage] = useState(1); //koja je strana u pitanju
-  const [pageCount, setPageCount] = useState(1);
+  const filterHomes = useSelector(
+    (state) => state.apartmentsReducer
+  ).apartments;
+  // const [page, setPage] = useState(1); //koja je strana u pitanju
+  const page = props.page;
+  const setPage = props.setPage;
+  const pageCount = props.pageCount;
+  const setFilter = props.setFilter;
+  const setSort = props.setSort;
+  const setOrder = props.setOrder;
+  const search = props.search;
+  const setSearch = props.setSearch;
 
-  const [filter, setFilter] = useState("");
-  const [sort, setSort] = useState("name");
-  const [order, setOrder] = useState("asc");
-  // const [input, setInput] = useState("");
-  const [search, setSearch] = useState("");
+  // const [filter, setFilter] = useState("");
+  // const [sort, setSort] = useState("name");
+  // const [order, setOrder] = useState("asc");
+  // // const [input, setInput] = useState("");
+  // const [search, setSearch] = useState("");
   let activePrev = false;
   let activeNext = false;
 
@@ -42,26 +51,26 @@ const Homepage = (props) => {
     });
   }, []);
 
-  useEffect(() => {
-    dispatch(getApartments(filter, sort, order, search, page))
-      .then((response) => {
-        if (user.isAdmin) {
-          let adminApartments = response.data.data.filter(
-            (one) => (one.user_id = user.user.id)
-          );
-          setFilterHomes(adminApartments);
-          setPageCount(response.data["last_page"]);
-          return;
-        }
-        setFilterHomes(response.data.data);
-        setPageCount(response.data["last_page"]);
-      })
-      .catch((error) => console.log(error));
-    // getFilteredHomes(filter, sort, order, search, page).then((result) => {
-    //   setFilterHomes(result.data.data);
-    //   setPageCount(result.data["last_page"]);
-    // });
-  }, [sort, order, filter, search, page, user]);
+  // useEffect(() => {
+  //   dispatch(getApartments(filter, sort, order, search, page))
+  //     .then((response) => {
+  //       if (user.isAdmin) {
+  //         let adminApartments = response.data.data.filter(
+  //           (one) => (one.user_id = user.user.id)
+  //         );
+  //         setFilterHomes(adminApartments);
+  //         setPageCount(response.data["last_page"]);
+  //         return;
+  //       }
+  //       setFilterHomes(response.data.data);
+  //       setPageCount(response.data["last_page"]);
+  //     })
+  //     .catch((error) => console.log(error));
+  //   // getFilteredHomes(filter, sort, order, search, page).then((result) => {
+  //   //   setFilterHomes(result.data.data);
+  //   //   setPageCount(result.data["last_page"]);
+  //   // });
+  // }, [sort, order, filter, search, page, user]);
   let items = [];
 
   for (let i = 1; i < pageCount + 1; i++) {
@@ -120,7 +129,7 @@ const Homepage = (props) => {
   }
 
   function removeHome(id) {
-    setFilterHomes(filterHomes.filter((home) => home.id !== id));
+    // setFilterHomes(filterHomes.filter((home) => home.id !== id));
   }
   const addLikedHome = (id) => {
     if (token === null) {
@@ -202,30 +211,32 @@ const Homepage = (props) => {
         </select>
       </div>
       <div className="box">
-        {filterHomes.map((home1, index) => {
-          //liked
-          let liked = false;
-          if (
-            likedHomes !== null && 
-            likedHomes.filter((one) => one.id === home1.id).length !== 0
-          ) {
-            liked = true;
-          }
+        {filterHomes &&
+          filterHomes.length > 0 &&
+          filterHomes.map((home1, index) => {
+            //liked
+            let liked = false;
+            if (
+              likedHomes !== null &&
+              likedHomes.filter((one) => one.id === home1.id).length !== 0
+            ) {
+              liked = true;
+            }
 
-          return (
-            <div className="apartman">
-              <Home
-                key={index}
-                removeHome={removeHome}
-                addLikedHome={addLikedHome}
-                deleteHome={deleteHome}
-                home1={home1}
-                history={props.history}
-                liked={liked}
-              />
-            </div>
-          );
-        })}
+            return (
+              <div className="apartman">
+                <Home
+                  key={index}
+                  removeHome={removeHome}
+                  addLikedHome={addLikedHome}
+                  deleteHome={deleteHome}
+                  home1={home1}
+                  history={props.history}
+                  liked={liked}
+                />
+              </div>
+            );
+          })}
       </div>
 
       <div className="pagination">
