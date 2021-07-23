@@ -1,5 +1,4 @@
-import axios from "axios";
-import { useSelector } from "react-redux";
+
 import {
   GET_APARTMENT_SUCCESS,
   GET_APARTMENT_FAIL,
@@ -29,7 +28,7 @@ export default function apartmentsReducer(state = initialState, action) {
     case ADD_LIKED_APARTMENT:
       return {
         ...state,
-        likedApartments: [...state.likedApartments, ...payload.likedApartments],
+        likedApartments: [...state.likedApartments, payload.likedApartments],
       };
       case GET_LIKED_APARTMENT:
         return {
@@ -49,7 +48,7 @@ export default function apartmentsReducer(state = initialState, action) {
     case DELETE_ALL_LIKED_APARTMENT:
       return {
         ...state,
-        likedApartments: null,
+        likedApartments: [],
       };
     case DELETE_APARTMENT:
       return {

@@ -12,7 +12,6 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useTheme } from "@material-ui/core/styles";
-import apartmentServices from "../services/apartment.services";
 import authHeader from "../services/auth-header";
 import { DELETE_APARTMENT_IMAGE } from "../actions/types";
 
@@ -45,7 +44,7 @@ function FormHome({ history, match }) {
   const [files, setFiles] = useState([]);
   const [showFiles, setShowFiles] = useState([]);
   const [newFiles, setNewFiles] = useState([]);
-  let deletedFiles = [];
+  
 
   useEffect(() => {
     if (!isAddMode && apartments) {

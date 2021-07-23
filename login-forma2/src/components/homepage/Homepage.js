@@ -13,6 +13,8 @@ import {
   storeLikedApartments,
 } from "../../actions/apartments";
 
+import { BsChevronDoubleLeft, BsChevronDoubleRight, BsChevronLeft, BsChevronRight } from 'react-icons/bs';
+
 const Homepage = (props) => {
   const token = JSON.parse(localStorage.getItem("token"));
   const user = useSelector((state) => state.userReducer);
@@ -101,6 +103,7 @@ for(let i of itemsNumbers){
         <Pagination.Item
       
         activeLabel={false}
+        disabled={true}
       >
         {'...'}
       </Pagination.Item>
@@ -163,7 +166,7 @@ for(let i of itemsNumbers){
       }
       dispatch(storeLikedApartments(user.user.id, id))
         .then(() => {
-          console.log("Liked home is stored");
+        
         })
         .catch((error) => {
           console.log(error);
@@ -270,35 +273,37 @@ for(let i of itemsNumbers){
 
       </div>
 
-
+     
       <div className="pagination">
         
       <Pagination>
               <Pagination.First onClick={() => setPage(1)} 
                disabled={checkPagePrev(page)}  >
-                
-               </Pagination.First>
-                
-              
+                 
+                 <BsChevronDoubleLeft  />
+               </Pagination.First>              
               <Pagination.Prev
                 onClick={() => {
                   page === 1 ? setPage(1) : setPage(page - 1);
-                  
-
-                }}
-                
+                }}                
                 hidden={checkPagePrev(page)}
-              />
-              {itemsDots}
-              
+              >
+                <BsChevronLeft/>
+              </Pagination.Prev>
+              {itemsDots}              
               <Pagination.Next
                 onClick={() =>
                   page === pageCount ? setPage(page) : setPage(page + 1)
                 }
                 hidden={checkPageNext(page)}
-              />
+              >
+                <BsChevronRight/>
+              </Pagination.Next>
+
               <Pagination.Last onClick={() => setPage(pageCount)}
-               disabled={checkPageNext(page)} />
+               disabled={checkPageNext(page)} >
+                 <BsChevronDoubleRight/>
+               </Pagination.Last>
             </Pagination>
 
       

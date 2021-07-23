@@ -540,3 +540,11 @@ button[disabled] {
   border: none;
   font-size: 2rem;
 }
+.sr-only {
+  display: none;
+}
+.message {
+  color: hsl(360, 67%, 44%);
+  text-align: center;
+  margin-top: 1%;
+}

@@ -4,7 +4,8 @@ import "../components/homepage/Homepage.css"
 import { useDispatch, useSelector } from "react-redux";
 import {  Pagination } from "react-bootstrap";
 import { deleteLikedApartment } from "../actions/apartments";
-
+import { BsChevronDoubleLeft, BsChevronDoubleRight, BsChevronLeft, BsChevronRight } from 'react-icons/bs';
+import apartmentServices from "../services/apartment.services";
 
 
 function LikedHomesList() {
@@ -27,15 +28,19 @@ function LikedHomesList() {
       ).likedApartments;
 
       useEffect(()=>{
+        
         if(likedHomes){
           let pages=1
+          let brojac=1
         for(let i=1;i<=likedHomes.length;i++){
-          if(i===pageCount+9){
+          if(i===(12*brojac+1)){
             setPageCount(pages+1)
+            pages++
+            brojac++;
           }
         }
       }
-      },[likedHomes])
+      },[likedHomes, pageCount, page])
       
   for (let i = 1; i < pageCount + 1; i++) {
     if(i===1 || i===pageCount || i>=left && i<right){
@@ -100,7 +105,7 @@ for(let i of itemsNumbers){
     if (user.user === null) return;
     dispatch(deleteLikedApartment(user.user.id, id))
       .then(() => {
-        console.log("Obrisano");
+        window.location.reload(true)
       })
       .catch((error) => {
         console.log(error);
@@ -112,6 +117,12 @@ for(let i of itemsNumbers){
     const endIndex=startIndex+12;
     if(likedHomes){
       return likedHomes.slice(startIndex, endIndex)
+    }
+    return
+  }
+  function message(){
+    if(likedHomes.length===0){
+      return <h3>You Don't Have Selected Apartments!</h3>
     }
     return
   }
@@ -130,10 +141,14 @@ for(let i of itemsNumbers){
         </div>
         
       </header>
+
+      <div className="message">
+      {message()}
+      </div>
+      
         <div className="boxLista">
          
-            {likedHomes && getPaginatedData().map((home1, index) => {
-               
+            {likedHomes && getPaginatedData().map((home1, index) => {   
                  let liked = false;
                   if (
                      likedHomes !== null && 
@@ -143,7 +158,7 @@ for(let i of itemsNumbers){
                  }
                 
                   return (
-                      <div className="apartmanLista">
+                      <div className="apartmanLista" key={index}>
                        <Home
                         key={index}
                         home1={home1}
@@ -155,26 +170,35 @@ for(let i of itemsNumbers){
                   
         })}
       </div>
-      <div className="pagination">     
+      <div className="pagination" hidden={likedHomes.length===0 ? true : false}>     
       <Pagination>
               <Pagination.First onClick={() => setPage(1)} 
-               disabled={checkPagePrev(page)}/>        
+               disabled={checkPagePrev(page)}  >
+                 
+                 <BsChevronDoubleLeft  />
+               </Pagination.First>              
               <Pagination.Prev
                 onClick={() => {
-                  page === 1 ? setPage(1) : setPage(page - 1);                
-               }}                
+                  page === 1 ? setPage(1) : setPage(page - 1);
+                }}                
                 hidden={checkPagePrev(page)}
-              />
-              {itemsDots}
-              
+              >
+                <BsChevronLeft/>
+              </Pagination.Prev>
+              {itemsDots}              
               <Pagination.Next
                 onClick={() =>
                   page === pageCount ? setPage(page) : setPage(page + 1)
                 }
                 hidden={checkPageNext(page)}
-              />
+              >
+                <BsChevronRight/>
+              </Pagination.Next>
+
               <Pagination.Last onClick={() => setPage(pageCount)}
-               disabled={checkPageNext(page)} />
+               disabled={checkPageNext(page)} >
+                 <BsChevronDoubleRight/>
+               </Pagination.Last>
             </Pagination>
 
         </div>

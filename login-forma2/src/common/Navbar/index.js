@@ -36,6 +36,8 @@ const Navbar = (props) => {
   const [click, setClick] = useState(false);
   const [open, setOpen] = useState(false);
   const handleClick = () => setClick(!click);
+  const [clickBtn, setClickBtn]=useState(false);
+
   useEffect(() => {
     window.addEventListener("scroll", handleScroll, { passive: true });
 
@@ -69,16 +71,19 @@ const Navbar = (props) => {
     if (user.user === null) return;
     dispatch(deleteLikedApartment(user.user.id, id))
       .then(() => {
-        console.log("Obrisano");
+       
       })
       .catch((error) => {
         console.log(error);
       });
   }
   function likedListHomes(id){
-    setOpen(false)
-    props.history.push("/liked-homes/"+id)
+       
+    setOpen(false)  
+    props.history.push("/liked-homes/"+id)    
   }
+  
+ 
   return (
     <>
       <Nav scrolled={scrollPosition}>
@@ -159,7 +164,7 @@ const Navbar = (props) => {
             {likedHomes !== null ? likedHomes.length : 0} liked apartments
           </Modal.Title>
         </Modal.Header>
-        <Modal.Body style={{ overflow: "auto", height: "500px" }}>
+        <Modal.Body style={{ overflow: "auto", height: "350px" }}>
           { likedHomes !== null &&
             likedHomes.map((home, index) => {
               
@@ -204,10 +209,10 @@ const Navbar = (props) => {
           >
             Clear All
           </Button>
-         
-          <Button variant="primary" onClick={()=>likedListHomes(user.user.id)}>
+         <Button  variant="primary" hidden={false} onClick={()=>likedListHomes(user.user.id)}>
             Open in full screen
           </Button>
+         
           
         </Modal.Footer>
       </Modal>
