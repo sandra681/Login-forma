@@ -125,7 +125,6 @@ const Homepage = (props) => {
   function deleteHome(id) {
     dispatch(deleteApartment(id))
       .then(() => {
-        window.location.reload();
         console.log("Uspesno izbrisan");
       })
       .catch((error) => console.log(error));

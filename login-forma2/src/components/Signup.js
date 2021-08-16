@@ -31,7 +31,6 @@ function Signup(props) {
       .then(() => {
         console.log(message);
         props.history.push("/login");
-        window.location.reload();
         setSuccessful(true);
       })
       .catch(() => setSuccessful(false));

@@ -192,6 +192,7 @@ export const deleteApartment = (home_id) => (dispatch) => {
     (response) => {
       dispatch({
         type: DELETE_APARTMENT,
+        payload: { home_id },
       });
 
       dispatch({

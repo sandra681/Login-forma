@@ -22,7 +22,6 @@ function Login(props) {
     dispatch(login(emailRef.current.value, passwordRef.current.value))
       .then((response) => {
         props.history.push("/");
-        window.location.reload();
       })
       .catch(() => {
         setLoading(false);

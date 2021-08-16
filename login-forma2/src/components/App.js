@@ -75,7 +75,6 @@ function App() {
   const logOutD = () => {
     dispatch(logout());
     history.push("/login");
-    window.location.reload();
   };
 
   return (

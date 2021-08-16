@@ -64,13 +64,14 @@ function FormHome({ history, match }) {
       roomsRef.current.value = apartment.rooms_number;
       parkingRef.current.value = apartment.parking_spaces;
     }
-  }, [apartment, apartments]);
+  }, [apartments]);
   function fileSelectedHandler(e) {
     let file = e.target.files[0]; //ako bi ovde ostalo files
     setShowFiles([...showFiles, { filename: e.target.files[0].name }]);
     let reader = new FileReader();
     reader.onload = (event) => {
-      setNewFiles([...newFiles, event.target.result]); //ovde nece biti 1 file nego niz
+      setFiles([...files, event.target.result]); //ovde nece biti 1 file nego niz
+      setNewFiles([...newFiles, event.target.result]);
     };
     reader.readAsDataURL(file);
   }
@@ -210,12 +211,13 @@ function FormHome({ history, match }) {
     setOpen(false);
     history.push("/");
   };
-  const handleRemoveFile = (indexImage) => {
+  const handleRemoveFile = (indexImage, file) => {
     debugger;
     dispatch({
       type: DELETE_APARTMENT_IMAGE,
-      payload: { indexImage, id },
+      payload: { indexImage, file, id },
     });
+    // setShowFiles(files);
   };
 
   return (
@@ -362,7 +364,7 @@ function FormHome({ history, match }) {
                       >
                         <p
                           style={{ marginRight: "10px", cursor: "pointer" }}
-                          onClick={() => handleRemoveFile(index)}
+                          onClick={() => handleRemoveFile(index, file)}
                         >
                           x
                         </p>
